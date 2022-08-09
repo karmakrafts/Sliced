@@ -1,0 +1,156 @@
+buildscript {
+    def config = new Properties()
+    file('build.properties').withInputStream(config.&load)
+    project.ext.config = config
+    project.ext.buildDate = new Date()
+
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    dependencies {
+        classpath group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: config.kotlin_version
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+
+archivesBaseName = config.project_id
+group = config.project_group
+version = "${config.project_version}.${(System.getenv("CI_PIPELINE_IID") ?: 0)}"
+sourceCompatibility = config.java_version
+targetCompatibility = config.java_version
+
+sourceSets {
+    main {
+        java { srcDirs = ['src/main/java'] }
+        kotlin { srcDirs = ['src/main/java', 'src/main/kotlin'] }
+    }
+
+    test {
+        java { srcDirs = ['src/test/java'] }
+        kotlin { srcDirs = ['src/test/java', 'src/test/kotlin'] }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    implementation group: 'org.jetbrains', name: 'annotations', version: config.annotations_version
+    implementation group: 'it.unimi.dsi', name: 'fastutil', version: config.dmi_version
+    implementation group: 'org.apiguardian', name: 'apiguardian-api', version: config.apiguard_version
+
+    implementation group: 'org.jetbrains', name: 'annotations', version: config.annotations_version
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: config.kotlin_version
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: config.kotlin_version
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: config.junit_version
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: config.junit_version
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = config.java_version
+    targetCompatibility = config.java_version
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : config.project_id,
+                "Specification-Vendor"    : "Karma Krafts",
+                "Specification-Version"   : project.version,
+                "Implementation-Title"    : config.project_id,
+                "Implementation-Version"  : project.version,
+                "Implementation-Vendor"   : "Karma Krafts",
+                "Implementation-Timestamp": buildDate.format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from javadoc
+}
+
+tasks.withType(Jar) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    repositories {
+        if (System.getenv('MAVEN_PASSWORD')) {
+            maven {
+                url "https://nexus.covers1624.net/repository/karmakrafts-releases/"
+
+                credentials {
+                    username 'kitsunealex'
+                    password System.getenv('MAVEN_PASSWORD')
+                }
+            }
+        }
+    }
+    publications {
+        Kommons(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            
+            artifact jar
+            artifact sourcesJar
+            artifact javadocJar
+    
+            pom {
+                name = archivesBaseName
+                description = archivesBaseName
+                //The publish plugin doesnt like GString's here apparently..
+                url = "https://git.karmakrafts.dev/kk/${config.project_id}".toString()
+
+                scm {
+                    url = "https://git.karmakrafts.dev/kk/${config.project_id}".toString()
+                }
+
+                issueManagement {
+                    system = 'gitlab'
+                    url = "https://git.karmakrafts.dev/kk/${config.project_id}/issues".toString()
+                }
+
+                licenses {
+                    license {
+                        name = "The MIT License"
+                        url = "https://git.karmakrafts.dev/kk/${config.project_id}/-/blob/master/LICENSE"
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'kitsunealex'
+                        name = 'KitsuneAlex'
+                    }
+                }
+            }
+        }
+    }
+}

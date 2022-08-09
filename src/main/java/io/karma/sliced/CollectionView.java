@@ -19,6 +19,7 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +51,11 @@ class CollectionView<T, C extends Collection<T>> implements View<T> {
     @Override
     public int size() {
         return ref.size();
+    }
+
+    @Override
+    public boolean contains(final @Nullable T value) {
+        return ref.contains(value);
     }
 
     @Override

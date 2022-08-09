@@ -28,6 +28,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
+ * A view describes a read-only
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */

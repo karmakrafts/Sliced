@@ -16,7 +16,10 @@
 
 package io.karma.sliced;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,11 +34,17 @@ import java.util.function.Supplier;
  * @author Alexander Hinze
  * @since 09/08/2022
  */
+@API(status = Status.INTERNAL)
 final class MapViewImpl<K, V, M extends Map<K, V>> implements MapView<K, V> {
     private final M ref;
 
     MapViewImpl(final @NotNull M ref) {
         this.ref = ref;
+    }
+
+    @Override
+    public V get(final @Nullable K key) {
+        return ref.get(key);
     }
 
     @Override

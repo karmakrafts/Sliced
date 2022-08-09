@@ -20,10 +20,23 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
+ * <h2>Information</h2>
+ * A specialized {@link View} for {@link java.util.Queue},
+ * which provides an additional set of functionality over
+ * the regular view access.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
 @API(status = Status.STABLE)
 public interface QueueView<T> extends View<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Retrieves the first element from the queue.
+     * Returns null if the queue is empty.
+     *
+     * @return The first element from the queue. Null if the queue is empty.
+     */
     T peek();
 }

@@ -21,10 +21,16 @@ import org.apiguardian.api.API;
 import java.util.Enumeration;
 
 /**
+ * An {@link Enumeration}, which provides a function
+ * to reset its internal iteration index.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
 @API(status = API.Status.STABLE)
 public interface ReusableEnumeration<T> extends Enumeration<T> {
+    /**
+     * Resets the internal iteration index of this enumeration.
+     */
     void reset();
 }

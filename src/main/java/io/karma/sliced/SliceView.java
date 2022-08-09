@@ -18,25 +18,35 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 
 /**
- * <h2>Information</h2>
- * A specialized {@link View} for {@link java.util.Deque},
- * which provides an additional set of functionality over
- * the regular view access.
- *
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 10/08/2022
  */
-@API(status = Status.STABLE)
-public interface DequeView<T> extends QueueView<T> {
-    /**
-     * <h2>Information</h2>
-     * <b>Time Complexity: O(1)</b><br>
-     * Retrieves the last element from the deque.
-     * Returns null if the deque is empty.
-     *
-     * @return The first element from the deque. Null if the deque is empty.
-     */
-    T peekLast();
+@API(status = Status.INTERNAL)
+final class SliceView<T> implements View<T> {
+    private final Slice<T> slice;
+
+    SliceView(final @NotNull Slice<T> slice) {
+        this.slice = slice;
+    }
+
+    @Override
+    public int size() {
+        return slice.size();
+    }
+
+    @Override
+    public @NotNull Slice<T> asSlice() {
+        return slice;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return slice.iterator();
+    }
 }

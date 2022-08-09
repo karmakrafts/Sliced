@@ -27,9 +27,14 @@ import java.util.Deque;
  * @since 09/08/2022
  */
 @API(status = Status.INTERNAL)
-final class DequeViewImpl<T, Q extends Deque<T>> extends QueueViewImpl<T, Q> implements DequeView<T> {
+final class DequeViewImpl<T, Q extends Deque<T>> extends CollectionView<T, Q> implements DequeView<T> {
     DequeViewImpl(final @NotNull Q ref) {
         super(ref);
+    }
+
+    @Override
+    public T peek() {
+        return ref.peek();
     }
 
     @Override

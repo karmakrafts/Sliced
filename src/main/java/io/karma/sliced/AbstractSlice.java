@@ -54,4 +54,9 @@ abstract class AbstractSlice<T> implements Slice<T> {
     public int size() {
         return size;
     }
+
+    @Override
+    public @NotNull View<T> asView() {
+        return new SliceView<>(this);
+    }
 }

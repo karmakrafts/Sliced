@@ -16,6 +16,8 @@
 
 package io.karma.sliced;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Queue;
@@ -24,7 +26,8 @@ import java.util.Queue;
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-class QueueViewImpl<T, Q extends Queue<T>> extends CollectionView<T, Q> implements QueueView<T> {
+@API(status = Status.INTERNAL)
+final class QueueViewImpl<T, Q extends Queue<T>> extends CollectionView<T, Q> implements QueueView<T> {
     QueueViewImpl(final @NotNull Q ref) {
         super(ref);
     }

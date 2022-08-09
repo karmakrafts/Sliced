@@ -23,6 +23,13 @@ import java.util.List;
 import java.util.Stack;
 
 /**
+ * <h2>Information</h2>
+ * Provides static factory functions for creating slices of
+ * supported collection/array types.
+ * <h2>Note</h2>
+ * If you want to create a view, create it using {@link Views}
+ * instead of converting from a {@link Slice}.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
@@ -32,26 +39,86 @@ public final class Slices {
     private Slices() {}
     // @formatter:on
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given array.
+     *
+     * @param <T>   The element type of the given array, and the newly created slice.
+     * @param array The array of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given array.
+     */
     public static <T> @NotNull Slice<T> from(final @NotNull T[] array, final int start, final int end) {
         return new ArraySlice<>(array, start, end);
     }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given array.
+     *
+     * @param <T>   The element type of the given array, and the newly created slice.
+     * @param array The array of which to create a slice.
+     * @return A new slice instance, which references the given array.
+     */
     public static <T> @NotNull Slice<T> from(final @NotNull T[] array) {
         return new ArraySlice<>(array, 0, array.length - 1);
     }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link List}.
+     *
+     * @param <T>   The element type of the given list, and the newly created slice.
+     * @param list  The list of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given list.
+     */
     public static <T> @NotNull Slice<T> from(final @NotNull List<T> list, final int start, final int end) {
         return new ListSlice<>(list, start, end);
     }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link List}.
+     *
+     * @param <T>  The element type of the given list, and the newly created slice.
+     * @param list The list of which to create a slice.
+     * @return A new slice instance, which references the given list.
+     */
     public static <T> @NotNull Slice<T> from(final @NotNull List<T> list) {
         return new ListSlice<>(list, 0, list.size() - 1);
     }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link Stack}.
+     *
+     * @param <T>   The element type of the given stack, and the newly created slice.
+     * @param stack The stack of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given stack.
+     */
     public static <T> @NotNull StackSlice<T> fromStack(final @NotNull Stack<T> stack, final int start, final int end) {
         return new StackSliceImpl<>(stack, start, end);
     }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link Stack}.
+     *
+     * @param <T>   The element type of the given stack, and the newly created slice.
+     * @param stack The stack of which to create a slice.
+     * @return A new slice instance, which references the given stack.
+     */
     public static <T> @NotNull StackSlice<T> fromStack(final @NotNull Stack<T> stack) {
         return new StackSliceImpl<>(stack, 0, stack.size() - 1);
     }

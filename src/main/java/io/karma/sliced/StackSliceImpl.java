@@ -16,6 +16,8 @@
 
 package io.karma.sliced;
 
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -27,6 +29,7 @@ import java.util.function.IntFunction;
  * @author Alexander Hinze
  * @since 09/08/2022
  */
+@API(status = Status.INTERNAL)
 final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> implements StackSlice<T> {
     private final S ref;
     private int iterationIndex;

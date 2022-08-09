@@ -20,10 +20,23 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 
 /**
+ * <h2>Information</h2>
+ * A specialized {@link View} for {@link java.util.Stack},
+ * which provides an additional set of functionality over
+ * the regular view access.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
 @API(status = Status.STABLE)
 public interface StackView<T> extends View<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Retrieves the current, topmost element on the stack.
+     * Returns null if the stack is empty.
+     *
+     * @return The current topmost element on the stack. Null if the stack is empty.
+     */
     T peek();
 }

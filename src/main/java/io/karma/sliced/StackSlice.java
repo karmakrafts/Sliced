@@ -16,10 +16,18 @@
 
 package io.karma.sliced;
 
+import org.apiguardian.api.API;
+
 /**
+ * <h2>Information</h2>
+ * A specialized {@link Slice} for {@link java.util.Stack},
+ * which provides an additional set of functionality over
+ * the regular slice access.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
+@API(status = API.Status.STABLE)
 public interface StackSlice<T> extends Slice<T>, StackView<T> {
 
 }

@@ -27,7 +27,7 @@ import java.util.Stack;
  * @since 09/08/2022
  */
 @API(status = Status.INTERNAL)
-class StackViewImpl<T, S extends Stack<T>> extends CollectionView<T, S> implements StackView<T> {
+final class StackViewImpl<T, S extends Stack<T>> extends CollectionView<T, S> implements StackView<T> {
     StackViewImpl(final @NotNull S ref) {
         super(ref);
     }

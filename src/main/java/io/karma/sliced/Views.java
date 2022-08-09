@@ -36,6 +36,10 @@ public final class Views {
     private Views() {}
     // @formatter:on
 
+    public static <T> @NotNull View<T> from(final @NotNull T[] ref) {
+        return new ArrayView<>(ref);
+    }
+
     public static <T> @NotNull View<T> from(final @NotNull Collection<T> collection) {
         return new CollectionView<>(collection);
     }

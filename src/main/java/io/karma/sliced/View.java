@@ -28,7 +28,9 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * A view describes a read-only
+ * A view describes a read-only window into an existing sequence of elements,
+ * like a collection or an array.
+ * <p>
  *
  * @author Alexander Hinze
  * @since 09/08/2022
@@ -37,11 +39,28 @@ import java.util.stream.StreamSupport;
 public interface View<T> extends Iterable<T> {
     int size();
 
-    @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory);
-
-    <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory);
-
     @NotNull Slice<T> asSlice();
+
+    default @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory) {
+        final T[] result = factory.apply(size());
+        int index = 0;
+
+        for (final T element : this) {
+            result[index++] = element;
+        }
+
+        return result;
+    }
+
+    default <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory) {
+        final C result = factory.get();
+
+        for (final T element : this) {
+            result.add(element);
+        }
+
+        return result;
+    }
 
     default boolean contains(final @Nullable T value) {
         if (value == null) {

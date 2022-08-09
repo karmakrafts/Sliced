@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.IntFunction;
-import java.util.function.Supplier;
 
 /**
  * @author Alexander Hinze
@@ -56,29 +54,6 @@ class CollectionView<T, C extends Collection<T>> implements View<T> {
     @Override
     public boolean contains(final @Nullable T value) {
         return ref.contains(value);
-    }
-
-    @Override
-    public <R extends Collection<T>> @NotNull R copy(final @NotNull Supplier<R> factory) {
-        final R result = factory.get();
-
-        for (final T element : this) {
-            result.add(element);
-        }
-
-        return result;
-    }
-
-    @Override
-    public @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory) {
-        final T[] result = factory.apply(ref.size());
-        int index = 0;
-
-        for (final T element : this) {
-            result[index++] = element;
-        }
-
-        return result;
     }
 
     @Override

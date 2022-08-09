@@ -17,62 +17,23 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.IntFunction;
-import java.util.function.Supplier;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.INTERNAL)
-class ListView<T> implements View<T> {
-    protected final List<T> ref;
-
-    ListView(final @NotNull List<T> ref) {
-        this.ref = ref;
+@API(status = Status.INTERNAL)
+class ListView<T, L extends List<T>> extends CollectionView<T, L> {
+    ListView(final @NotNull L ref) {
+        super(ref);
     }
 
     @Override
     public @NotNull Slice<T> asSlice() {
         return new ListSlice<>(ref, 0, ref.size() - 1);
-    }
-
-    @Override
-    public int size() {
-        return ref.size();
-    }
-
-    @Override
-    public <C extends Collection<T>> @NotNull C copy(@NotNull Supplier<C> factory) {
-        final C result = factory.get();
-
-        for(final T element : this) {
-            result.add(element);
-        }
-
-        return result;
-    }
-
-    @Override
-    public @NotNull T[] toArray(@NotNull IntFunction<T[]> factory) {
-        final int size = size();
-        final T[] result = factory.apply(size);
-        int index = 0;
-
-        for(final T element : this) {
-            result[index++] = element;
-        }
-
-        return result;
-    }
-
-    @Override
-    public @NotNull Iterator<T> iterator() {
-        return ref.iterator();
     }
 }

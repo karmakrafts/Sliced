@@ -18,10 +18,11 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Spliterators;
 import java.util.function.IntFunction;
+import java.util.function.ObjIntConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -34,17 +35,41 @@ import java.util.stream.StreamSupport;
 public interface View<T> extends Iterable<T> {
     int size();
 
-    @NotNull Slice<T> asSlice();
-
     @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory);
 
     <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory);
 
+    @NotNull Slice<T> asSlice();
+
+    default boolean contains(final @Nullable T value) {
+        if (value == null) {
+            return false;
+        }
+
+        for (final T element : this) {
+            if (!element.equals(value)) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     default @NotNull Stream<T> stream() {
-        return StreamSupport.stream(Spliterators.spliterator(iterator(), size(), 0), false);
+        return StreamSupport.stream(spliterator(), false);
     }
 
     default @NotNull Stream<T> parallelStream() {
-        return StreamSupport.stream(Spliterators.spliterator(iterator(), size(), 0), true);
+        return StreamSupport.stream(spliterator(), true);
+    }
+
+    default void forEachIndexed(final @NotNull ObjIntConsumer<T> consumer) {
+        int index = 0;
+
+        for (final T element : this) {
+            consumer.accept(element, index++);
+        }
     }
 }

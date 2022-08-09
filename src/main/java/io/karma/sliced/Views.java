@@ -19,7 +19,12 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * @author Alexander Hinze
@@ -31,7 +36,27 @@ public final class Views {
     private Views() {}
     // @formatter:on
 
-    public static <T> @NotNull View<T> from(final @NotNull List<T> list) {
+    public static <T> @NotNull View<T> from(final @NotNull Collection<T> collection) {
+        return new CollectionView<>(collection);
+    }
+
+    public static <T> @NotNull View<T> fromList(final @NotNull List<T> list) {
         return new ListView<>(list);
+    }
+
+    public static <T> @NotNull QueueView<T> fromQueue(final @NotNull Queue<T> queue) {
+        return new QueueViewImpl<>(queue);
+    }
+
+    public static <T> @NotNull DequeView<T> fromDeque(final @NotNull Deque<T> deque) {
+        return new DequeViewImpl<>(deque);
+    }
+
+    public static <T> @NotNull StackView<T> fromStack(final @NotNull Stack<T> stack) {
+        return new StackViewImpl<>(stack);
+    }
+
+    public static <K, V> @NotNull MapView<K, V> fromMap(final @NotNull Map<K, V> map) {
+        return new MapViewImpl<>(map);
     }
 }

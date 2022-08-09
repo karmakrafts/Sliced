@@ -17,14 +17,23 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Enumeration;
+import java.util.Stack;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    void reset();
+@API(status = Status.INTERNAL)
+class StackViewImpl<T, S extends Stack<T>> extends CollectionView<T, S> implements StackView<T> {
+    StackViewImpl(final @NotNull S ref) {
+        super(ref);
+    }
+
+    @Override
+    public T peek() {
+        return ref.peek();
+    }
 }

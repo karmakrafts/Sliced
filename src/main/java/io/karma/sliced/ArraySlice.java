@@ -19,9 +19,9 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.IntFunction;
 
 /**
@@ -29,18 +29,18 @@ import java.util.function.IntFunction;
  * @since 09/08/2022
  */
 @API(status = API.Status.INTERNAL)
-final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
-    private final L ref;
+final class ArraySlice<T> extends AbstractSlice<T> {
+    private final T[] ref;
     private int iterationIndex;
 
-    ListSlice(final @NotNull L ref, final int start, final int end) {
+    ArraySlice(final @NotNull T[] ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
 
     @Override
-    public T get(int index) {
-        return ref.get(index);
+    public T get(final int index) {
+        return ref[index];
     }
 
     @Override
@@ -57,32 +57,7 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new ListSlice<>(ref, actualStart, actualEnd);
-    }
-
-    @Override
-    public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
-        final int actualStart = this.start + start;
-        final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
-
-        if (actualStart < 0 || actualStart > maxIndex) {
-            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
-        }
-
-        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
-
-        final int size = actualEnd - actualStart;
-        final T[] result = factory.apply(size);
-        int index = 0;
-
-        for (int i = actualStart; i <= actualEnd; i++) {
-            result[index++] = ref.get(i);
-        }
-
-        return result;
+        return new ArraySlice<>(ref, actualStart, actualEnd);
     }
 
     @Override
@@ -102,31 +77,50 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
         final int size = actualEnd - actualStart;
         final C result = factory.apply(size);
 
-        for (int i = actualStart; i <= actualEnd; i++) {
-            result.add(ref.get(i));
-        }
+        result.addAll(Arrays.asList(ref).subList(actualStart, actualEnd + 1));
 
         return result;
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return ref.iterator();
+    public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
+        final int actualStart = this.start + start;
+        final int actualEnd = this.start + end;
+        final int maxIndex = this.size - 1;
+
+        if (actualStart < 0 || actualStart > maxIndex) {
+            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
+        }
+
+        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
+            throw new ArrayIndexOutOfBoundsException("End index is out of range");
+        }
+
+        final int size = actualEnd - actualStart;
+        final T[] result = factory.apply(size);
+        System.arraycopy(ref, start, result, 0, size);
+
+        return result;
     }
 
     @Override
     public boolean hasMoreElements() {
-        return iterationIndex < ref.size();
+        return iterationIndex < size;
     }
 
     @Override
     public T nextElement() {
-        return ref.get(iterationIndex++);
+        return ref[iterationIndex++];
     }
 
     @Override
     public void reset() {
         iterationIndex = 0;
+    }
+
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayIterator<>(ref);
     }
 }

@@ -16,15 +16,21 @@
 
 package io.karma.sliced;
 
-import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Enumeration;
+import java.util.Queue;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    void reset();
+class QueueViewImpl<T, Q extends Queue<T>> extends CollectionView<T, Q> implements QueueView<T> {
+    QueueViewImpl(final @NotNull Q ref) {
+        super(ref);
+    }
+
+    @Override
+    public T peek() {
+        return ref.peek();
+    }
 }

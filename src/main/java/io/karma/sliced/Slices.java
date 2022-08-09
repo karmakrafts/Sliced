@@ -20,6 +20,7 @@ import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author Alexander Hinze
@@ -31,11 +32,27 @@ public final class Slices {
     private Slices() {}
     // @formatter:on
 
+    public static <T> @NotNull Slice<T> from(final @NotNull T[] array, final int start, final int end) {
+        return new ArraySlice<>(array, start, end);
+    }
+
+    public static <T> @NotNull Slice<T> from(final @NotNull T[] array) {
+        return new ArraySlice<>(array, 0, array.length - 1);
+    }
+
     public static <T> @NotNull Slice<T> from(final @NotNull List<T> list, final int start, final int end) {
         return new ListSlice<>(list, start, end);
     }
 
     public static <T> @NotNull Slice<T> from(final @NotNull List<T> list) {
-        return from(list, 0, list.size() - 1);
+        return new ListSlice<>(list, 0, list.size() - 1);
+    }
+
+    public static <T> @NotNull StackSlice<T> fromStack(final @NotNull Stack<T> stack, final int start, final int end) {
+        return new StackSliceImpl<>(stack, start, end);
+    }
+
+    public static <T> @NotNull StackSlice<T> fromStack(final @NotNull Stack<T> stack) {
+        return new StackSliceImpl<>(stack, 0, stack.size() - 1);
     }
 }

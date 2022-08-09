@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.function.IntFunction;
+import java.util.function.ObjIntConsumer;
+import java.util.function.Supplier;
 
 /**
  * @author Alexander Hinze
@@ -42,6 +44,27 @@ public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
 
     default <C extends Collection<T>> @NotNull C copy(final @NotNull IntFunction<C> factory) {
         return copy(0, size() - 1, factory);
+    }
+
+    // View overrides
+
+    @Override
+    default void forEachIndexed(final @NotNull ObjIntConsumer<T> consumer) {
+        final int size = size();
+
+        for (int i = 0; i < size; i++) {
+            consumer.accept(get(i), i);
+        }
+    }
+
+    @Override
+    default @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory) {
+        return toArray(0, size() - 1, factory);
+    }
+
+    @Override
+    default <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory) {
+        return copy(0, size() - 1, i -> factory.get());
     }
 
     @Override

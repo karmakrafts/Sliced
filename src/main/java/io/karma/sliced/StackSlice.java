@@ -16,15 +16,10 @@
 
 package io.karma.sliced;
 
-import org.apiguardian.api.API;
-
-import java.util.Enumeration;
-
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    void reset();
+public interface StackSlice<T> extends Slice<T>, StackView<T> {
+
 }

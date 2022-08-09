@@ -16,31 +16,24 @@
 
 package io.karma.sliced;
 
-import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Stack;
 import java.util.function.IntFunction;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.INTERNAL)
-final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
-    private final L ref;
+final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> implements StackSlice<T> {
+    private final S ref;
     private int iterationIndex;
 
-    ListSlice(final @NotNull L ref, final int start, final int end) {
+    StackSliceImpl(final @NotNull S ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
-    }
-
-    @Override
-    public T get(int index) {
-        return ref.get(index);
     }
 
     @Override
@@ -57,7 +50,12 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new ListSlice<>(ref, actualStart, actualEnd);
+        return new StackSliceImpl<>(ref, actualStart, actualEnd);
+    }
+
+    @Override
+    public T get(final int index) {
+        return ref.get(index);
     }
 
     @Override
@@ -86,7 +84,7 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
     }
 
     @Override
-    public <C extends Collection<T>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory) {
+    public <C extends Collection<T>> @NotNull C copy(int start, int end, @NotNull IntFunction<C> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
         final int maxIndex = this.size - 1;
@@ -109,6 +107,11 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
         return result;
     }
 
+    @Override
+    public T peek() {
+        return ref.peek();
+    }
+
     @NotNull
     @Override
     public Iterator<T> iterator() {
@@ -117,7 +120,7 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
 
     @Override
     public boolean hasMoreElements() {
-        return iterationIndex < ref.size();
+        return iterationIndex < ref.size() - 1;
     }
 
     @Override

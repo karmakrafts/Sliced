@@ -17,14 +17,41 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
-
-import java.util.Enumeration;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    void reset();
+@API(status = API.Status.INTERNAL)
+abstract class AbstractSlice<T> implements Slice<T> {
+    protected final int start;
+    protected final int end;
+    protected final int size;
+
+    protected AbstractSlice(final int start, final int end) {
+        this.start = start;
+        this.end = end;
+        size = end - start;
+    }
+
+    @Override
+    public @NotNull Slice<T> asSlice() {
+        return this;
+    }
+
+    @Override
+    public int start() {
+        return start;
+    }
+
+    @Override
+    public int end() {
+        return end;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
 }

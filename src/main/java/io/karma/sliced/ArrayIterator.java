@@ -17,14 +17,31 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    void reset();
+@API(status = Status.INTERNAL)
+final class ArrayIterator<T> implements Iterator<T> {
+    private final T[] ref;
+    private int index;
+
+    ArrayIterator(final @NotNull T[] ref) {
+        this.ref = ref;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < ref.length;
+    }
+
+    @Override
+    public T next() {
+        return ref[index++];
+    }
 }

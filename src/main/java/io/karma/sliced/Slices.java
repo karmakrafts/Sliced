@@ -19,6 +19,8 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
@@ -69,6 +71,36 @@ public final class Slices {
 
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <T>   The element type of the given list, and the newly created slice.
+     * @param list  The list of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given list.
+     */
+    public static <T> @NotNull Slice<T> from(final @NotNull Collection<T> list, final int start, final int end) {
+        return new ListSlice<>(new ArrayList<>(list), start, end);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <T>  The element type of the given list, and the newly created slice.
+     * @param list The list of which to create a slice.
+     * @return A new slice instance, which references the given list.
+     */
+    public static <T> @NotNull Slice<T> from(final @NotNull Collection<T> list) {
+        return new ListSlice<>(new ArrayList<>(list), 0, list.size() - 1);
+    }
+
+    /**
+     * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b><br>
      * Creates a new slice instance which references the given {@link List}.
      *
@@ -78,7 +110,7 @@ public final class Slices {
      * @param end   The index at which the newly created slice should end.
      * @return A new slice instance, which references the given list.
      */
-    public static <T> @NotNull Slice<T> from(final @NotNull List<T> list, final int start, final int end) {
+    public static <T> @NotNull Slice<T> fromList(final @NotNull List<T> list, final int start, final int end) {
         return new ListSlice<>(list, start, end);
     }
 
@@ -91,7 +123,7 @@ public final class Slices {
      * @param list The list of which to create a slice.
      * @return A new slice instance, which references the given list.
      */
-    public static <T> @NotNull Slice<T> from(final @NotNull List<T> list) {
+    public static <T> @NotNull Slice<T> fromList(final @NotNull List<T> list) {
         return new ListSlice<>(list, 0, list.size() - 1);
     }
 

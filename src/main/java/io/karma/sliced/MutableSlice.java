@@ -30,5 +30,13 @@ import org.apiguardian.api.API.Status;
  */
 @API(status = Status.STABLE)
 public interface MutableSlice<T> extends Slice<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Sets the start- and end-index of this slice instance.
+     *
+     * @param start The index at which this slice begins.
+     * @param end   The index at which this slice ends (inclusive).
+     */
     void setRange(final int start, final int end);
 }

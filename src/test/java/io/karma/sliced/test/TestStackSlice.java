@@ -75,4 +75,20 @@ final class TestStackSlice {
 
         Assertions.assertSame(TestListSlice.LIST.get(TestListSlice.LIST.size() - 4), slice.peek());
     }
+
+    @Test
+    void testIteration() {
+        final StackSlice<String> slice = Slices.fromStack(STACK);
+        Assertions.assertNotNull(slice);
+        int index = 0;
+
+        for (final String s : slice) {
+            Assertions.assertSame(STACK.get(index++), s);
+        }
+    }
+
+    @Test
+    void testRangedIteration() {
+
+    }
 }

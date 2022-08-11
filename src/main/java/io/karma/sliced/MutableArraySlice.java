@@ -122,6 +122,6 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return new ArrayIterator<>(ref);
+        return new RangedArrayIterator<>(ref, start, end);
     }
 }

@@ -112,7 +112,7 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return ref.iterator();
+        return new RangedListIterator<>(ref, start, end);
     }
 
     @Override

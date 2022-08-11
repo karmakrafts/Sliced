@@ -117,7 +117,7 @@ final class MutableStackSliceImpl<T, S extends Stack<T>> extends AbstractMutable
 
     @Override
     public @NotNull Iterator<T> iterator() {
-        return ref.iterator();
+        return new RangedListIterator<>(ref, start, end);
     }
 
     @Override

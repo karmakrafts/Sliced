@@ -121,6 +121,6 @@ final class ArraySlice<T> extends AbstractSlice<T> {
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return new ArrayIterator<>(ref);
+        return new RangedArrayIterator<>(ref, start, end);
     }
 }

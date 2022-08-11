@@ -113,7 +113,7 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return ref.iterator();
+        return new RangedListIterator<>(ref, start, end);
     }
 
     @Override

@@ -117,7 +117,7 @@ final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> imple
 
     @Override
     public @NotNull Iterator<T> iterator() {
-        return ref.iterator();
+        return new RangedListIterator<>(ref, start, end);
     }
 
     @Override

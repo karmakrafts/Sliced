@@ -89,6 +89,7 @@ task javadocJar(type: Jar) {
 }
 
 tasks.withType(Jar) {
+    from 'LICENSE'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 

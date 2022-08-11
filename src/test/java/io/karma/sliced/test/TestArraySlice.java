@@ -41,7 +41,7 @@ final class TestArraySlice {
         int index = 0;
 
         for (final String s : ARRAY) {
-            Assertions.assertEquals(s, slice.get(index++));
+            Assertions.assertSame(s, slice.get(index++));
         }
     }
 
@@ -53,7 +53,7 @@ final class TestArraySlice {
         int index = 0;
 
         for (final String s : ARRAY) {
-            Assertions.assertEquals(s, slice.get(index++));
+            Assertions.assertSame(s, slice.get(index++));
         }
 
         index = 0;
@@ -61,6 +61,36 @@ final class TestArraySlice {
 
         for (final String s : ARRAY_2) {
             Assertions.assertEquals(s, slice.get(index++));
+        }
+    }
+
+    @Test
+    void testIteration() {
+        final Slice<String> slice = Slices.from(ARRAY);
+        Assertions.assertNotNull(slice);
+        int index = 0;
+
+        for (final String s : slice) {
+            Assertions.assertSame(ARRAY[index++], s);
+        }
+    }
+
+    @Test
+    void testRangedIteration() {
+        final MutableSlice<String> slice = Slices.mutableFrom(ARRAY);
+        Assertions.assertNotNull(slice);
+
+        int index = 0;
+
+        for (final String s : slice) {
+            Assertions.assertSame(ARRAY[index++], s);
+        }
+
+        index = 0;
+        slice.setRange(3, ARRAY.length - 4);
+
+        for (final String s : slice) {
+            Assertions.assertEquals(ARRAY_2[index++], s);
         }
     }
 }

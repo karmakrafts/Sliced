@@ -16,20 +16,25 @@
 
 package io.karma.sliced;
 
-import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 11/08/2022
  */
-@API(status = API.Status.INTERNAL)
-abstract class AbstractSlice<T> implements Slice<T> {
-    protected final int start;
-    protected final int end;
-    protected final int size;
+abstract class AbstractMutableSlice<T> implements MutableSlice<T> {
+    protected int start;
+    protected int end;
+    protected int size;
 
-    protected AbstractSlice(final int start, final int end) {
+    protected AbstractMutableSlice(final int start, final int end) {
+        this.start = start;
+        this.end = end;
+        size = end - start;
+    }
+
+    @Override
+    public void setRange(final int start, final int end) {
         this.start = start;
         this.end = end;
         size = end - start;

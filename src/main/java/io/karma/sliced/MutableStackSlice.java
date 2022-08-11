@@ -18,35 +18,16 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
+ * <h2>Information</h2>
+ * A mutable stack slice is a subtype of a regular {@link StackSlice},
+ * which allows mutating the start- and end-index of the slice.
+ * This allows the reduction of allocation overhead in loops for example.
+ *
  * @author Alexander Hinze
- * @since 10/08/2022
+ * @since 11/08/2022
  */
-@API(status = Status.INTERNAL)
-final class SliceView<T> implements View<T> {
-    private final Slice<T> slice;
-
-    SliceView(final @NotNull Slice<T> slice) {
-        this.slice = slice;
-    }
-
-    @Override
-    public int size() {
-        return slice.size();
-    }
-
-    @Override
-    public @NotNull Slice<T> asSlice() {
-        return slice;
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return slice.iterator();
-    }
+@API(status = Status.STABLE)
+public interface MutableStackSlice<T> extends MutableSlice<T>, StackSlice<T> {
 }

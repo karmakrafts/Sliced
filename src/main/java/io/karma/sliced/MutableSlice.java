@@ -17,41 +17,18 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
-import org.jetbrains.annotations.NotNull;
+import org.apiguardian.api.API.Status;
 
 /**
+ * <h2>Information</h2>
+ * A mutable slice is a subtype of a regular {@link Slice},
+ * which allows mutating the start- and end-index of the slice.
+ * This allows the reduction of allocation overhead in loops for example.
+ *
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 11/08/2022
  */
-@API(status = API.Status.INTERNAL)
-abstract class AbstractSlice<T> implements Slice<T> {
-    protected final int start;
-    protected final int end;
-    protected final int size;
-
-    protected AbstractSlice(final int start, final int end) {
-        this.start = start;
-        this.end = end;
-        size = end - start;
-    }
-
-    @Override
-    public @NotNull Slice<T> asSlice() {
-        return this;
-    }
-
-    @Override
-    public int start() {
-        return start;
-    }
-
-    @Override
-    public int end() {
-        return end;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
+@API(status = Status.STABLE)
+public interface MutableSlice<T> extends Slice<T> {
+    void setRange(final int start, final int end);
 }

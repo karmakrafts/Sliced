@@ -50,6 +50,7 @@ import java.util.function.Supplier;
 public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
      * Retrieves the start index of this slice instance.
      *
      * @return The start index of this slice instance.
@@ -58,6 +59,7 @@ public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
 
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
      * Retrieves the end index of this slice instance.
      *
      * @return The end index of this slice instance.
@@ -66,6 +68,7 @@ public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
 
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
      * Retrieves an element of type {@link T} at the given index.
      *
      * @param index The index of the element which to retrieve.
@@ -76,6 +79,7 @@ public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
 
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
      * Creates a new sub-slice from this slice instance,
      * with the given index range relative to the start index
      * of this slice instance.
@@ -88,16 +92,6 @@ public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
      *         as this slice instance, but with the given relative index range.
      */
     @NotNull Slice<T> slice(final int start, final int end);
-
-    /**
-     * Creates a new view instance, containing a new wrapper
-     * collection instance which contains the elements given
-     * access to by this slice instance.
-     *
-     * @return A new view instance containing a reference to all
-     *         the elements given access to by this slice instance.
-     */
-    @NotNull View<T> asView();
 
     /**
      * <h2>Information</h2>

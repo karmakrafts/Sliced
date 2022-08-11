@@ -40,6 +40,16 @@ final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> imple
     }
 
     @Override
+    public T get(final int index) {
+        return ref.get(start + index);
+    }
+
+    @Override
+    public T peek() {
+        return get(size);
+    }
+
+    @Override
     public @NotNull Slice<T> slice(final int start, final int end) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
@@ -54,11 +64,6 @@ final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> imple
         }
 
         return new StackSliceImpl<>(ref, actualStart, actualEnd);
-    }
-
-    @Override
-    public T get(final int index) {
-        return ref.get(index);
     }
 
     @Override
@@ -111,13 +116,7 @@ final class StackSliceImpl<T, S extends Stack<T>> extends AbstractSlice<T> imple
     }
 
     @Override
-    public T peek() {
-        return ref.peek();
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
+    public @NotNull Iterator<T> iterator() {
         return ref.iterator();
     }
 

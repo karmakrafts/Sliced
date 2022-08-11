@@ -40,7 +40,7 @@ final class ArraySlice<T> extends AbstractSlice<T> {
 
     @Override
     public T get(final int index) {
-        return ref[index];
+        return ref[start + index];
     }
 
     @Override

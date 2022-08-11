@@ -40,7 +40,7 @@ final class ListSlice<T, L extends List<T>> extends AbstractSlice<T> {
 
     @Override
     public T get(int index) {
-        return ref.get(index);
+        return ref.get(start + index);
     }
 
     @Override

@@ -82,4 +82,28 @@ final class MapViewImpl<K, V, M extends Map<K, V>> implements MapView<K, V> {
     public @NotNull Iterator<Entry<K, V>> iterator() {
         return ref.entrySet().iterator();
     }
+
+    @Override
+    public int hashCode() {
+        return ref.hashCode();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final @Nullable Object obj) {
+        if (obj instanceof Map) {
+            final Set<? extends Entry<? extends K, ? extends V>> entries = ((Map<? extends K, ? extends V>) obj).entrySet();
+
+            for (final Entry<? extends K, ? extends V> entry : entries) {
+
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

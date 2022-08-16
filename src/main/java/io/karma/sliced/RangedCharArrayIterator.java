@@ -17,20 +17,35 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 /**
- * An {@link Enumeration}, which provides a function
- * to reset its internal iteration index.
- *
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 14/08/2022
  */
-@API(status = API.Status.STABLE)
-public interface ReusableEnumeration<T> extends Enumeration<T> {
-    /**
-     * Resets the internal iteration index of this enumeration.
-     */
-    void reset();
+@API(status = Status.INTERNAL)
+final class RangedCharArrayIterator implements Iterator<Character> {
+    private final char[] ref;
+    private final int start;
+    private final int size;
+    private int index;
+
+    RangedCharArrayIterator(final char[] ref, final int start, final int end) {
+        this.ref = ref;
+        this.start = start;
+        size = end - start;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return index < size;
+    }
+
+    @Override
+    public @NotNull Character next() {
+        return ref[start + index++];
+    }
 }

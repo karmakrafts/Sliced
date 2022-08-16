@@ -18,7 +18,6 @@ package io.karma.sliced.test;
 
 import io.karma.sliced.MutableSlice;
 import io.karma.sliced.Slice;
-import io.karma.sliced.Slices;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -38,7 +37,7 @@ final class TestListSlice {
 
     @Test
     void test() {
-        final Slice<String> slice = Slices.fromList(LIST);
+        final Slice<String> slice = Slice.of(LIST);
         Assertions.assertNotNull(slice);
 
         int index = 0;
@@ -50,7 +49,7 @@ final class TestListSlice {
 
     @Test
     void testMutable() {
-        final MutableSlice<String> slice = Slices.mutableFromList(LIST);
+        final MutableSlice<String> slice = MutableSlice.of(LIST);
         Assertions.assertNotNull(slice);
 
         int index = 0;
@@ -69,7 +68,7 @@ final class TestListSlice {
 
     @Test
     void testIteration() {
-        final Slice<String> slice = Slices.fromList(LIST);
+        final Slice<String> slice = Slice.of(LIST);
         Assertions.assertNotNull(slice);
         int index = 0;
 
@@ -80,7 +79,7 @@ final class TestListSlice {
 
     @Test
     void testRangedIteration() {
-        final MutableSlice<String> slice = Slices.mutableFromList(LIST);
+        final MutableSlice<String> slice = MutableSlice.of(LIST);
         Assertions.assertNotNull(slice);
 
         int index = 0;

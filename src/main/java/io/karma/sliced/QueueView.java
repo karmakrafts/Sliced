@@ -18,6 +18,9 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Queue;
 
 /**
  * <h2>Information</h2>
@@ -30,6 +33,19 @@ import org.apiguardian.api.API.Status;
  */
 @API(status = Status.STABLE)
 public interface QueueView<T> extends View<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link Queue}.
+     *
+     * @param <TT>  The element type of the given queue, and the newly created view.
+     * @param queue The queue of which to create a view.
+     * @return A new view instance, which references the given queue.
+     */
+    static <TT> @NotNull QueueView<TT> of(final @NotNull Queue<TT> queue) {
+        return new QueueViewImpl<>(queue);
+    }
+
     /**
      * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b><br>

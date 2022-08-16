@@ -17,6 +17,9 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Stack;
 
 /**
  * <h2>Information</h2>
@@ -29,5 +32,31 @@ import org.apiguardian.api.API;
  */
 @API(status = API.Status.STABLE)
 public interface StackSlice<T> extends Slice<T>, StackView<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link Stack}.
+     *
+     * @param <T>   The element type of the given stack, and the newly created slice.
+     * @param stack The stack of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given stack.
+     */
+    static <T> @NotNull StackSlice<T> of(final @NotNull Stack<T> stack, final int start, final int end) {
+        return new StackSliceImpl<>(stack, start, end);
+    }
 
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link Stack}.
+     *
+     * @param <T>   The element type of the given stack, and the newly created slice.
+     * @param stack The stack of which to create a slice.
+     * @return A new slice instance, which references the given stack.
+     */
+    static <T> @NotNull StackSlice<T> of(final @NotNull Stack<T> stack) {
+        return new StackSliceImpl<>(stack, 0, stack.size() - 1);
+    }
 }

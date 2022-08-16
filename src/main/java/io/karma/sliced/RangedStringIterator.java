@@ -17,43 +17,35 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 13/08/2022
  */
-@API(status = API.Status.INTERNAL)
-abstract class AbstractSlice<T> implements Slice<T> {
-    protected final int start;
-    protected final int end;
-    protected final int size;
-    protected final int maxIndex;
+@API(status = Status.INTERNAL)
+final class RangedStringIterator implements Iterator<Character> {
+    private final CharSequence seq;
+    private final int start;
+    private final int size;
+    private int index;
 
-    protected AbstractSlice(final int start, final int end) {
+    RangedStringIterator(final @NotNull CharSequence seq, final int start, final int end) {
+        this.seq = seq;
         this.start = start;
-        this.end = end;
         size = end - start;
-        maxIndex = size - 1;
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return this;
+    public boolean hasNext() {
+        return index < size;
     }
 
     @Override
-    public int start() {
-        return start;
-    }
-
-    @Override
-    public int end() {
-        return end;
-    }
-
-    @Override
-    public int size() {
-        return size;
+    public @NotNull Character next() {
+        return seq.charAt(start + index++);
     }
 }

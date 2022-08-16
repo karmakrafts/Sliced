@@ -19,7 +19,9 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -44,9 +46,37 @@ final class ArrayView<T> implements View<T> {
         return new ArraySlice<>(ref, 0, ref.length - 1);
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
+    public @NotNull Iterator<T> iterator() {
         return new ArrayIterator<>(ref);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(ref);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final @Nullable Object obj) {
+        if (obj instanceof Object[]) {
+            return Arrays.equals(ref, (Object[]) obj);
+        }
+        else if (obj instanceof View) {
+            for (final T element : (View<? extends T>) obj) {
+                if (!containsRef(element)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

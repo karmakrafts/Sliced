@@ -18,7 +18,6 @@ package io.karma.sliced.test;
 
 import io.karma.sliced.MutableSlice;
 import io.karma.sliced.Slice;
-import io.karma.sliced.Slices;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,7 +34,7 @@ final class TestArraySlice {
 
     @Test
     void test() {
-        final Slice<String> slice = Slices.from(ARRAY);
+        final Slice<String> slice = Slice.of(ARRAY);
         Assertions.assertNotNull(slice);
 
         int index = 0;
@@ -47,7 +46,7 @@ final class TestArraySlice {
 
     @Test
     void testMutable() {
-        final MutableSlice<String> slice = Slices.mutableFrom(ARRAY);
+        final MutableSlice<String> slice = MutableSlice.of(ARRAY);
         Assertions.assertNotNull(slice);
 
         int index = 0;
@@ -66,7 +65,7 @@ final class TestArraySlice {
 
     @Test
     void testIteration() {
-        final Slice<String> slice = Slices.from(ARRAY);
+        final Slice<String> slice = Slice.of(ARRAY);
         Assertions.assertNotNull(slice);
         int index = 0;
 
@@ -77,7 +76,7 @@ final class TestArraySlice {
 
     @Test
     void testRangedIteration() {
-        final MutableSlice<String> slice = Slices.mutableFrom(ARRAY);
+        final MutableSlice<String> slice = MutableSlice.of(ARRAY);
         Assertions.assertNotNull(slice);
 
         int index = 0;

@@ -18,6 +18,9 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Stack;
 
 /**
  * <h2>Information</h2>
@@ -30,6 +33,19 @@ import org.apiguardian.api.API.Status;
  */
 @API(status = Status.STABLE)
 public interface StackView<T> extends View<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link Stack}.
+     *
+     * @param <TT>  The element type of the given stack, and the newly created view.
+     * @param stack The stack of which to create a view.
+     * @return A new view instance, which references the given stack.
+     */
+    static <TT> @NotNull StackView<TT> of(final @NotNull Stack<TT> stack) {
+        return new StackViewImpl<>(stack);
+    }
+
     /**
      * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b><br>

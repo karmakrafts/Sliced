@@ -17,6 +17,7 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,25 +28,42 @@ import java.util.function.IntFunction;
 
 /**
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 14/08/2022
  */
-@API(status = API.Status.INTERNAL)
-final class ArraySlice<T> extends AbstractSlice<T> {
-    private final T[] ref;
+@API(status = Status.INTERNAL)
+final class ArrayCharSliceImpl extends AbstractSlice<Character> implements CharSlice {
+    private final char[] ref;
     private int iterationIndex;
 
-    ArraySlice(final @NotNull T[] ref, final int start, final int end) {
+    ArrayCharSliceImpl(final char[] ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
 
     @Override
-    public T get(final int index) {
-        return ref[start + index];
+    public @NotNull CharSlice trimLeading() {
+        int start = 0;
+
+        while (ref[start] == ' ') {
+            start++;
+        }
+
+        return new ArrayCharSliceImpl(ref, start, end);
     }
 
     @Override
-    public @NotNull Slice<T> slice(final int start, final int end) {
+    public @NotNull CharSlice trimTrailing() {
+        int end = length() - 1;
+
+        while (ref[end] == ' ') {
+            end--;
+        }
+
+        return new ArrayCharSliceImpl(ref, start, end);
+    }
+
+    @Override
+    public @NotNull Slice<Character> slice(final int start, final int end) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
 
@@ -57,12 +75,55 @@ final class ArraySlice<T> extends AbstractSlice<T> {
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new ArraySlice<>(ref, actualStart, actualEnd);
+        return new ArrayCharSliceImpl(ref, actualStart, actualEnd);
     }
 
-    @SuppressWarnings("all")
     @Override
-    public <C extends Collection<T>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory) {
+    public char[] toCharArray(final int start, final int end) {
+        final int actualStart = this.start + start;
+        final int actualEnd = this.start + end;
+
+        if (actualStart < 0 || actualStart > maxIndex) {
+            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
+        }
+
+        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
+            throw new ArrayIndexOutOfBoundsException("End index is out of range");
+        }
+
+        final int size = actualEnd - actualStart;
+        final char[] chars = new char[size];
+        System.arraycopy(ref, actualStart, chars, 0, size);
+
+        return chars;
+    }
+
+    @Override
+    public @NotNull Character @NotNull [] toArray(final int start, final int end, final @NotNull IntFunction<Character[]> factory) {
+        final int actualStart = this.start + start;
+        final int actualEnd = this.start + end;
+
+        if (actualStart < 0 || actualStart > maxIndex) {
+            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
+        }
+
+        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
+            throw new ArrayIndexOutOfBoundsException("End index is out of range");
+        }
+
+        final int size = actualEnd - actualStart;
+        final Character[] result = factory.apply(size);
+        int index = 0;
+
+        for (int i = actualStart; i <= actualEnd; i++) {
+            result[index++] = ref[i];
+        }
+
+        return result;
+    }
+
+    @Override
+    public <C extends Collection<Character>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
 
@@ -85,23 +146,13 @@ final class ArraySlice<T> extends AbstractSlice<T> {
     }
 
     @Override
-    public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
-        final int actualStart = this.start + start;
-        final int actualEnd = this.start + end;
+    public char charAt(final int index) {
+        return ref[start + index];
+    }
 
-        if (actualStart < 0 || actualStart > maxIndex) {
-            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
-        }
-
-        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
-
-        final int size = actualEnd - actualStart;
-        final T[] result = factory.apply(size);
-        System.arraycopy(ref, start, result, 0, size);
-
-        return result;
+    @Override
+    public @NotNull Iterator<Character> iterator() {
+        return new RangedCharArrayIterator(ref, start, end);
     }
 
     @Override
@@ -110,19 +161,46 @@ final class ArraySlice<T> extends AbstractSlice<T> {
     }
 
     @Override
-    public T nextElement() {
+    public @NotNull Character nextElement() {
         return ref[start + iterationIndex++];
+    }
+
+    @Override
+    public char current() {
+        return ref[start + iterationIndex];
+    }
+
+    @Override
+    public char next() {
+        return ref[start + ++iterationIndex];
+    }
+
+    @Override
+    public char previous() {
+        return ref[start + --iterationIndex];
+    }
+
+    @Override
+    public char setIndex(final int position) {
+        return ref[iterationIndex = position];
+    }
+
+    @Override
+    public int getIndex() {
+        return iterationIndex;
+    }
+
+    @SuppressWarnings("all")
+    @Override
+    public @NotNull Object clone() {
+        final ArrayCharSliceImpl result = new ArrayCharSliceImpl(ref, start, end);
+        result.iterationIndex = iterationIndex;
+        return result;
     }
 
     @Override
     public void reset() {
         iterationIndex = 0;
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return new RangedArrayIterator<>(ref, start, end);
     }
 
     @Override
@@ -135,11 +213,11 @@ final class ArraySlice<T> extends AbstractSlice<T> {
     public boolean equals(final @Nullable Object obj) {
         final boolean isArray = obj instanceof Object[];
 
-        if (!isArray && !(obj instanceof Slice)) {
+        if (!isArray && !(obj instanceof CharSlice)) {
             if (obj instanceof View) {
                 int matches = 0;
 
-                for (final T element : (View<? extends T>) obj) {
+                for (final char element : (View<? extends Character>) obj) {
                     if (containsRef(element)) {
                         matches++;
                     }
@@ -154,11 +232,11 @@ final class ArraySlice<T> extends AbstractSlice<T> {
         // @formatter:off
         final int length = isArray
             ? ((Object[])obj).length
-            : ((Slice<? extends T>)obj).size();
+            : ((CharSlice)obj).size();
 
-        final IntFunction<? extends T> getter = isArray
-            ? i -> (T)((Object[])obj)[i]
-            : ((Slice<? extends T>)obj)::get;
+        final Int2CharFunction getter = isArray
+            ? i -> (Character)((Object[])obj)[i]
+            : ((CharSlice)obj)::get;
         // @formatter:on
 
         int matches = 0;

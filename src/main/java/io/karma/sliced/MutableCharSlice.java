@@ -17,43 +17,20 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alexander Hinze
- * @since 09/08/2022
+ * @since 13/08/2022
  */
-@API(status = API.Status.INTERNAL)
-abstract class AbstractSlice<T> implements Slice<T> {
-    protected final int start;
-    protected final int end;
-    protected final int size;
-    protected final int maxIndex;
-
-    protected AbstractSlice(final int start, final int end) {
-        this.start = start;
-        this.end = end;
-        size = end - start;
-        maxIndex = size - 1;
+@API(status = Status.STABLE)
+public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
+    static @NotNull MutableCharSlice of(final @NotNull CharSequence seq, final int start, final int end) {
+        return new MutableStringSliceImpl(seq, start, end);
     }
 
-    @Override
-    public @NotNull Slice<T> asSlice() {
-        return this;
-    }
-
-    @Override
-    public int start() {
-        return start;
-    }
-
-    @Override
-    public int end() {
-        return end;
-    }
-
-    @Override
-    public int size() {
-        return size;
+    static @NotNull MutableCharSlice of(final @NotNull CharSequence seq) {
+        return new MutableStringSliceImpl(seq, 0, seq.length() - 1);
     }
 }

@@ -26,11 +26,13 @@ abstract class AbstractMutableSlice<T> implements MutableSlice<T> {
     protected int start;
     protected int end;
     protected int size;
+    protected int maxIndex;
 
     protected AbstractMutableSlice(final int start, final int end) {
         this.start = start;
         this.end = end;
         size = end - start;
+        maxIndex = size - 1;
     }
 
     @Override
@@ -38,6 +40,7 @@ abstract class AbstractMutableSlice<T> implements MutableSlice<T> {
         this.start = start;
         this.end = end;
         size = end - start;
+        maxIndex = size - 1;
     }
 
     @Override

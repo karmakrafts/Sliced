@@ -17,43 +17,18 @@
 package io.karma.sliced;
 
 import org.apiguardian.api.API;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.Enumeration;
 
 /**
+ * <h2>Information</h2>
+ * An {@link Enumeration}, which provides a function
+ * to reset its internal iteration index through extending {@link Resettable}.
+ *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = API.Status.INTERNAL)
-abstract class AbstractSlice<T> implements Slice<T> {
-    protected final int start;
-    protected final int end;
-    protected final int size;
-    protected final int maxIndex;
+@API(status = API.Status.STABLE)
+public interface ResettableEnumeration<T> extends Enumeration<T>, Resettable {
 
-    protected AbstractSlice(final int start, final int end) {
-        this.start = start;
-        this.end = end;
-        size = end - start;
-        maxIndex = size - 1;
-    }
-
-    @Override
-    public @NotNull Slice<T> asSlice() {
-        return this;
-    }
-
-    @Override
-    public int start() {
-        return start;
-    }
-
-    @Override
-    public int end() {
-        return end;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
 }

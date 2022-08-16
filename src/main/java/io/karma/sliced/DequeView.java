@@ -18,6 +18,9 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Deque;
 
 /**
  * <h2>Information</h2>
@@ -30,6 +33,19 @@ import org.apiguardian.api.API.Status;
  */
 @API(status = Status.STABLE)
 public interface DequeView<T> extends QueueView<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link Deque}.
+     *
+     * @param <TT>  The element type of the given deque, and the newly created view.
+     * @param deque The deque of which to create a view.
+     * @return A new view instance, which references the given deque.
+     */
+    static <TT> @NotNull DequeView<TT> of(final @NotNull Deque<TT> deque) {
+        return new DequeViewImpl<>(deque);
+    }
+
     /**
      * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b><br>

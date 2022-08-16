@@ -19,6 +19,7 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,7 +49,6 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
     public @NotNull Slice<T> slice(final int start, final int end) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -65,7 +65,6 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
     public <C extends Collection<T>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -87,7 +86,6 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
     public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -111,7 +109,7 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
 
     @Override
     public T nextElement() {
-        return ref[iterationIndex++];
+        return ref[start + iterationIndex++];
     }
 
     @Override
@@ -123,5 +121,47 @@ final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
     @Override
     public Iterator<T> iterator() {
         return new RangedArrayIterator<>(ref, start, end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(ref);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final @Nullable Object obj) {
+        final boolean isArray = obj instanceof Object[];
+
+        if (!isArray && !(obj instanceof Slice)) {
+            return false;
+        }
+
+        // @formatter:off
+        final int length = isArray
+            ? ((Object[])obj).length
+            : ((Slice<? extends T>)obj).size();
+
+        final IntFunction<T> getter = isArray
+            ? i -> (T)((Object[])obj)[i]
+            : ((Slice<? extends T>)obj)::get;
+        // @formatter:on
+
+        int matches = 0;
+
+        for (int i = 0; i < length; i++) {
+            if (!get(i).equals(getter.apply(i))) {
+                break;
+            }
+
+            matches++;
+        }
+
+        return matches == length;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return Arrays.toString(ref);
     }
 }

@@ -18,8 +18,10 @@ package io.karma.sliced;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -33,6 +35,20 @@ import java.util.Map.Entry;
  */
 @API(status = Status.STABLE)
 public interface MapView<K, V> extends View<Entry<K, V>> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link Map}.
+     *
+     * @param <TK> The key type of the given map and view to create.
+     * @param <TV> The value type of the given map and view to create.
+     * @param map  The map of which to create a view.
+     * @return A new view instance, which references the given map.
+     */
+    static <TK, TV> @NotNull MapView<TK, TV> of(final @NotNull Map<TK, TV> map) {
+        return new MapViewImpl<>(map);
+    }
+
     /**
      * Retrieves the value associated with the given key.
      * Returns null if the given key doesn't exist in the map

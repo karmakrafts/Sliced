@@ -60,4 +60,33 @@ class CollectionView<T, C extends Collection<T>> implements View<T> {
     public @NotNull Iterator<T> iterator() {
         return ref.iterator();
     }
+
+    @Override
+    public int hashCode() {
+        return ref.hashCode();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final @Nullable Object obj) {
+        if (obj instanceof Collection) {
+            return ref.equals(obj);
+        }
+        else if (obj instanceof View) {
+            for (final T element : (View<? extends T>) obj) {
+                if (!containsRef(element)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return ref.toString();
+    }
 }

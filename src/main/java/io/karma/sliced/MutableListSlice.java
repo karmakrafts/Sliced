@@ -19,6 +19,7 @@ package io.karma.sliced;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,7 +49,6 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
     public @NotNull Slice<T> slice(final int start, final int end) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -65,7 +65,6 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
     public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -90,7 +89,6 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
     public <C extends Collection<T>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory) {
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
-        final int maxIndex = this.size - 1;
 
         if (actualStart < 0 || actualStart > maxIndex) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
@@ -118,16 +116,58 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
 
     @Override
     public boolean hasMoreElements() {
-        return iterationIndex < ref.size();
+        return iterationIndex < size;
     }
 
     @Override
     public T nextElement() {
-        return ref.get(iterationIndex++);
+        return ref.get(start + iterationIndex++);
     }
 
     @Override
     public void reset() {
         iterationIndex = 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return ref.hashCode();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(final @Nullable Object obj) {
+        final boolean isList = obj instanceof List;
+
+        if (!isList && !(obj instanceof Slice)) {
+            return false;
+        }
+
+        // @formatter:off
+        final int length = isList
+            ? ((List<? extends T>)obj).size()
+            : ((Slice<? extends T>)obj).size();
+
+        final IntFunction<T> getter = isList
+            ? ((List<? extends T>)obj)::get
+            : ((Slice<? extends T>)obj)::get;
+        // @formatter:on
+
+        int matches = 0;
+
+        for (int i = 0; i < length; i++) {
+            if (!get(i).equals(getter.apply(i))) {
+                break;
+            }
+
+            matches++;
+        }
+
+        return matches == length;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return ref.toString();
     }
 }

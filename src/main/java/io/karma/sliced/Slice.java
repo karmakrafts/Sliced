@@ -34,20 +34,106 @@ import java.util.function.Supplier;
  * to retrieve singular elements by their index, as well
  * as creating sub-slices from a given index range.
  * <p>
- * A slice is also a {@link ReusableEnumeration}, which means
+ * A slice is also a {@link ResettableEnumeration}, which means
  * it can be used like a regular {@link java.util.Enumeration}
  * with the benefit of being able to reset the internal iterator
  * of the enumeration instance.
  * <h2>Note</h2>
  * If you don't depend on the ability to index into
  * the underlying collection/array, use {@link View}
- * instead. See {@link Views}.
+ * instead. See {@link View#of(Object[])} and it's overloads.
  *
  * @author Alexander Hinze
  * @since 09/08/2022
  */
 @API(status = API.Status.STABLE)
-public interface Slice<T> extends View<T>, ReusableEnumeration<T> {
+public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given array.
+     *
+     * @param <TT>  The element type of the given array, and the newly created slice.
+     * @param array The array of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given array.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull TT[] array, final int start, final int end) {
+        return new ArraySlice<>(array, start, end);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given array.
+     *
+     * @param <TT>  The element type of the given array, and the newly created slice.
+     * @param array The array of which to create a slice.
+     * @return A new slice instance, which references the given array.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull TT[] array) {
+        return new ArraySlice<>(array, 0, array.length - 1);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <TT>       The element type of the given list, and the newly created slice.
+     * @param collection The list of which to create a slice.
+     * @param start      The index at which the newly created slice should begin.
+     * @param end        The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given list.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull Collection<TT> collection, final int start, final int end) {
+        return new ListSlice<>(new ArrayList<>(collection), start, end);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <TT>       The element type of the given list, and the newly created slice.
+     * @param collection The list of which to create a slice.
+     * @return A new slice instance, which references the given list.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull Collection<TT> collection) {
+        return new ListSlice<>(new ArrayList<>(collection), 0, collection.size() - 1);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link List}.
+     *
+     * @param <TT>  The element type of the given list, and the newly created slice.
+     * @param list  The list of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new slice instance, which references the given list.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull List<TT> list, final int start, final int end) {
+        return new ListSlice<>(list, start, end);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new slice instance which references the given {@link List}.
+     *
+     * @param <TT> The element type of the given list, and the newly created slice.
+     * @param list The list of which to create a slice.
+     * @return A new slice instance, which references the given list.
+     */
+    static <TT> @NotNull Slice<TT> of(final @NotNull List<TT> list) {
+        return new ListSlice<>(list, 0, list.size() - 1);
+    }
+
     /**
      * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b><br>

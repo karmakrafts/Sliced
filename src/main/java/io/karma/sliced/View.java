@@ -22,9 +22,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.ObjIntConsumer;
@@ -51,6 +55,49 @@ import java.util.stream.StreamSupport;
 public interface View<T> extends Iterable<T> {
     /**
      * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given array.
+     *
+     * @param <TT>  The element type of the given array, and the newly created view.
+     * @param array The array of which to create a view.
+     * @return A new view instance, which references the given array.
+     */
+    static <TT> @NotNull View<TT> of(final @NotNull TT[] array) {
+        return new ArrayView<>(array);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link Collection}.
+     * <h2>Note</h2>
+     * That if your given collection is a {@link List}, {@link Queue},
+     * {@link Deque}, {@link Stack} or {@link Map}, you should use the
+     * specialized functions provided by this class.
+     *
+     * @param <TT>       The element type of the given array, and the newly created view.
+     * @param collection The collection of which to create a view.
+     * @return A new view instance, which references the given array.
+     */
+    static <TT> @NotNull View<TT> of(final @NotNull Collection<TT> collection) {
+        return new CollectionView<>(collection);
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new view instance which references the given {@link List}.
+     *
+     * @param <TT> The element type of the given list, and the newly created view.
+     * @param list The list of which to create a view.
+     * @return A new view instance, which references the given list.
+     */
+    static <TT> @NotNull View<TT> of(final @NotNull List<TT> list) {
+        return new ListView<>(list);
+    }
+
+    /**
+     * <h2>Information</h2>
      * <b>Time Complexity: O(1)</b>
      *
      * @return The number of element contained within the collection/array
@@ -69,7 +116,7 @@ public interface View<T> extends Iterable<T> {
      * the same underlying collection reference, or a newly created wrapper list
      * if there's no specialization available for the type of the underlying collection.
      * <h2>Note</h2>
-     * If you want to create slices directly, see {@link Slices}.
+     * If you want to create slices directly, see {@link Slice#of(Object[])} and it's overloads.
      *
      * @return A new slice instance with a reference to the same collection/array
      *         as this view instance.
@@ -126,7 +173,7 @@ public interface View<T> extends Iterable<T> {
      * <b>Time Complexity:</b><br>
      * <ul>
      *     <li><b>O(n)</b> if the default implementation provided by this interface is used</li>
-     *     <li><b>~O(1)</b> if a specialized implementation on a {@link java.util.HashSet} is used</li>
+     *     <li><b>O(1)</b> if a specialized implementation on a {@link java.util.HashSet} is used</li>
      * </ul>
      * Checks if the given value is contained within the collection/array referenced
      * by this view instance.
@@ -142,6 +189,32 @@ public interface View<T> extends Iterable<T> {
 
         for (final T element : this) {
             if (!element.equals(value)) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Checks whether or not the collection/array referenced by this view instance
+     * contains the exact given reference to the given value.
+     *
+     * @param ref The reference to check for.
+     * @return True if the collection/array associated with this view instance
+     *         contains the exact given reference to an object.
+     */
+    default boolean containsRef(final @Nullable T ref) {
+        if (ref == null) {
+            return false;
+        }
+
+        for (final T element : this) {
+            if (element != ref) {
                 continue;
             }
 

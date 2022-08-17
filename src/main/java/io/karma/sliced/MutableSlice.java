@@ -40,7 +40,7 @@ public interface MutableSlice<T> extends Slice<T> {
      * <b>Time Complexity: O(1)</b><br>
      * Creates a new mutable slice instance which references the given array.
      *
-     * @param <TT>   The element type of the given array, and the newly created slice.
+     * @param <TT>  The element type of the given array, and the newly created slice.
      * @param array The array of which to create a slice.
      * @param start The index at which the newly created slice should begin.
      * @param end   The index at which the newly created slice should end.

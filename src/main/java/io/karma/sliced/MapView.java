@@ -21,8 +21,11 @@ import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * <h2>Information</h2>
@@ -50,6 +53,8 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
     }
 
     /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
      * Retrieves the value associated with the given key.
      * Returns null if the given key doesn't exist in the map
      * instance referenced by this view instance.
@@ -58,4 +63,76 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      * @return The value associated with the given key. Null if the given key doesn't exist.
      */
     V get(final @Nullable K key);
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new set, containing references to all keys stored
+     * within the map, which is referenced by this view instance.
+     *
+     * @return A set of all keys contained within the map referenced by this view instance.
+     */
+    @NotNull Set<K> keys();
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new stream instance of all keys contained within
+     * the map, which is referenced by this view instance.
+     *
+     * @return A new stream instance of all keys contained within
+     *         the map referenced by this view instance.
+     */
+    default @NotNull Stream<K> keyStream() {
+        return keys().stream();
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new parallel stream instance of all keys contained within
+     * the map, which is referenced by this view instance.
+     *
+     * @return A new parallel stream instance of all keys contained within
+     *         the map referenced by this view instance.
+     */
+    default @NotNull Stream<K> parallelKeyStream() {
+        return keys().parallelStream();
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new collection, containing references to all values stored
+     * within the map, which is referenced by this view instance.
+     *
+     * @return A collection of all values contained within the map referenced by this view instance.
+     */
+    @NotNull Collection<V> values();
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new stream instance of all values contained within
+     * the map, which is referenced by this view instance.
+     *
+     * @return A new stream instance of all values contained within
+     *         the map referenced by this view instance.
+     */
+    default @NotNull Stream<V> valueStream() {
+        return values().stream();
+    }
+
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(n)</b><br>
+     * Creates a new parallel stream instance of all values contained within
+     * the map, which is referenced by this view instance.
+     *
+     * @return A new parallel stream instance of all values contained within
+     *         the map referenced by this view instance.
+     */
+    default @NotNull Stream<V> parallelValueStream() {
+        return values().parallelStream();
+    }
 }

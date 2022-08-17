@@ -62,12 +62,32 @@ public interface CharSlice extends Slice<Character>, CharSequence, ResettableCha
         return new StringCharSliceImpl(seq, 0, seq.length() - 1);
     }
 
-    static @NotNull CharSlice of(final char[] chars, final int start, final int end) {
-        return new ArrayCharSliceImpl(chars, start, end);
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new string slice for the given character array,
+     * with the given start- and end index.
+     *
+     * @param ref   The character array to create a slice of.
+     * @param start The start index of the slice to be created.
+     * @param end   The end index (inclusive) of the slice to be created.
+     * @return A new string slice referencing the given character array.
+     */
+    static @NotNull CharSlice of(final char[] ref, final int start, final int end) {
+        return new ArrayCharSliceImpl(ref, start, end);
     }
 
-    static @NotNull CharSlice of(final char[] chars) {
-        return new ArrayCharSliceImpl(chars, 0, chars.length - 1);
+    /**
+     * <h2>Information</h2>
+     * <b>Time Complexity: O(1)</b><br>
+     * Creates a new string slice for the given character array,
+     * with the given start- and end index.
+     *
+     * @param ref The character array to create a slice of.
+     * @return A new string slice referencing the given character array.
+     */
+    static @NotNull CharSlice of(final char[] ref) {
+        return new ArrayCharSliceImpl(ref, 0, ref.length - 1);
     }
 
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter, final int start, final int end) {

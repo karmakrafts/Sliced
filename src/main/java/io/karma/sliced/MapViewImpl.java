@@ -48,6 +48,16 @@ final class MapViewImpl<K, V, M extends Map<K, V>> implements MapView<K, V> {
     }
 
     @Override
+    public @NotNull Set<K> keys() {
+        return ref.keySet();
+    }
+
+    @Override
+    public @NotNull Collection<V> values() {
+        return ref.values();
+    }
+
+    @Override
     public int size() {
         return ref.size();
     }

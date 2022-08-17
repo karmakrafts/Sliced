@@ -21,20 +21,21 @@ import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 
 /**
  * @author Alexander Hinze
- * @since 14/08/2022
+ * @since 17/08/2022
  */
 @API(status = Status.INTERNAL)
-final class MutableStringSliceImpl extends AbstractMutableSlice<Character> implements MutableCharSlice {
-    private final CharSequence ref;
-    private int iterationIndex = 0;
+final class MutableArrayCharSlice extends AbstractMutableSlice<Character> implements MutableCharSlice {
+    private final char[] ref;
+    private int iterationIndex;
 
-    MutableStringSliceImpl(final @NotNull CharSequence ref, final int start, final int end) {
+    MutableArrayCharSlice(final char[] ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
@@ -43,22 +44,22 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
     public @NotNull CharSlice trimLeading() {
         int start = 0;
 
-        while (ref.charAt(start) == ' ') {
+        while (ref[start] == ' ') {
             start++;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new ArrayCharSliceImpl(ref, start, end);
     }
 
     @Override
     public @NotNull CharSlice trimTrailing() {
         int end = length() - 1;
 
-        while (ref.charAt(end) == ' ') {
+        while (ref[end] == ' ') {
             end--;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new ArrayCharSliceImpl(ref, start, end);
     }
 
     @Override
@@ -74,15 +75,11 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new StringCharSliceImpl(ref, actualStart, actualEnd);
+        return new ArrayCharSliceImpl(ref, actualStart, actualEnd);
     }
 
     @Override
     public char[] toCharArray(final int start, final int end) {
-        if (ref instanceof String) {
-            return ((String) ref).toCharArray();
-        }
-
         final int actualStart = this.start + start;
         final int actualEnd = this.start + end;
 
@@ -96,11 +93,7 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
 
         final int size = actualEnd - actualStart;
         final char[] chars = new char[size];
-        int index = 0;
-
-        for (int i = actualStart; i <= actualEnd; i++) {
-            chars[index++] = ref.charAt(i);
-        }
+        System.arraycopy(ref, actualStart, chars, 0, size);
 
         return chars;
     }
@@ -123,7 +116,7 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
         int index = 0;
 
         for (int i = actualStart; i <= actualEnd; i++) {
-            result[index++] = ref.charAt(i);
+            result[index++] = ref[i];
         }
 
         return result;
@@ -146,7 +139,7 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
         final C result = factory.apply(size);
 
         for (int i = actualStart; i <= actualEnd; i++) {
-            result.add(ref.charAt(i));
+            result.add(ref[i]);
         }
 
         return result;
@@ -154,12 +147,12 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
 
     @Override
     public char charAt(final int index) {
-        return ref.charAt(start + index);
+        return ref[start + index];
     }
 
     @Override
     public @NotNull Iterator<Character> iterator() {
-        return new RangedStringIterator(ref, start, end);
+        return new RangedCharArrayIterator(ref, start, end);
     }
 
     @Override
@@ -169,27 +162,27 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
 
     @Override
     public @NotNull Character nextElement() {
-        return ref.charAt(start + iterationIndex++);
+        return ref[start + iterationIndex++];
     }
 
     @Override
     public char current() {
-        return ref.charAt(start + iterationIndex);
+        return ref[start + iterationIndex];
     }
 
     @Override
     public char next() {
-        return ref.charAt(start + ++iterationIndex);
+        return ref[start + ++iterationIndex];
     }
 
     @Override
     public char previous() {
-        return ref.charAt(start + --iterationIndex);
+        return ref[start + --iterationIndex];
     }
 
     @Override
     public char setIndex(final int position) {
-        return ref.charAt(iterationIndex = position);
+        return ref[iterationIndex = position];
     }
 
     @Override
@@ -197,11 +190,10 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
         return iterationIndex;
     }
 
-    // TODO: this is very wrong according to spec, figure this out
     @SuppressWarnings("all")
     @Override
     public @NotNull Object clone() {
-        final MutableStringSliceImpl result = new MutableStringSliceImpl(ref, start, end);
+        final MutableArrayCharSlice result = new MutableArrayCharSlice(ref, start, end);
         result.iterationIndex = iterationIndex;
         return result;
     }
@@ -213,7 +205,7 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
 
     @Override
     public int hashCode() {
-        return ref.hashCode();
+        return Arrays.hashCode(ref);
     }
 
     @SuppressWarnings("unchecked")
@@ -262,6 +254,6 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
 
     @Override
     public @NotNull String toString() {
-        return ref.toString();
+        return Arrays.toString(ref);
     }
 }

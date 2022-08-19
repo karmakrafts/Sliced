@@ -10,7 +10,7 @@ cache:
 build:
   stage: build
   script:
-    - ./gradlew -DpublishDocs.root="/var/www/docs/sliced" build publish publishDocs --info --no-daemon
+    - sudo bash "./gradlew -DpublishDocs.root=/var/www/docs/sliced build publish publishDocs --info --no-daemon"
   artifacts:
     paths:
       - build/libs/*.jar

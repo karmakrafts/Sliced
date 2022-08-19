@@ -264,8 +264,8 @@ final class StringCharSliceImpl extends AbstractSlice<Character> implements Char
         final char[] chars = new char[size];
         int index = 0;
 
-        for (int i = start; i <= end; i++) {
-            chars[index++] = ref.charAt(i);
+        for (int i = 0; i < size; i++) {
+            chars[index++] = ref.charAt(start + i);
         }
 
         return new String(chars);

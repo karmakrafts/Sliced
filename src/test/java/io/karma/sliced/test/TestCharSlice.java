@@ -32,32 +32,54 @@ final class TestCharSlice {
     private static final int LENGTH = VALUE.length();
     private static final String VALUE_2 = "A.B.C.D.E.F.G.H.I.J.K.L.M.N.O.P.Q.R.S.T.U.V.W.X.Y.Z";
     private static final char[] VALUE_2_CHARS = VALUE_2.toCharArray();
+    private static final String VALUE_3 = "A.-.B.-.C.-.D.-.E.-.F.-.G.-.H.-.I.-.J.-.K.-.L.-.M.-.N.-.O.-.P.-.Q.-.R.-.S.-.T.-.U.-.V.-.W.-.X.-.Y.-.Z";
+    private static final char[] VALUE_3_CHARS = VALUE_3.toCharArray();
+    private static final String VALUE_4 = "foo.bar.foobar.barfoo.apple.banana.orange.tangerine";
+    private static final char[] VALUE_4_CHARS = VALUE_4.toCharArray();
+    private static final String[] WORDS = VALUE_4.split("\\.");
+    private static final int WORD_COUNT = WORDS.length;
 
     @Test
     void testSplitStaticSequence() {
-        final CharSlice[] slices = CharSlice.split(VALUE_2, ".");
+        CharSlice[] slices = CharSlice.split(VALUE_3, ".-.");
         Assertions.assertNotNull(slices);
         Assertions.assertEquals(LENGTH, slices.length);
 
         for (int i = 0; i < LENGTH; i++) {
             Assertions.assertEquals(VALUE.charAt(i), slices[i].charAt(0));
+        }
+
+        slices = CharSlice.split(VALUE_4, ".");
+        Assertions.assertNotNull(slices);
+        Assertions.assertEquals(WORD_COUNT, slices.length);
+
+        for (int i = 0; i < WORD_COUNT; i++) {
+            Assertions.assertEquals(WORDS[i], slices[i].toString());
         }
     }
 
     @Test
     void testSplitStaticChar() {
-        final CharSlice[] slices = CharSlice.split(VALUE_2, '.');
+        CharSlice[] slices = CharSlice.split(VALUE_2, '.');
         Assertions.assertNotNull(slices);
         Assertions.assertEquals(LENGTH, slices.length);
 
         for (int i = 0; i < LENGTH; i++) {
             Assertions.assertEquals(VALUE.charAt(i), slices[i].charAt(0));
         }
+
+        slices = CharSlice.split(VALUE_4, '.');
+        Assertions.assertNotNull(slices);
+        Assertions.assertEquals(WORD_COUNT, slices.length);
+
+        for (int i = 0; i < WORD_COUNT; i++) {
+            Assertions.assertEquals(WORDS[i], slices[i].toString());
+        }
     }
 
     @Test
     void testSplitSequence() {
-        final CharSlice[] slices = CharSlice.of(VALUE_2).split(".");
+        final CharSlice[] slices = CharSlice.of(VALUE_3).split(".-.");
         Assertions.assertNotNull(slices);
         Assertions.assertEquals(LENGTH, slices.length);
 
@@ -79,7 +101,7 @@ final class TestCharSlice {
 
     @Test
     void testArraySplitSequence() {
-        final CharSlice[] slices = CharSlice.of(VALUE_2_CHARS).split(".");
+        final CharSlice[] slices = CharSlice.of(VALUE_3_CHARS).split(".-.");
         Assertions.assertNotNull(slices);
         Assertions.assertEquals(LENGTH, slices.length);
 

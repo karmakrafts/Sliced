@@ -127,7 +127,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, ResettableCha
         final int numSlices = numDelimiters + 1;
         final CharSlice[] slices = new CharSlice[numSlices];
         int index = 0;
-        int subEnd = 0;
+        int lastEnd = start;
 
         matchingChars = 0; // Reset # of matching chars
 
@@ -143,15 +143,12 @@ public interface CharSlice extends Slice<Character>, CharSequence, ResettableCha
                 continue;
             }
 
-            final int subStart = subEnd == 0 ? 0 : subEnd + delimiterLength;
-            subEnd = i - delimiterLength + 1;
-            slices[index++] = new StringCharSliceImpl(seq, subStart, subEnd);
+            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i - (delimiterLength - 1));
+            lastEnd = i + 1;
             matchingChars = 0;
         }
 
-        final int subStart = subEnd + delimiterLength;
-        slices[index] = new StringCharSliceImpl(seq, subStart, end);
-
+        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
         return slices;
     }
 
@@ -186,18 +183,18 @@ public interface CharSlice extends Slice<Character>, CharSequence, ResettableCha
         final int numSlices = numDelimiters + 1;
         final CharSlice[] slices = new CharSlice[numSlices];
         int index = 0;
-        int subEnd = 0;
+        int lastEnd = 0;
 
         for (int i = start; i <= end; i++) {
             if (seq.charAt(i) != delimiter) {
                 continue;
             }
 
-            final int subStart = subEnd == 0 ? 0 : subEnd + 1;
-            slices[index++] = new StringCharSliceImpl(seq, subStart, subEnd = i);
+            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i);
+            lastEnd = i + 1;
         }
 
-        slices[index] = new StringCharSliceImpl(seq, subEnd + 1, end);
+        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
         return slices;
     }
 

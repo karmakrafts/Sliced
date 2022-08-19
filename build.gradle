@@ -3,6 +3,7 @@ buildscript {
     file('build.properties').withInputStream(config.&load)
     project.ext.config = config
     project.ext.buildDate = new Date()
+    project.ext.docsDir = System.properties['publishDocs.root']
 
     repositories {
         mavenCentral()
@@ -85,6 +86,15 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar) {
     classifier 'javadoc'
     from javadoc
+}
+
+if(docsDir != null) {
+    task publishDocs(type: Copy) {
+        dependsOn javadocJar
+        mustRunAfter javadocJar
+        from zipTree(file("${buildDir}/libs/${archivesBaseName}-${version}-javadoc.jar"))
+        into file(docsDir)
+    }
 }
 
 tasks.withType(Jar) {

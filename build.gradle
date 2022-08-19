@@ -102,6 +102,12 @@ tasks.withType(Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.withType(Javadoc) {
+    options {
+        addStringOption('-no-frames')
+    }
+}
+
 artifacts {
     archives jar
     archives sourcesJar

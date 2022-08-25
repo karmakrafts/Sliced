@@ -82,6 +82,17 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         return new ArrayCharSliceImpl(ref, 0, ref.length - 1);
     }
 
+    /**
+     * Splits the given {@link CharSequence} {code seq} at each given delimiter {@code delimiter},
+     * between the given start and end index.
+     *
+     * @param seq       The character sequence to split.
+     * @param delimiter The delimiter to split with.
+     * @param start     The index at which to start splitting.
+     * @param end       The index at which to end splitting.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter, final int start, final int end) {
         final int size = seq.length();
         final int maxIndex = size - 1;
@@ -144,10 +155,29 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         return slices;
     }
 
+    /**
+     * Splits the given {@link CharSequence} {code seq} at each given delimiter {@code delimiter}.
+     *
+     * @param seq       The character sequence to split.
+     * @param delimiter The delimiter to split with.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter) {
         return split(seq, delimiter, 0, seq.length() - 1);
     }
 
+    /**
+     * Splits the given {@link CharSequence} {code seq} at each given delimiter {@code delimiter},
+     * between the given start and end index.
+     *
+     * @param seq       The character sequence to split.
+     * @param delimiter The delimiter to split with.
+     * @param start     The index at which to start splitting.
+     * @param end       The index at which to end splitting.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter, final int start, final int end) {
         final int size = seq.length();
         final int maxIndex = size - 1;
@@ -190,52 +220,148 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         return slices;
     }
 
+    /**
+     * Splits the given {@link CharSequence} {code seq} at each given delimiter {@code delimiter}.
+     *
+     * @param seq       The character sequence to split.
+     * @param delimiter The delimiter to split with.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter) {
         return split(seq, delimiter, 0, seq.length() - 1);
     }
 
     // Instance functions
 
+    /**
+     * Retrieves the character at the given index.
+     *
+     * @param index The index of the character to retrieve.
+     * @return The character at the given index.
+     */
     char getChar(final int index);
 
-    @Override
-    default char charAt(final int index) {
-        return getChar(index);
-    }
-
+    /**
+     * Splits this {@link CharSlice} at each given delimiter {@code delimiter},
+     * between the given start and end index.
+     *
+     * @param delimiter The delimiter to split with.
+     * @param start     The index at which to start splitting.
+     * @param end       The index at which to end splitting.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     default @NotNull CharSlice[] split(final char delimiter, final int start, final int end) {
         return split(this, delimiter, start, end);
     }
 
+    /**
+     * Splits this {@link CharSlice} at each given delimiter {@code delimiter}.
+     *
+     * @param delimiter The delimiter to split with.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     default @NotNull CharSlice[] split(final char delimiter) {
         return split(delimiter, 0, length() - 1);
     }
 
+    /**
+     * Splits this {@link CharSlice} at each given delimiter {@code delimiter},
+     * between the given start and end index.
+     *
+     * @param delimiter The delimiter to split with.
+     * @param start     The index at which to start splitting.
+     * @param end       The index at which to end splitting.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter, final int start, final int end) {
         return split(this, delimiter, start, end);
     }
 
+    /**
+     * Splits this {@link CharSlice} at each given delimiter {@code delimiter}.
+     *
+     * @param delimiter The delimiter to split with.
+     * @return A new array of {@link CharSlice} instances, referencing the relevant
+     *         sections of the original char sequence.
+     */
     default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter) {
         return split(delimiter, 0, length() - 1);
     }
 
+    /**
+     * Trims all leading whitespace (space, tab, newline etc.)
+     * off the original char sequence and returns a new {@link CharSlice},
+     * which only references the non-leading-WS part of the original
+     * underlying character sequence.
+     *
+     * @return A new {@link CharSlice} referencing all non-leading-WS
+     *         characters of the original slice instance's character sequence.
+     */
     @NotNull CharSlice trimLeading();
 
+    /**
+     * Trims all trailing whitespace (space, tab, newline etc.)
+     * off the original char sequence and returns a new {@link CharSlice},
+     * which only references the non-trailing-WS part of the original
+     * underlying character sequence.
+     *
+     * @return A new {@link CharSlice} referencing all non-trailing-WS
+     *         characters of the original slice instance's character sequence.
+     */
     @NotNull CharSlice trimTrailing();
 
+    /**
+     * Trims both leading and trailing whitespace off the original
+     * char sequence and returns a new {@link CharSlice}, which only
+     * references the non-WS center part of the original underlying
+     * character sequence.
+     * <p>
+     * This function is a combination of {@link #trimLeading()} and {@link #trimTrailing()}.
+     *
+     * @return A new {@link CharSlice} referencing all non-WS
+     *         characters of the original slice instance's character sequence.
+     */
     default @NotNull CharSlice trim() {
         return trimLeading().trimTrailing();
     }
 
+    /**
+     * Creates a new {@code char} array with the appropriate size,
+     * and copies all values from {@code start} to {@code end} into
+     * new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
+     *
+     * @param start The index at which to start copying elements.
+     * @param end   The index at which to end copying elements.
+     * @return A new array containing all elements from {@code start} to {@code end}.
+     */
     char[] toCharArray(final int start, final int end);
 
+    /**
+     * Creates a new {@code char} array with the appropriate size,
+     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
+     *
+     * @return A new array containing all elements.
+     */
     default char[] toCharArray() {
         return toCharArray(0, length() - 1);
     }
 
+    // Slice functions
+
     @Override
     default @NotNull Character get(final int index) {
         return charAt(index);
+    }
+
+    // CharacterIterator functions
+
+    @Override
+    default char charAt(final int index) {
+        return getChar(index);
     }
 
     @Override

@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.iterator.RangedArrayIterator;
+import io.karma.sliced.slice.ArraySlice;
+import io.karma.sliced.slice.Slice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.IntFunction;
 
 /**
@@ -31,18 +34,18 @@ import java.util.function.IntFunction;
  * @since 11/08/2022
  */
 @API(status = Status.INTERNAL)
-final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<T> {
-    private final L ref;
+public final class MutableArraySlice<T> extends AbstractMutableSlice<T> {
+    private final T[] ref;
     private int iterationIndex;
 
-    MutableListSlice(final @NotNull L ref, final int start, final int end) {
+    public MutableArraySlice(final @NotNull T[] ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
 
     @Override
-    public T get(int index) {
-        return ref.get(start + index);
+    public T get(final int index) {
+        return ref[start + index];
     }
 
     @Override
@@ -58,31 +61,7 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new ListSlice<>(ref, actualStart, actualEnd);
-    }
-
-    @Override
-    public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
-        final int actualStart = this.start + start;
-        final int actualEnd = this.start + end;
-
-        if (actualStart < 0 || actualStart > maxIndex) {
-            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
-        }
-
-        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
-
-        final int size = actualEnd - actualStart;
-        final T[] result = factory.apply(size);
-        int index = 0;
-
-        for (int i = actualStart; i <= actualEnd; i++) {
-            result[index++] = ref.get(i);
-        }
-
-        return result;
+        return new ArraySlice<>(ref, actualStart, actualEnd);
     }
 
     @Override
@@ -101,17 +80,29 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
         final int size = actualEnd - actualStart;
         final C result = factory.apply(size);
 
-        for (int i = actualStart; i <= actualEnd; i++) {
-            result.add(ref.get(i));
-        }
+        result.addAll(Arrays.asList(ref).subList(actualStart, actualEnd + 1));
 
         return result;
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return new RangedListIterator<>(ref, start, end);
+    public @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory) {
+        final int actualStart = this.start + start;
+        final int actualEnd = this.start + end;
+
+        if (actualStart < 0 || actualStart > maxIndex) {
+            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
+        }
+
+        if (actualEnd < 0 || actualEnd > maxIndex || actualEnd < actualStart) {
+            throw new ArrayIndexOutOfBoundsException("End index is out of range");
+        }
+
+        final int size = actualEnd - actualStart;
+        final T[] result = factory.apply(size);
+        System.arraycopy(ref, start, result, 0, size);
+
+        return result;
     }
 
     @Override
@@ -121,7 +112,7 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
 
     @Override
     public T nextElement() {
-        return ref.get(start + iterationIndex++);
+        return ref[start + iterationIndex++];
     }
 
     @Override
@@ -129,27 +120,33 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
         iterationIndex = 0;
     }
 
+    @NotNull
+    @Override
+    public Iterator<T> iterator() {
+        return new RangedArrayIterator<>(ref, start, end);
+    }
+
     @Override
     public int hashCode() {
-        return ref.hashCode();
+        return Arrays.hashCode(ref);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(final @Nullable Object obj) {
-        final boolean isList = obj instanceof List;
+        final boolean isArray = obj instanceof Object[];
 
-        if (!isList && !(obj instanceof Slice)) {
+        if (!isArray && !(obj instanceof Slice)) {
             return false;
         }
 
         // @formatter:off
-        final int length = isList
-            ? ((List<? extends T>)obj).size()
+        final int length = isArray
+            ? ((Object[])obj).length
             : ((Slice<? extends T>)obj).size();
 
-        final IntFunction<T> getter = isList
-            ? ((List<? extends T>)obj)::get
+        final IntFunction<T> getter = isArray
+            ? i -> (T)((Object[])obj)[i]
             : ((Slice<? extends T>)obj)::get;
         // @formatter:on
 
@@ -168,6 +165,6 @@ final class MutableListSlice<T, L extends List<T>> extends AbstractMutableSlice<
 
     @Override
     public @NotNull String toString() {
-        return ref.toString();
+        return Arrays.toString(ref);
     }
 }

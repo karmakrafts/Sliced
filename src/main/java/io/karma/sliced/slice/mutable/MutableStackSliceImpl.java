@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.iterator.RangedListIterator;
+import io.karma.sliced.slice.Slice;
+import io.karma.sliced.slice.StackSliceImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +34,11 @@ import java.util.function.IntFunction;
  * @since 11/08/2022
  */
 @API(status = Status.INTERNAL)
-final class MutableStackSliceImpl<T, S extends Stack<T>> extends AbstractMutableSlice<T> implements MutableStackSlice<T> {
+public final class MutableStackSliceImpl<T, S extends Stack<T>> extends AbstractMutableSlice<T> implements MutableStackSlice<T> {
     private final S ref;
     private int iterationIndex;
 
-    MutableStackSliceImpl(final @NotNull S ref, final int start, final int end) {
+    public MutableStackSliceImpl(final @NotNull S ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
@@ -150,7 +153,7 @@ final class MutableStackSliceImpl<T, S extends Stack<T>> extends AbstractMutable
         // @formatter:off
         final int length = isStack
             ? ((Stack<? extends T>)obj).size()
-            : ((StackSliceImpl<? extends T, ?>)obj).size;
+            : ((StackSliceImpl<? extends T, ?>)obj).size();
 
         final IntFunction<T> getter = isStack
             ? ((Stack<? extends T>)obj)::get

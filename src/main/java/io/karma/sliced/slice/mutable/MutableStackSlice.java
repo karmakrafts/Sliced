@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.slice.StackSlice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Stack;
 
 /**
- * <h2>Information</h2>
  * A mutable stack slice is a subtype of a regular {@link StackSlice},
  * which allows mutating the start- and end-index of the slice.
  * This allows the reduction of allocation overhead in loops for example.
@@ -34,30 +34,26 @@ import java.util.Stack;
 @API(status = Status.STABLE)
 public interface MutableStackSlice<T> extends MutableSlice<T>, StackSlice<T> {
     /**
-     * <h2>Information</h2>
-     * <b>Time Complexity: O(1)</b><br>
      * Creates a new mutable slice instance which references the given {@link Stack}.
      *
-     * @param <TT>  The element type of the given stack, and the newly created slice.
+     * @param <T>   The element type of the given stack, and the newly created slice.
      * @param stack The stack of which to create a slice.
      * @param start The index at which the newly created slice should begin.
      * @param end   The index at which the newly created slice should end.
      * @return A new mutable slice instance, which references the given stack.
      */
-    static <TT> @NotNull MutableStackSlice<TT> of(final @NotNull Stack<TT> stack, final int start, final int end) {
+    static <T> @NotNull MutableStackSlice<T> of(final @NotNull Stack<T> stack, final int start, final int end) {
         return new MutableStackSliceImpl<>(stack, start, end);
     }
 
     /**
-     * <h2>Information</h2>
-     * <b>Time Complexity: O(1)</b><br>
      * Creates a new mutable slice instance which references the given {@link Stack}.
      *
-     * @param <TT>  The element type of the given stack, and the newly created slice.
+     * @param <T>   The element type of the given stack, and the newly created slice.
      * @param stack The stack of which to create a slice.
      * @return A new mutable slice instance, which references the given stack.
      */
-    static <TT> @NotNull MutableStackSlice<TT> of(final @NotNull Stack<TT> stack) {
+    static <T> @NotNull MutableStackSlice<T> of(final @NotNull Stack<T> stack) {
         return new MutableStackSliceImpl<>(stack, 0, stack.size() - 1);
     }
 }

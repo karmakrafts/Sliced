@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.slice.Slice;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Alexander Hinze
  * @since 11/08/2022
  */
-abstract class AbstractMutableSlice<T> implements MutableSlice<T> {
+@API(status = Status.INTERNAL)
+public abstract class AbstractMutableSlice<T> implements MutableSlice<T> {
     protected int start;
     protected int end;
     protected int size;

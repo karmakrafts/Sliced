@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.slice.CharSlice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A mutable version of {@link CharSlice}, which allows
- * settings the start and end indices.
+ * A mutable slice is a subtype of a regular {@link CharSlice},
+ * which allows mutating the start- and end-index of the slice.
+ * This allows the reduction of allocation overhead in loops for example.
  *
  * @author Alexander Hinze
- * @since 13/08/2022
+ * @since 25/08/2022
  */
 @API(status = Status.STABLE)
 public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
     /**
-     * <h2>Information</h2>
-     * <b>Time Complexity: O(1)</b><br>
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.
      *
@@ -45,8 +45,6 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
     }
 
     /**
-     * <h2>Information</h2>
-     * <b>Time Complexity: O(1)</b><br>
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.
      *
@@ -57,10 +55,24 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
         return new MutableStringSliceImpl(seq, 0, seq.length() - 1);
     }
 
+    /**
+     * Creates a new mutable slice instance which references the given array.
+     *
+     * @param ref   The array of which to create a slice.
+     * @param start The index at which the newly created slice should begin.
+     * @param end   The index at which the newly created slice should end.
+     * @return A new mutable slice instance, which references the given array.
+     */
     static @NotNull MutableCharSlice of(final char[] ref, final int start, final int end) {
         return new MutableArrayCharSlice(ref, start, end);
     }
 
+    /**
+     * Creates a new mutable slice instance which references the given array.
+     *
+     * @param ref The array of which to create a slice.
+     * @return A new mutable slice instance, which references the given array.
+     */
     static @NotNull MutableCharSlice of(final char[] ref) {
         return new MutableArrayCharSlice(ref, 0, ref.length - 1);
     }

@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package io.karma.sliced;
+package io.karma.sliced.slice.mutable;
 
+import io.karma.sliced.function.Int2CharFunction;
+import io.karma.sliced.iterator.RangedStringIterator;
+import io.karma.sliced.slice.CharSlice;
+import io.karma.sliced.slice.Slice;
+import io.karma.sliced.slice.StringCharSliceImpl;
+import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -30,11 +36,11 @@ import java.util.function.IntFunction;
  * @since 14/08/2022
  */
 @API(status = Status.INTERNAL)
-final class MutableStringSliceImpl extends AbstractMutableSlice<Character> implements MutableCharSlice {
+public final class MutableStringSliceImpl extends AbstractMutableSlice<Character> implements MutableCharSlice {
     private final CharSequence ref;
     private int iterationIndex = 0;
 
-    MutableStringSliceImpl(final @NotNull CharSequence ref, final int start, final int end) {
+    public MutableStringSliceImpl(final @NotNull CharSequence ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
@@ -153,7 +159,7 @@ final class MutableStringSliceImpl extends AbstractMutableSlice<Character> imple
     }
 
     @Override
-    public char charAt(final int index) {
+    public char getChar(final int index) {
         return ref.charAt(start + index);
     }
 

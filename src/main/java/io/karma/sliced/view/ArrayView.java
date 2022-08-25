@@ -16,8 +16,8 @@
 
 package io.karma.sliced.view;
 
-import io.karma.sliced.slice.ArraySlice;
 import io.karma.sliced.iterator.ArrayIterator;
+import io.karma.sliced.slice.ArraySlice;
 import io.karma.sliced.slice.Slice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;

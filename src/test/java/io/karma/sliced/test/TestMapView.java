@@ -16,7 +16,7 @@
 
 package io.karma.sliced.test;
 
-import io.karma.sliced.MapView;
+import io.karma.sliced.view.MapView;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

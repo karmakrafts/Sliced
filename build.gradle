@@ -128,7 +128,7 @@ publishing {
         }
     }
     publications {
-        Kommons(MavenPublication) {
+        sliced(MavenPublication) {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version

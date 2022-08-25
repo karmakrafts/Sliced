@@ -16,8 +16,8 @@
 
 package io.karma.sliced.test;
 
-import io.karma.sliced.MutableSlice;
-import io.karma.sliced.Slice;
+import io.karma.sliced.slice.mutable.MutableSlice;
+import io.karma.sliced.slice.Slice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

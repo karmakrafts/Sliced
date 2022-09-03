@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.iterator;
+package io.karma.sliced.view;
 
+import io.karma.sliced.iterator.FloatIterator;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -23,23 +24,32 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 
 /**
- * A primitive specialization of {@link Iterator}&lt;{@link Character}&gt;,
- * which provides a non-boxing version of {@link Iterator#next()}.
+ * A primitive specialization for {@code float} of {@link View}.
  *
  * @author Alexander Hinze
  * @since 03/09/2022
  */
 @API(status = Status.STABLE)
-public interface CharIterator extends Iterator<Character> {
+public interface FloatView extends View<Float> {
     /**
-     * Retrieves the next {@code char} value in the sequence being iterated over.
+     * Creates a new {@link FloatIterator} from the
+     * elements referenced by this slice instance.
      *
-     * @return The next {@code char} value in the sequence being iterated over.
+     * @return A new {@link FloatIterator} from the
+     *         elements referenced by this slice instance.
      */
-    char nextChar();
+    @NotNull FloatIterator floatIterator();
+
+    /**
+     * Creates a new {@code float} array with the appropriate size,
+     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
+     *
+     * @return A new array containing all elements referenced by this slice instance.
+     */
+    float[] toFloatArray();
 
     @Override
-    default @NotNull Character next() {
-        return nextChar();
+    default @NotNull Iterator<Float> iterator() {
+        return floatIterator();
     }
 }

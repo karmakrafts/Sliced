@@ -51,7 +51,7 @@ public interface DoubleSlice extends DoubleView, Slice<Double> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull DoubleSlice of(final double[] ref) {
+    static @NotNull DoubleSlice of(final double... ref) {
         return new ArrayDoubleSlice(ref, 0, ref.length - 1);
     }
 

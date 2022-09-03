@@ -51,7 +51,7 @@ public interface LongSlice extends LongView, Slice<Long> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull LongSlice of(final long[] ref) {
+    static @NotNull LongSlice of(final long... ref) {
         return new ArrayLongSlice(ref, 0, ref.length - 1);
     }
 

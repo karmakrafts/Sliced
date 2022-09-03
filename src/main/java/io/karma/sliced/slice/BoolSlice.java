@@ -50,7 +50,7 @@ public interface BoolSlice extends BoolView, Slice<Boolean> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull BoolSlice of(final boolean[] ref) {
+    static @NotNull BoolSlice of(final boolean... ref) {
         return new ArrayBoolSlice(ref, 0, ref.length - 1);
     }
 

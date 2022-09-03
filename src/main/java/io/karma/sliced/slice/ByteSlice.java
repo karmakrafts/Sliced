@@ -50,7 +50,7 @@ public interface ByteSlice extends ByteView, Slice<Byte> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull ByteSlice of(final byte[] ref) {
+    static @NotNull ByteSlice of(final byte... ref) {
         return new ArrayByteSlice(ref, 0, ref.length - 1);
     }
 

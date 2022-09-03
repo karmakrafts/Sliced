@@ -49,7 +49,7 @@ public interface MutableByteSlice extends MutableSlice<Byte>, ByteSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableByteSlice of(final byte[] ref) {
+    static @NotNull MutableByteSlice of(final byte... ref) {
         return new MutableArrayByteSlice(ref, 0, ref.length - 1);
     }
 }

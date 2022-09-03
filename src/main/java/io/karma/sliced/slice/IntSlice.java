@@ -51,7 +51,7 @@ public interface IntSlice extends IntView, Slice<Integer> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull IntSlice of(final int[] ref) {
+    static @NotNull IntSlice of(final int... ref) {
         return new ArrayIntSlice(ref, 0, ref.length - 1);
     }
 

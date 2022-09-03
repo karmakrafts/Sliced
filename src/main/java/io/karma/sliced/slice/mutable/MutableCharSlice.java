@@ -73,7 +73,7 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableCharSlice of(final char[] ref) {
+    static @NotNull MutableCharSlice of(final char... ref) {
         return new MutableArrayCharSlice(ref, 0, ref.length - 1);
     }
 }

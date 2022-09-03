@@ -55,7 +55,8 @@ public interface MutableSlice<T> extends Slice<T> {
      * @param array The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static <T> @NotNull MutableSlice<T> of(final @NotNull T[] array) {
+    @SafeVarargs
+    static <T> @NotNull MutableSlice<T> of(final @NotNull T... array) {
         return new MutableArraySlice<>(array, 0, array.length - 1);
     }
 

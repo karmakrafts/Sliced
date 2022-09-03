@@ -49,7 +49,7 @@ public interface MutableBoolSlice extends MutableSlice<Boolean>, BoolSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableBoolSlice of(final boolean[] ref) {
+    static @NotNull MutableBoolSlice of(final boolean... ref) {
         return new MutableArrayBoolSlice(ref, 0, ref.length - 1);
     }
 }

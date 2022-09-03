@@ -74,7 +74,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param ref The character array to create a slice of.
      * @return A new string slice referencing the given character array.
      */
-    static @NotNull CharSlice of(final char[] ref) {
+    static @NotNull CharSlice of(final char... ref) {
         return new ArrayCharSliceImpl(ref, 0, ref.length - 1);
     }
 

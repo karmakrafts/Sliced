@@ -49,7 +49,7 @@ public interface MutableIntSlice extends MutableSlice<Integer>, IntSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableIntSlice of(final int[] ref) {
+    static @NotNull MutableIntSlice of(final int... ref) {
         return new MutableArrayIntSlice(ref, 0, ref.length - 1);
     }
 }

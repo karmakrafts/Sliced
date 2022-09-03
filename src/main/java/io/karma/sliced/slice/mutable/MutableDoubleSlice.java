@@ -49,7 +49,7 @@ public interface MutableDoubleSlice extends MutableSlice<Double>, DoubleSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableDoubleSlice of(final double[] ref) {
+    static @NotNull MutableDoubleSlice of(final double... ref) {
         return new MutableArrayDoubleSlice(ref, 0, ref.length - 1);
     }
 }

@@ -52,7 +52,7 @@ public interface FloatSlice extends Slice<Float> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull FloatSlice of(final float[] ref) {
+    static @NotNull FloatSlice of(final float... ref) {
         return new ArrayFloatSlice(ref, 0, ref.length - 1);
     }
 

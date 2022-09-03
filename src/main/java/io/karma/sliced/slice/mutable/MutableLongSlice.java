@@ -49,7 +49,7 @@ public interface MutableLongSlice extends MutableSlice<Long>, LongSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableLongSlice of(final long[] ref) {
+    static @NotNull MutableLongSlice of(final long... ref) {
         return new MutableArrayLongSlice(ref, 0, ref.length - 1);
     }
 }

@@ -60,7 +60,8 @@ public interface View<T> extends Iterable<T> {
      * @param array The array of which to create a view.
      * @return A new view instance, which references the given array.
      */
-    static <T> @NotNull View<T> of(final @NotNull T[] array) {
+    @SafeVarargs
+    static <T> @NotNull View<T> of(final @NotNull T... array) {
         return new ArrayView<>(array);
     }
 

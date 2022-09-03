@@ -70,7 +70,8 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @param array The array of which to create a slice.
      * @return A new slice instance, which references the given array.
      */
-    static <T> @NotNull Slice<T> of(final @NotNull T[] array) {
+    @SafeVarargs
+    static <T> @NotNull Slice<T> of(final @NotNull T... array) {
         return new ArraySlice<>(array, 0, array.length - 1);
     }
 

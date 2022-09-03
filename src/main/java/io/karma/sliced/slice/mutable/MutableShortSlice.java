@@ -49,7 +49,7 @@ public interface MutableShortSlice extends MutableSlice<Short>, ShortSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableShortSlice of(final short[] ref) {
+    static @NotNull MutableShortSlice of(final short... ref) {
         return new MutableArrayShortSlice(ref, 0, ref.length - 1);
     }
 }

@@ -49,7 +49,7 @@ public interface MutableFloatSlice extends MutableSlice<Float>, FloatSlice {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableFloatSlice of(final float[] ref) {
+    static @NotNull MutableFloatSlice of(final float... ref) {
         return new MutableArrayFloatSlice(ref, 0, ref.length - 1);
     }
 }

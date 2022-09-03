@@ -271,31 +271,6 @@ public final class MutableArrayCharSlice extends AbstractMutableSlice<Character>
         return ref[start + iterationIndex++];
     }
 
-    @Override
-    public char current() {
-        return ref[start + iterationIndex];
-    }
-
-    @Override
-    public char next() {
-        return ref[start + ++iterationIndex];
-    }
-
-    @Override
-    public char previous() {
-        return ref[start + --iterationIndex];
-    }
-
-    @Override
-    public char setIndex(final int position) {
-        return ref[iterationIndex = position];
-    }
-
-    @Override
-    public int getIndex() {
-        return iterationIndex;
-    }
-
     @SuppressWarnings("all")
     @Override
     public @NotNull Object clone() {

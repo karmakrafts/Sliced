@@ -17,7 +17,6 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.Int2CharFunction;
-import io.karma.sliced.iterator.RangedCharArrayIterator;
 import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -26,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.function.IntFunction;
 
 /**
@@ -63,106 +61,6 @@ public final class ArrayCharSliceImpl extends AbstractSlice<Character> implement
         }
 
         return new ArrayCharSliceImpl(ref, start, end);
-    }
-
-    @Override
-    public @NotNull CharSlice[] split(final @NotNull CharSequence delimiter, final int start, final int end) {
-        if (start < 0 || start > maxIndex) {
-            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
-        }
-
-        if (end < 0 || end > maxIndex || end < start) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
-
-        // Find number of delimiters
-        final int delimiterLength = delimiter.length();
-        int numDelimiters = 0; // # of delimiters total
-        int matchingChars = 0; // # of matching characters for the delimiter
-
-        for (int i = start; i <= end; i++) {
-            if (ref[i] != delimiter.charAt(matchingChars)) {
-                matchingChars = 0; // Reset number of matching chars
-                continue;
-            }
-
-            matchingChars++;
-
-            if (matchingChars != delimiterLength) {
-                continue;
-            }
-
-            matchingChars = 0;
-            numDelimiters++;
-        }
-
-        // Create sub-views
-        final int numSlices = numDelimiters + 1;
-        final CharSlice[] slices = new CharSlice[numSlices];
-        int index = 0;
-        int lastEnd = start;
-
-        matchingChars = 0; // Reset # of matching chars
-
-        for (int i = start; i <= end; i++) {
-            if (ref[i] != delimiter.charAt(matchingChars)) {
-                matchingChars = 0; // Reset number of matching chars
-                continue;
-            }
-
-            matchingChars++;
-
-            if (matchingChars != delimiterLength) {
-                continue;
-            }
-
-            slices[index++] = new ArrayCharSliceImpl(ref, lastEnd, i - (delimiterLength - 1));
-            lastEnd = i + 1;
-            matchingChars = 0;
-        }
-
-        slices[index] = new ArrayCharSliceImpl(ref, lastEnd, end + 1);
-        return slices;
-    }
-
-    @Override
-    public @NotNull CharSlice[] split(final char delimiter, final int start, final int end) {
-        if (start < 0 || start > maxIndex) {
-            throw new ArrayIndexOutOfBoundsException("Start index is out of range");
-        }
-
-        if (end < 0 || end > maxIndex || end < start) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
-
-        // Find # of delimiters
-        int numDelimiters = 0;
-
-        for (int i = start; i <= end; i++) {
-            if (ref[i] != delimiter) {
-                continue;
-            }
-
-            numDelimiters++;
-        }
-
-        // Create sub-views
-        final int numSlices = numDelimiters + 1;
-        final CharSlice[] slices = new CharSlice[numSlices];
-        int index = 0;
-        int lastEnd = 0;
-
-        for (int i = start; i <= end; i++) {
-            if (ref[i] != delimiter) {
-                continue;
-            }
-
-            slices[index++] = new ArrayCharSliceImpl(ref, lastEnd, i);
-            lastEnd = i + 1;
-        }
-
-        slices[index] = new ArrayCharSliceImpl(ref, lastEnd, end + 1);
-        return slices;
     }
 
     @Override
@@ -254,11 +152,6 @@ public final class ArrayCharSliceImpl extends AbstractSlice<Character> implement
     }
 
     @Override
-    public @NotNull Iterator<Character> iterator() {
-        return new RangedCharArrayIterator(ref, start, end);
-    }
-
-    @Override
     public boolean hasMoreElements() {
         return iterationIndex < size;
     }
@@ -266,31 +159,6 @@ public final class ArrayCharSliceImpl extends AbstractSlice<Character> implement
     @Override
     public @NotNull Character nextElement() {
         return ref[start + iterationIndex++];
-    }
-
-    @Override
-    public char current() {
-        return ref[start + iterationIndex];
-    }
-
-    @Override
-    public char next() {
-        return ref[start + ++iterationIndex];
-    }
-
-    @Override
-    public char previous() {
-        return ref[start + --iterationIndex];
-    }
-
-    @Override
-    public char setIndex(final int position) {
-        return ref[iterationIndex = position];
-    }
-
-    @Override
-    public int getIndex() {
-        return iterationIndex;
     }
 
     @SuppressWarnings("all")

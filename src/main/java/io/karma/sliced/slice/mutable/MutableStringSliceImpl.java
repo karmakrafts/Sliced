@@ -17,10 +17,10 @@
 package io.karma.sliced.slice.mutable;
 
 import io.karma.sliced.function.Int2CharFunction;
-import io.karma.sliced.iterator.RangedStringIterator;
+import io.karma.sliced.iterator.RangedCharSeqIterator;
+import io.karma.sliced.slice.CharSeqSliceImpl;
 import io.karma.sliced.slice.CharSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.slice.StringCharSliceImpl;
 import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -53,7 +53,7 @@ public final class MutableStringSliceImpl extends AbstractMutableSlice<Character
             start++;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new CharSeqSliceImpl(ref, start, end);
     }
 
     @Override
@@ -64,7 +64,7 @@ public final class MutableStringSliceImpl extends AbstractMutableSlice<Character
             end--;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new CharSeqSliceImpl(ref, start, end);
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class MutableStringSliceImpl extends AbstractMutableSlice<Character
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new StringCharSliceImpl(ref, actualStart, actualEnd);
+        return new CharSeqSliceImpl(ref, actualStart, actualEnd);
     }
 
     @Override
@@ -165,7 +165,7 @@ public final class MutableStringSliceImpl extends AbstractMutableSlice<Character
 
     @Override
     public @NotNull Iterator<Character> iterator() {
-        return new RangedStringIterator(ref, start, end);
+        return new RangedCharSeqIterator(ref, start, end);
     }
 
     @Override
@@ -176,31 +176,6 @@ public final class MutableStringSliceImpl extends AbstractMutableSlice<Character
     @Override
     public @NotNull Character nextElement() {
         return ref.charAt(start + iterationIndex++);
-    }
-
-    @Override
-    public char current() {
-        return ref.charAt(start + iterationIndex);
-    }
-
-    @Override
-    public char next() {
-        return ref.charAt(start + ++iterationIndex);
-    }
-
-    @Override
-    public char previous() {
-        return ref.charAt(start + --iterationIndex);
-    }
-
-    @Override
-    public char setIndex(final int position) {
-        return ref.charAt(iterationIndex = position);
-    }
-
-    @Override
-    public int getIndex() {
-        return iterationIndex;
     }
 
     // TODO: this is very wrong according to spec, figure this out

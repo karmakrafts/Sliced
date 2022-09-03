@@ -17,12 +17,10 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ByteFunction;
-import io.karma.sliced.iterator.ByteIterator;
+import io.karma.sliced.view.ByteView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Byte}&gt;,
@@ -33,7 +31,7 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface ByteSlice extends Slice<Byte> {
+public interface ByteSlice extends ByteView, Slice<Byte> {
     /**
      * Creates a new slice instance which references the given array.
      *
@@ -57,15 +55,6 @@ public interface ByteSlice extends Slice<Byte> {
     }
 
     /**
-     * Creates a new {@link ByteIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link ByteIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull ByteIterator byteIterator();
-
-    /**
      * Retrieves a {@code byte} value from this
      * slice instance at the given index.
      *
@@ -85,12 +74,7 @@ public interface ByteSlice extends Slice<Byte> {
      */
     byte[] toByteArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code byte} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default byte[] toByteArray() {
         return toByteArray(0, size() - 1);
     }
@@ -111,10 +95,5 @@ public interface ByteSlice extends Slice<Byte> {
     @Override
     default @NotNull Slice<Byte> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Byte> iterator() {
-        return byteIterator();
     }
 }

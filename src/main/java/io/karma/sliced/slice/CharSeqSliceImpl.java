@@ -17,7 +17,6 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.Int2CharFunction;
-import io.karma.sliced.iterator.RangedStringIterator;
 import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -25,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.function.IntFunction;
 
 /**
@@ -33,11 +31,11 @@ import java.util.function.IntFunction;
  * @since 13/08/2022
  */
 @API(status = Status.INTERNAL)
-public final class StringCharSliceImpl extends AbstractSlice<Character> implements CharSlice {
+public final class CharSeqSliceImpl extends AbstractSlice<Character> implements CharSlice {
     private final CharSequence ref;
     private int iterationIndex = 0;
 
-    public StringCharSliceImpl(final @NotNull CharSequence ref, final int start, final int end) {
+    public CharSeqSliceImpl(final @NotNull CharSequence ref, final int start, final int end) {
         super(start, end);
         this.ref = ref;
     }
@@ -50,7 +48,7 @@ public final class StringCharSliceImpl extends AbstractSlice<Character> implemen
             start++;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new CharSeqSliceImpl(ref, start, end);
     }
 
     @Override
@@ -61,7 +59,7 @@ public final class StringCharSliceImpl extends AbstractSlice<Character> implemen
             end--;
         }
 
-        return new StringCharSliceImpl(ref, start, end);
+        return new CharSeqSliceImpl(ref, start, end);
     }
 
     @Override
@@ -77,7 +75,7 @@ public final class StringCharSliceImpl extends AbstractSlice<Character> implemen
             throw new ArrayIndexOutOfBoundsException("End index is out of range");
         }
 
-        return new StringCharSliceImpl(ref, actualStart, actualEnd);
+        return new CharSeqSliceImpl(ref, actualStart, actualEnd);
     }
 
     @Override
@@ -161,11 +159,6 @@ public final class StringCharSliceImpl extends AbstractSlice<Character> implemen
     }
 
     @Override
-    public @NotNull Iterator<Character> iterator() {
-        return new RangedStringIterator(ref, start, end);
-    }
-
-    @Override
     public boolean hasMoreElements() {
         return iterationIndex < size;
     }
@@ -175,35 +168,10 @@ public final class StringCharSliceImpl extends AbstractSlice<Character> implemen
         return ref.charAt(start + iterationIndex++);
     }
 
-    @Override
-    public char current() {
-        return ref.charAt(start + iterationIndex);
-    }
-
-    @Override
-    public char next() {
-        return ref.charAt(start + ++iterationIndex);
-    }
-
-    @Override
-    public char previous() {
-        return ref.charAt(start + --iterationIndex);
-    }
-
-    @Override
-    public char setIndex(final int position) {
-        return ref.charAt(iterationIndex = position);
-    }
-
-    @Override
-    public int getIndex() {
-        return iterationIndex;
-    }
-
     @SuppressWarnings("all")
     @Override
     public @NotNull Object clone() {
-        final StringCharSliceImpl result = new StringCharSliceImpl(ref, start, end);
+        final CharSeqSliceImpl result = new CharSeqSliceImpl(ref, start, end);
         result.iterationIndex = iterationIndex;
         return result;
     }

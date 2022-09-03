@@ -16,30 +16,20 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
+import java.text.CharacterIterator;
 
 /**
- * A primitive specialization of {@link Iterator}&lt;{@link Character}&gt;,
- * which provides a non-boxing version of {@link Iterator#next()}.
+ * Extends both {@link CharacterIterator} as well as {@link Resettable},
+ * to allow for the easy polymorphic implementation of multi-purpose
+ * resettable iterators/enumerations.
  *
  * @author Alexander Hinze
- * @since 03/09/2022
+ * @since 13/08/2022
  */
 @API(status = Status.STABLE)
-public interface CharIterator extends Iterator<Character> {
-    /**
-     * Retrieves the next {@code char} value in the sequence being iterated over.
-     *
-     * @return The next {@code char} value in the sequence being iterated over.
-     */
-    char nextChar();
-
-    @Override
-    default @NotNull Character next() {
-        return nextChar();
-    }
+public interface TextIterator extends CharacterIterator, Resettable {
 }

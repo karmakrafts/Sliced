@@ -17,12 +17,10 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ShortFunction;
-import io.karma.sliced.iterator.ShortIterator;
+import io.karma.sliced.view.ShortView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Short}&gt;,
@@ -33,7 +31,7 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface ShortSlice extends Slice<Short> {
+public interface ShortSlice extends ShortView, Slice<Short> {
     /**
      * Creates a new slice instance which references the given array.
      *
@@ -57,15 +55,6 @@ public interface ShortSlice extends Slice<Short> {
     }
 
     /**
-     * Creates a new {@link ShortIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link ShortIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull ShortIterator shortIterator();
-
-    /**
      * Retrieves a {@code short} value from this
      * slice instance at the given index.
      *
@@ -85,12 +74,7 @@ public interface ShortSlice extends Slice<Short> {
      */
     short[] toShortArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code short} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default short[] toShortArray() {
         return toShortArray(0, size() - 1);
     }
@@ -111,10 +95,5 @@ public interface ShortSlice extends Slice<Short> {
     @Override
     default @NotNull Slice<Short> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Short> iterator() {
-        return shortIterator();
     }
 }

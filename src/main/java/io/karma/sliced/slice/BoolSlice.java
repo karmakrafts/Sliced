@@ -17,12 +17,10 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.BoolFunction;
-import io.karma.sliced.iterator.BoolIterator;
+import io.karma.sliced.view.BoolView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Boolean}&gt;,
@@ -33,7 +31,7 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface BoolSlice extends Slice<Boolean> {
+public interface BoolSlice extends BoolView, Slice<Boolean> {
     /**
      * Creates a new slice instance which references the given array.
      *
@@ -57,15 +55,6 @@ public interface BoolSlice extends Slice<Boolean> {
     }
 
     /**
-     * Creates a new {@link BoolIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link BoolIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull BoolIterator boolIterator();
-
-    /**
      * Retrieves a {@code boolean} value from this
      * slice instance at the given index.
      *
@@ -85,12 +74,7 @@ public interface BoolSlice extends Slice<Boolean> {
      */
     boolean[] toBoolArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code boolean} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default boolean[] toBoolArray() {
         return toBoolArray(0, size() - 1);
     }
@@ -111,10 +95,5 @@ public interface BoolSlice extends Slice<Boolean> {
     @Override
     default @NotNull Slice<Boolean> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Boolean> iterator() {
-        return boolIterator();
     }
 }

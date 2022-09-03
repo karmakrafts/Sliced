@@ -16,16 +16,12 @@
 
 package io.karma.sliced.slice;
 
-import io.karma.sliced.iterator.IntIterator;
+import io.karma.sliced.view.IntView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-import java.util.Spliterator;
 import java.util.function.IntFunction;
-import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Integer}&gt;,
@@ -36,7 +32,7 @@ import java.util.stream.StreamSupport;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface IntSlice extends Slice<Integer> {
+public interface IntSlice extends IntView, Slice<Integer> {
     /**
      * Creates a new slice instance which references the given array.
      *
@@ -60,24 +56,6 @@ public interface IntSlice extends Slice<Integer> {
     }
 
     /**
-     * Creates a new {@link IntIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link IntIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull IntIterator intIterator();
-
-    /**
-     * Creates a new {@link Spliterator.OfInt} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link Spliterator.OfInt} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull Spliterator.OfInt intSpliterator();
-
-    /**
      * Retrieves a {@code int} value from this
      * slice instance at the given index.
      *
@@ -97,12 +75,7 @@ public interface IntSlice extends Slice<Integer> {
      */
     int[] toIntArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code int} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default int[] toIntArray() {
         return toIntArray(0, size() - 1);
     }
@@ -120,35 +93,8 @@ public interface IntSlice extends Slice<Integer> {
         return function.apply(getInt(index));
     }
 
-    /**
-     * Creates a new non-parallel {@link IntStream}
-     * for the elements referenced by this slice instance.
-     *
-     * @return A new {@link IntStream} instance of all
-     *         elements referenced by this slice instance.
-     */
-    default @NotNull IntStream intStream() {
-        return StreamSupport.intStream(intSpliterator(), false);
-    }
-
-    /**
-     * Creates a new parallel {@link IntStream}
-     * for the elements referenced by this slice instance.
-     *
-     * @return A new {@link IntStream} instance of all
-     *         elements referenced by this slice instance.
-     */
-    default @NotNull IntStream parallelIntStream() {
-        return StreamSupport.intStream(intSpliterator(), true);
-    }
-
     @Override
     default @NotNull Slice<Integer> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Integer> iterator() {
-        return intIterator();
     }
 }

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.iterator;
+package io.karma.sliced.view;
 
+import io.karma.sliced.iterator.ByteIterator;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -23,23 +24,30 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 
 /**
- * A primitive specialization of {@link Iterator}&lt;{@link Character}&gt;,
- * which provides a non-boxing version of {@link Iterator#next()}.
- *
  * @author Alexander Hinze
  * @since 03/09/2022
  */
 @API(status = Status.STABLE)
-public interface CharIterator extends Iterator<Character> {
+public interface ByteView extends View<Byte> {
     /**
-     * Retrieves the next {@code char} value in the sequence being iterated over.
+     * Creates a new {@link ByteIterator} from the
+     * elements referenced by this slice instance.
      *
-     * @return The next {@code char} value in the sequence being iterated over.
+     * @return A new {@link ByteIterator} from the
+     *         elements referenced by this slice instance.
      */
-    char nextChar();
+    @NotNull ByteIterator byteIterator();
+
+    /**
+     * Creates a new {@code byte} array with the appropriate size,
+     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
+     *
+     * @return A new array containing all elements referenced by this slice instance.
+     */
+    byte[] toByteArray();
 
     @Override
-    default @NotNull Character next() {
-        return nextChar();
+    default @NotNull Iterator<Byte> iterator() {
+        return byteIterator();
     }
 }

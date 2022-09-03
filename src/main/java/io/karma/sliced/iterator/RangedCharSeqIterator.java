@@ -20,20 +20,18 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-
 /**
  * @author Alexander Hinze
  * @since 13/08/2022
  */
 @API(status = Status.INTERNAL)
-public final class RangedStringIterator implements Iterator<Character> {
+public final class RangedCharSeqIterator implements CharIterator {
     private final CharSequence seq;
     private final int start;
     private final int size;
     private int index;
 
-    public RangedStringIterator(final @NotNull CharSequence seq, final int start, final int end) {
+    public RangedCharSeqIterator(final @NotNull CharSequence seq, final int start, final int end) {
         this.seq = seq;
         this.start = start;
         size = end - start;
@@ -45,7 +43,7 @@ public final class RangedStringIterator implements Iterator<Character> {
     }
 
     @Override
-    public @NotNull Character next() {
+    public char nextChar() {
         return seq.charAt(start + index++);
     }
 }

@@ -16,16 +16,12 @@
 
 package io.karma.sliced.slice;
 
-import io.karma.sliced.iterator.LongIterator;
+import io.karma.sliced.view.LongView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
-import java.util.Spliterator;
 import java.util.function.LongFunction;
-import java.util.stream.LongStream;
-import java.util.stream.StreamSupport;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Long}&gt;,
@@ -36,7 +32,7 @@ import java.util.stream.StreamSupport;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface LongSlice extends Slice<Long> {
+public interface LongSlice extends LongView, Slice<Long> {
     /**
      * Creates a new slice instance which references the given array.
      *
@@ -60,24 +56,6 @@ public interface LongSlice extends Slice<Long> {
     }
 
     /**
-     * Creates a new {@link LongIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link LongIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull LongIterator longIterator();
-
-    /**
-     * Creates a new {@link Spliterator.OfLong} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link Spliterator.OfLong} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull Spliterator.OfLong longSpliterator();
-
-    /**
      * Retrieves a {@code long} value from this
      * slice instance at the given index.
      *
@@ -97,12 +75,7 @@ public interface LongSlice extends Slice<Long> {
      */
     long[] toLongArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code long} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default long[] toLongArray() {
         return toLongArray(0, size() - 1);
     }
@@ -120,35 +93,8 @@ public interface LongSlice extends Slice<Long> {
         return function.apply(getLong(index));
     }
 
-    /**
-     * Creates a new non-parallel {@link LongStream}
-     * for the elements referenced by this slice instance.
-     *
-     * @return A new {@link LongStream} instance of all
-     *         elements referenced by this slice instance.
-     */
-    default @NotNull LongStream longStream() {
-        return StreamSupport.longStream(longSpliterator(), false);
-    }
-
-    /**
-     * Creates a new parallel {@link LongStream}
-     * for the elements referenced by this slice instance.
-     *
-     * @return A new {@link LongStream} instance of all
-     *         elements referenced by this slice instance.
-     */
-    default @NotNull LongStream parallelLongStream() {
-        return StreamSupport.longStream(longSpliterator(), true);
-    }
-
     @Override
     default @NotNull Slice<Long> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Long> iterator() {
-        return longIterator();
     }
 }

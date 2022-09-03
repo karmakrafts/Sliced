@@ -16,7 +16,7 @@
 
 package io.karma.sliced.slice;
 
-import io.karma.sliced.iterator.CharIterator;
+import io.karma.sliced.view.CharView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +24,12 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A char slice is a specialized form of {@link Slice}, which provides
  * primitive specializations and additional functionality through extending {@link CharSequence}.
- * <p>
- * It also extends {@link CharIterator}, which allows
- * the string slice to be used as a regular {@link java.text.CharacterIterator},
- * with the benefit of being able to reset its internal iteration index easily.
  *
  * @author Alexander Hinze
  * @since 13/08/2022
  */
 @API(status = Status.STABLE)
-public interface CharSlice extends Slice<Character>, CharSequence, CharIterator {
+public interface CharSlice extends CharView, Slice<Character> {
     /**
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.<br>
@@ -44,7 +40,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * @return A new string slice referencing the given character sequence.
      */
     static @NotNull CharSlice of(final @NotNull CharSequence seq, final int start, final int end) {
-        return new StringCharSliceImpl(seq, start, end);
+        return new CharSeqSliceImpl(seq, start, end);
     }
 
     /**
@@ -55,7 +51,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * @return A new string slice referencing the given character sequence.
      */
     static @NotNull CharSlice of(final @NotNull CharSequence seq) {
-        return new StringCharSliceImpl(seq, 0, seq.length() - 1);
+        return new CharSeqSliceImpl(seq, 0, seq.length() - 1);
     }
 
     /**
@@ -146,12 +142,12 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
                 continue;
             }
 
-            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i - (delimiterLength - 1));
+            slices[index++] = new CharSeqSliceImpl(seq, lastEnd, i - (delimiterLength - 1));
             lastEnd = i + 1;
             matchingChars = 0;
         }
 
-        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
+        slices[index] = new CharSeqSliceImpl(seq, lastEnd, end + 1);
         return slices;
     }
 
@@ -212,11 +208,11 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
                 continue;
             }
 
-            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i);
+            slices[index++] = new CharSeqSliceImpl(seq, lastEnd, i);
             lastEnd = i + 1;
         }
 
-        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
+        slices[index] = new CharSeqSliceImpl(seq, lastEnd, end + 1);
         return slices;
     }
 
@@ -340,12 +336,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      */
     char[] toCharArray(final int start, final int end);
 
-    /**
-     * Creates a new {@code char} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements.
-     */
+    @Override
     default char[] toCharArray() {
         return toCharArray(0, length() - 1);
     }
@@ -357,7 +348,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         return charAt(index);
     }
 
-    // CharacterIterator functions
+    // CharSequence functions
 
     @Override
     default char charAt(final int index) {
@@ -372,25 +363,5 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
     @Override
     default @NotNull CharSequence subSequence(final int start, final int end) {
         return (CharSlice) slice(start, end);
-    }
-
-    @Override
-    default char first() {
-        return charAt(0);
-    }
-
-    @Override
-    default char last() {
-        return charAt(length() - 1);
-    }
-
-    @Override
-    default int getBeginIndex() {
-        return start();
-    }
-
-    @Override
-    default int getEndIndex() {
-        return end();
     }
 }

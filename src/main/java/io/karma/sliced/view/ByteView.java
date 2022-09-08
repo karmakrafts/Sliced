@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.ByteIterator;
+import io.karma.sliced.view.impl.ArrayByteView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +25,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 
 /**
+ * A primitive specialization for {@code byte} of {@link View}.
+ *
  * @author Alexander Hinze
  * @since 03/09/2022
  */
 @API(status = Status.STABLE)
 public interface ByteView extends View<Byte> {
+    static @NotNull ByteView of(final byte... ref) {
+        return new ArrayByteView(ref);
+    }
+
     /**
      * Creates a new {@link ByteIterator} from the
      * elements referenced by this slice instance.

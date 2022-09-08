@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.LongIterator;
+import io.karma.sliced.view.impl.ArrayLongView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,10 @@ import java.util.stream.StreamSupport;
  */
 @API(status = Status.STABLE)
 public interface LongView extends View<Long> {
+    static @NotNull LongView of(final long... ref) {
+        return new ArrayLongView(ref);
+    }
+
     /**
      * Creates a new {@link LongIterator} from the
      * elements referenced by this slice instance.

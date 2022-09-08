@@ -16,6 +16,7 @@
 
 package io.karma.sliced.view;
 
+import io.karma.sliced.view.impl.DequeViewImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;

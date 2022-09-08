@@ -17,6 +17,7 @@
 package io.karma.sliced.slice.mutable;
 
 import io.karma.sliced.slice.ShortSlice;
+import io.karma.sliced.slice.mutable.impl.MutableArrayShortSlice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,13 +35,13 @@ public interface MutableShortSlice extends MutableSlice<Short>, ShortSlice {
     /**
      * Creates a new mutable slice instance which references the given array.
      *
-     * @param ref   The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param ref    The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableShortSlice of(final short[] ref, final int start, final int end) {
-        return new MutableArrayShortSlice(ref, start, end);
+    static @NotNull MutableShortSlice of(final short[] ref, final int offset, final int size) {
+        return new MutableArrayShortSlice(ref, offset, size);
     }
 
     /**
@@ -50,6 +51,6 @@ public interface MutableShortSlice extends MutableSlice<Short>, ShortSlice {
      * @return A new mutable slice instance, which references the given array.
      */
     static @NotNull MutableShortSlice of(final short... ref) {
-        return new MutableArrayShortSlice(ref, 0, ref.length - 1);
+        return new MutableArrayShortSlice(ref, 0, ref.length);
     }
 }

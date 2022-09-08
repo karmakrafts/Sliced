@@ -17,6 +17,8 @@
 package io.karma.sliced.slice.mutable;
 
 import io.karma.sliced.slice.CharSlice;
+import io.karma.sliced.slice.mutable.impl.MutableArrayCharSlice;
+import io.karma.sliced.slice.mutable.impl.MutableCharSeqSlice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -35,13 +37,13 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.
      *
-     * @param seq   The character sequence to create a slice of.
-     * @param start The start index of the slice to be created.
-     * @param end   The end index (inclusive) of the slice to be created.
+     * @param seq    The character sequence to create a slice of.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new string slice referencing the given character sequence.
      */
-    static @NotNull MutableCharSlice of(final @NotNull CharSequence seq, final int start, final int end) {
-        return new MutableStringSliceImpl(seq, start, end);
+    static @NotNull MutableCharSlice of(final @NotNull CharSequence seq, final int offset, final int size) {
+        return new MutableCharSeqSlice(seq, offset, size);
     }
 
     /**
@@ -52,19 +54,19 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
      * @return A new string slice referencing the given character sequence.
      */
     static @NotNull MutableCharSlice of(final @NotNull CharSequence seq) {
-        return new MutableStringSliceImpl(seq, 0, seq.length() - 1);
+        return new MutableCharSeqSlice(seq, 0, seq.length());
     }
 
     /**
      * Creates a new mutable slice instance which references the given array.
      *
-     * @param ref   The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param ref    The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull MutableCharSlice of(final char[] ref, final int start, final int end) {
-        return new MutableArrayCharSlice(ref, start, end);
+    static @NotNull MutableCharSlice of(final char[] ref, final int offset, final int size) {
+        return new MutableArrayCharSlice(ref, offset, size);
     }
 
     /**
@@ -74,6 +76,6 @@ public interface MutableCharSlice extends CharSlice, MutableSlice<Character> {
      * @return A new mutable slice instance, which references the given array.
      */
     static @NotNull MutableCharSlice of(final char... ref) {
-        return new MutableArrayCharSlice(ref, 0, ref.length - 1);
+        return new MutableArrayCharSlice(ref, 0, ref.length);
     }
 }

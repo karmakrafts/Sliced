@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.FloatIterator;
+import io.karma.sliced.view.impl.ArrayFloatView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,10 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface FloatView extends View<Float> {
+    static @NotNull FloatView of(final float... ref) {
+        return new ArrayFloatView(ref);
+    }
+
     /**
      * Creates a new {@link FloatIterator} from the
      * elements referenced by this slice instance.

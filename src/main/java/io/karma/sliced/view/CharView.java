@@ -17,14 +17,17 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.CharIterator;
-import io.karma.sliced.iterator.RangedCharSeqIterator;
-import io.karma.sliced.iterator.RangedTextIterator;
 import io.karma.sliced.iterator.TextIterator;
+import io.karma.sliced.iterator.impl.CharSeqCharIterator;
+import io.karma.sliced.iterator.impl.CharSeqTextIterator;
+import io.karma.sliced.view.impl.ArrayCharView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A primitive specialization for {@code char} of {@link View}.
@@ -34,12 +37,34 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface CharView extends View<Character>, CharSequence {
+    static @NotNull CharView of(final char... ref) {
+        return new ArrayCharView(ref);
+    }
+
     default @NotNull TextIterator textIterator() {
-        return new RangedTextIterator(this, 0, length() - 1);
+        return new CharSeqTextIterator(this);
     }
 
     default @NotNull CharIterator charIterator() {
-        return new RangedCharSeqIterator(this, 0, length() - 1);
+        return new CharSeqCharIterator(this);
+    }
+
+    /**
+     * Compiles this character sequence as a new {@link Pattern} instance.
+     *
+     * @return A new {@link Pattern} instance, containing this char slice
+     *         as its regular expression pattern.
+     */
+    default @NotNull Pattern compilePattern() {
+        return Pattern.compile(new String(toCharArray())); // why no CharSequence brian? WHY BRIAN?!
+    }
+
+    /**
+     * @param pattern
+     * @return
+     */
+    default @NotNull Matcher matcher(final @NotNull Pattern pattern) {
+        return pattern.matcher(this);
     }
 
     /**

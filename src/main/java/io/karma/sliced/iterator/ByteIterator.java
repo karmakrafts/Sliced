@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayByteIterator;
+import io.karma.sliced.iterator.impl.RangedArrayByteIterator;
 import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +34,14 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ByteIterator extends Iterator<Byte>, Resettable {
+    static @NotNull ByteIterator of(final byte[] ref, final int offset, final int size) {
+        return new RangedArrayByteIterator(ref, offset, size);
+    }
+
+    static @NotNull ByteIterator of(final byte... ref) {
+        return new ArrayByteIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code byte} value in the sequence being iterated over.
      *

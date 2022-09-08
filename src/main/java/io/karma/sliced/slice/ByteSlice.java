@@ -17,12 +17,11 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ByteFunction;
-import io.karma.sliced.iterator.ByteIterator;
+import io.karma.sliced.slice.impl.ArrayByteSlice;
+import io.karma.sliced.view.ByteView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * A primitive specialization of a regular {@link Slice}&lt;{@link Byte}&gt;,
@@ -33,17 +32,17 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 @API(status = Status.STABLE)
-public interface ByteSlice extends Slice<Byte> {
+public interface ByteSlice extends ByteView, Slice<Byte> {
     /**
      * Creates a new slice instance which references the given array.
      *
-     * @param ref   The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param ref    The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull ByteSlice of(final byte[] ref, final int start, final int end) {
-        return new ArrayByteSlice(ref, start, end);
+    static @NotNull ByteSlice of(final byte[] ref, final int offset, final int size) {
+        return new ArrayByteSlice(ref, offset, size);
     }
 
     /**
@@ -52,18 +51,9 @@ public interface ByteSlice extends Slice<Byte> {
      * @param ref The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull ByteSlice of(final byte[] ref) {
-        return new ArrayByteSlice(ref, 0, ref.length - 1);
+    static @NotNull ByteSlice of(final byte... ref) {
+        return new ArrayByteSlice(ref, 0, ref.length);
     }
-
-    /**
-     * Creates a new {@link ByteIterator} from the
-     * elements referenced by this slice instance.
-     *
-     * @return A new {@link ByteIterator} from the
-     *         elements referenced by this slice instance.
-     */
-    @NotNull ByteIterator byteIterator();
 
     /**
      * Retrieves a {@code byte} value from this
@@ -74,25 +64,26 @@ public interface ByteSlice extends Slice<Byte> {
      */
     byte getByte(final int index);
 
+    @Override
+    default @NotNull Byte get(final int index) {
+        return getByte(index);
+    }
+
     /**
      * Creates a new {@code byte} array with the appropriate size,
      * and copies all values from {@code start} to {@code end} into
      * new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
      *
-     * @param start The index at which to start copying elements.
-     * @param end   The index at which to end copying elements.
+     * @param offset The index at which the newly created array should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created array.
      * @return A new array containing all elements from {@code start} to {@code end}.
      */
-    byte[] toByteArray(final int start, final int end);
+    byte[] toByteArray(final int offset, final int size);
 
-    /**
-     * Creates a new {@code byte} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements referenced by this slice instance.
-     */
+    @Override
     default byte[] toByteArray() {
-        return toByteArray(0, size() - 1);
+        return toByteArray(0, size());
     }
 
     /**
@@ -111,10 +102,5 @@ public interface ByteSlice extends Slice<Byte> {
     @Override
     default @NotNull Slice<Byte> asSlice() {
         return this;
-    }
-
-    @Override
-    default @NotNull Iterator<Byte> iterator() {
-        return byteIterator();
     }
 }

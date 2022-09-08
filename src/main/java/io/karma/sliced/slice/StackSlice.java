@@ -16,6 +16,7 @@
 
 package io.karma.sliced.slice;
 
+import io.karma.sliced.slice.impl.StackSliceImpl;
 import io.karma.sliced.view.StackView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
@@ -35,14 +36,14 @@ public interface StackSlice<T> extends Slice<T>, StackView<T> {
     /**
      * Creates a new slice instance which references the given {@link Stack}.
      *
-     * @param <T>   The element type of the given stack, and the newly created slice.
-     * @param stack The stack of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param <T>    The element type of the given stack, and the newly created slice.
+     * @param stack  The stack of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new slice instance, which references the given stack.
      */
-    static <T> @NotNull StackSlice<T> of(final @NotNull Stack<T> stack, final int start, final int end) {
-        return new StackSliceImpl<>(stack, start, end);
+    static <T> @NotNull StackSlice<T> of(final @NotNull Stack<T> stack, final int offset, final int size) {
+        return new StackSliceImpl<>(stack, offset, size);
     }
 
     /**
@@ -53,6 +54,6 @@ public interface StackSlice<T> extends Slice<T>, StackView<T> {
      * @return A new slice instance, which references the given stack.
      */
     static <T> @NotNull StackSlice<T> of(final @NotNull Stack<T> stack) {
-        return new StackSliceImpl<>(stack, 0, stack.size() - 1);
+        return new StackSliceImpl<>(stack, 0, stack.size());
     }
 }

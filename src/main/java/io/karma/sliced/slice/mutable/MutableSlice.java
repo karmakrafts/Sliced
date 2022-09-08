@@ -17,6 +17,8 @@
 package io.karma.sliced.slice.mutable;
 
 import io.karma.sliced.slice.Slice;
+import io.karma.sliced.slice.mutable.impl.MutableArraySlice;
+import io.karma.sliced.slice.mutable.impl.MutableListSlice;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -38,14 +40,14 @@ public interface MutableSlice<T> extends Slice<T> {
     /**
      * Creates a new mutable slice instance which references the given array.
      *
-     * @param <T>   The element type of the given array, and the newly created slice.
-     * @param array The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param <T>    The element type of the given array, and the newly created slice.
+     * @param array  The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static <T> @NotNull MutableSlice<T> of(final @NotNull T[] array, final int start, final int end) {
-        return new MutableArraySlice<>(array, start, end);
+    static <T> @NotNull MutableSlice<T> of(final @NotNull T[] array, final int offset, final int size) {
+        return new MutableArraySlice<>(array, offset, size);
     }
 
     /**
@@ -55,8 +57,9 @@ public interface MutableSlice<T> extends Slice<T> {
      * @param array The array of which to create a slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static <T> @NotNull MutableSlice<T> of(final @NotNull T[] array) {
-        return new MutableArraySlice<>(array, 0, array.length - 1);
+    @SafeVarargs
+    static <T> @NotNull MutableSlice<T> of(final @NotNull T... array) {
+        return new MutableArraySlice<>(array, 0, array.length);
     }
 
     /**
@@ -65,12 +68,12 @@ public interface MutableSlice<T> extends Slice<T> {
      *
      * @param <T>        The element type of the given list, and the newly created slice.
      * @param collection The list of which to create a slice.
-     * @param start      The index at which the newly created slice should begin.
-     * @param end        The index at which the newly created slice should end.
+     * @param offset     The index at which the newly created slice should begin.
+     * @param size       The size of the newly created slice.
      * @return A new mutable slice instance, which references the given list.
      */
-    static <T> @NotNull MutableSlice<T> of(final @NotNull Collection<T> collection, final int start, final int end) {
-        return new MutableListSlice<>(new ArrayList<>(collection), start, end);
+    static <T> @NotNull MutableSlice<T> of(final @NotNull Collection<T> collection, final int offset, final int size) {
+        return new MutableListSlice<>(new ArrayList<>(collection), offset, size);
     }
 
     /**
@@ -82,20 +85,20 @@ public interface MutableSlice<T> extends Slice<T> {
      * @return A new mutable slice instance, which references the given list.
      */
     static <T> @NotNull MutableSlice<T> of(final @NotNull Collection<T> collection) {
-        return new MutableListSlice<>(new ArrayList<>(collection), 0, collection.size() - 1);
+        return new MutableListSlice<>(new ArrayList<>(collection), 0, collection.size());
     }
 
     /**
      * Creates a new mutable slice instance which references the given {@link List}.
      *
-     * @param <T>   The element type of the given list, and the newly created slice.
-     * @param list  The list of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param <T>    The element type of the given list, and the newly created slice.
+     * @param list   The list of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given list.
      */
-    static <T> @NotNull MutableSlice<T> of(final @NotNull List<T> list, final int start, final int end) {
-        return new MutableListSlice<>(list, start, end);
+    static <T> @NotNull MutableSlice<T> of(final @NotNull List<T> list, final int offset, final int size) {
+        return new MutableListSlice<>(list, offset, size);
     }
 
     /**
@@ -106,14 +109,20 @@ public interface MutableSlice<T> extends Slice<T> {
      * @return A new mutable slice instance, which references the given list.
      */
     static <T> @NotNull MutableSlice<T> of(final @NotNull List<T> list) {
-        return new MutableListSlice<>(list, 0, list.size() - 1);
+        return new MutableListSlice<>(list, 0, list.size());
     }
 
     /**
-     * Sets the start- and end-index of this slice instance.
+     * Sets the starting offset of the current slice instance.
      *
-     * @param start The index at which this slice begins.
-     * @param end   The index at which this slice ends (inclusive).
+     * @param offset The new starting offset of this slice instance.
      */
-    void setRange(final int start, final int end);
+    void setOffset(final int offset);
+
+    /**
+     * Sets the size of the current slice instance.
+     *
+     * @param size The new size of this slice instance.
+     */
+    void setSize(final int size);
 }

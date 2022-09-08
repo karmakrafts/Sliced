@@ -16,7 +16,9 @@
 
 package io.karma.sliced.slice;
 
-import io.karma.sliced.iterator.ResettableEnumeration;
+import io.karma.sliced.slice.impl.ArraySlice;
+import io.karma.sliced.slice.impl.ListSlice;
+import io.karma.sliced.util.ResettableEnumeration;
 import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -53,14 +56,14 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
     /**
      * Creates a new slice instance which references the given array.
      *
-     * @param <T>   The element type of the given array, and the newly created slice.
-     * @param array The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param <T>    The element type of the given array, and the newly created slice.
+     * @param array  The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new slice instance, which references the given array.
      */
-    static <T> @NotNull Slice<T> of(final @NotNull T[] array, final int start, final int end) {
-        return new ArraySlice<>(array, start, end);
+    static <T> @NotNull Slice<T> of(final @NotNull T[] array, final int offset, final int size) {
+        return new ArraySlice<>(array, offset, size);
     }
 
     /**
@@ -70,47 +73,22 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @param array The array of which to create a slice.
      * @return A new slice instance, which references the given array.
      */
-    static <T> @NotNull Slice<T> of(final @NotNull T[] array) {
-        return new ArraySlice<>(array, 0, array.length - 1);
-    }
-
-    /**
-     * Creates a new slice instance which references the given {@link Collection}.
-     * Creates a new wrapper list for the slice to index into.
-     *
-     * @param <T>        The element type of the given list, and the newly created slice.
-     * @param collection The list of which to create a slice.
-     * @param start      The index at which the newly created slice should begin.
-     * @param end        The index at which the newly created slice should end.
-     * @return A new slice instance, which references the given list.
-     */
-    static <T> @NotNull Slice<T> of(final @NotNull Collection<T> collection, final int start, final int end) {
-        return new ListSlice<>(new ArrayList<>(collection), start, end);
-    }
-
-    /**
-     * Creates a new slice instance which references the given {@link Collection}.
-     * Creates a new wrapper list for the slice to index into.
-     *
-     * @param <T>        The element type of the given list, and the newly created slice.
-     * @param collection The list of which to create a slice.
-     * @return A new slice instance, which references the given list.
-     */
-    static <T> @NotNull Slice<T> of(final @NotNull Collection<T> collection) {
-        return new ListSlice<>(new ArrayList<>(collection), 0, collection.size() - 1);
+    @SafeVarargs
+    static <T> @NotNull Slice<T> of(final @NotNull T... array) {
+        return new ArraySlice<>(array, 0, array.length);
     }
 
     /**
      * Creates a new slice instance which references the given {@link List}.
      *
-     * @param <T>   The element type of the given list, and the newly created slice.
-     * @param list  The list of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param <T>    The element type of the given list, and the newly created slice.
+     * @param list   The list of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new slice instance, which references the given list.
      */
-    static <T> @NotNull Slice<T> of(final @NotNull List<T> list, final int start, final int end) {
-        return new ListSlice<>(list, start, end);
+    static <T> @NotNull Slice<T> of(final @NotNull List<T> list, final int offset, final int size) {
+        return new ListSlice<>(list, offset, size);
     }
 
     /**
@@ -121,7 +99,66 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @return A new slice instance, which references the given list.
      */
     static <T> @NotNull Slice<T> of(final @NotNull List<T> list) {
-        return new ListSlice<>(list, 0, list.size() - 1);
+        return new ListSlice<>(list, 0, list.size());
+    }
+
+    /**
+     * Creates a new slice instance which references a copy of the given array.
+     *
+     * @param <T>    The element type of the given array, and the newly created slice.
+     * @param array  The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
+     * @return A new slice instance, which references the given array.
+     */
+    static <T> @NotNull Slice<T> copyOf(final @NotNull T[] array, final int offset, final int size, final @NotNull IntFunction<T[]> factory) {
+        final int arraySize = array.length;
+
+        if (offset < 0 || size < 0 || size > arraySize) {
+            throw new ArrayIndexOutOfBoundsException("Invalid slice range");
+        }
+
+        final T[] copy = factory.apply(size);
+        System.arraycopy(array, offset, copy, 0, size);
+        return new ArraySlice<>(copy, offset, size);
+    }
+
+    /**
+     * Creates a new slice instance which references a copy of the given array.
+     *
+     * @param <T>   The element type of the given array, and the newly created slice.
+     * @param array The array of which to create a slice.
+     * @return A new slice instance, which references the given array.
+     */
+    @SafeVarargs
+    static <T> @NotNull Slice<T> copyOf(final @NotNull T... array) {
+        return new ArraySlice<>(array, 0, array.length);
+    }
+
+    /**
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <T>        The element type of the given list, and the newly created slice.
+     * @param collection The list of which to create a slice.
+     * @param offset     The index at which the newly created slice should begin.
+     * @param size       The size of the newly created slice.
+     * @return A new slice instance, which references the given list.
+     */
+    static <T> @NotNull Slice<T> copyOf(final @NotNull Collection<T> collection, final int offset, final int size) {
+        return new ListSlice<>(new ArrayList<>(collection), offset, size);
+    }
+
+    /**
+     * Creates a new slice instance which references the given {@link Collection}.
+     * Creates a new wrapper list for the slice to index into.
+     *
+     * @param <T>        The element type of the given list, and the newly created slice.
+     * @param collection The list of which to create a slice.
+     * @return A new slice instance, which references the given list.
+     */
+    static <T> @NotNull Slice<T> copyOf(final @NotNull Collection<T> collection) {
+        return new ListSlice<>(new ArrayList<>(collection), 0, collection.size());
     }
 
     /**
@@ -129,14 +166,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      *
      * @return The start index of this slice instance.
      */
-    int start();
-
-    /**
-     * Retrieves the end index of this slice instance.
-     *
-     * @return The end index of this slice instance.
-     */
-    int end();
+    int offset();
 
     /**
      * Retrieves an element of type {@link T} at the given index.
@@ -152,14 +182,13 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * with the given index range relative to the start index
      * of this slice instance.
      *
-     * @param start The start index of the sub-slice to create,
-     *              relative to the start index of this slice instance.
-     * @param end   The end index of the sub-slice to create,
-     *              relative to the start index of this slice instance.
+     * @param offset The index at which the newly created slice should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created slice.
      * @return A new slice instance containing the same collection/array reference
      *         as this slice instance, but with the given relative index range.
      */
-    @NotNull Slice<T> slice(final int start, final int end);
+    @NotNull Slice<T> slice(final int offset, final int size);
 
     /**
      * Creates a new array of size n, where n is the number of elements contained
@@ -167,31 +196,53 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * and copies a reference to all elements contained within the collection
      * this view is referencing into the newly created array.
      *
-     * @param start   The start index from which to copy element references,
-     *                relative to the start index of this slice instance.
-     * @param end     The end index from which to copy element references,
-     *                relative to the end index of this slice instance.
+     * @param offset  The index at which the newly created array should begin
+     *                (relative to the offset of this slice).
+     * @param size    The size of the newly created array.
      * @param factory The function with which to create the new array of size n.
      * @return A new array of size n, containing a reference to all elements contained
      *         within this view's underlying collection/array.
      */
-    @NotNull T[] toArray(final int start, final int end, final @NotNull IntFunction<T[]> factory);
+    default @NotNull T[] toArray(final int offset, final int size, final @NotNull IntFunction<T[]> factory) {
+        if (offset < 0 || offset > size() || size <= 0) {
+            throw new ArrayIndexOutOfBoundsException("Invalid slice range");
+        }
+
+        final T[] result = factory.apply(size);
+
+        for (int i = 0; i < size; i++) {
+            result[i] = get(offset + i);
+        }
+
+        return result;
+    }
 
     /**
      * Creates a new collection of type {@link C}, and copies all element references
      * contained within the underlying collection/array of this view into the newly
      * created collection.
      *
-     * @param start   The start index from which to copy element references,
-     *                relative to the start index of this slice instance.
-     * @param end     The end index from which to copy element references,
-     *                relative to the end index of this slice instance.
+     * @param offset  The index at which the newly created collection should begin
+     *                (relative to the offset of this slice).
+     * @param size    The size of the newly created collection.
      * @param factory The function with which to create the new collection.
      * @param <C>     The type of the collection to create.
      * @return A new collection instance of type {@link C}, containing all elements
      *         given access to by this view instance.
      */
-    <C extends Collection<T>> @NotNull C copy(final int start, final int end, final @NotNull IntFunction<C> factory);
+    default <C extends Collection<T>> @NotNull C copy(final int offset, final int size, final @NotNull IntFunction<C> factory) {
+        if (offset < 0 || offset > size() || size <= 0) {
+            throw new ArrayIndexOutOfBoundsException("Invalid slice range");
+        }
+
+        final C result = factory.apply(size);
+
+        for (int i = 0; i < size; i++) {
+            result.add(get(offset + i));
+        }
+
+        return result;
+    }
 
     /**
      * Creates a new collection of type {@link C}, and copies all element references
@@ -205,7 +256,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      *         given access to by this view instance.
      */
     default <C extends Collection<T>> @NotNull C copy(final @NotNull IntFunction<C> factory) {
-        return copy(0, size() - 1, factory);
+        return copy(0, size(), factory);
     }
 
     /**
@@ -213,14 +264,13 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * contained within the underlying collection/array of this view instance
      * into the newly created list instance.
      *
-     * @param start The start index at which to start copying element references
-     *              from into the newly created list.
-     * @param end   The end index at which to stop copying element references
-     *              from into the newly created list.
+     * @param offset The index at which the newly created list should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created list.
      * @return A new list containing all elements given access to by this view instance.
      */
-    default @NotNull List<T> copyList(final int start, final int end) {
-        return copy(start, end, ArrayList::new);
+    default @NotNull ArrayList<T> copyArrayList(final int offset, final int size) {
+        return copy(offset, size, ArrayList::new);
     }
 
     /**
@@ -228,14 +278,13 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * contained within the underlying collection/array of this view instance
      * into the newly created list instance.
      *
-     * @param start The start index at which to start copying element references
-     *              from into the newly created list.
-     * @param end   The end index at which to stop copying element references
-     *              from into the newly created list.
+     * @param offset The index at which the newly created set should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created set.
      * @return A new set containing all elements given access to by this view instance.
      */
-    default @NotNull Set<T> copySet(final int start, final int end) {
-        return copy(start, end, HashSet::new);
+    default @NotNull HashSet<T> copyHashSet(final int offset, final int size) {
+        return copy(offset, size, HashSet::new);
     }
 
     /**
@@ -265,7 +314,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
 
     /**
      * Retrieves the element at the given index if it is
-     * not null, otherwise it throws an exception of type {@link X}.
+     * not null, otherwise throws an exception of type {@link X}.
      *
      * @param index    The index of the element to retrieve.
      * @param supplier The exception supplier.
@@ -283,6 +332,17 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
         return value;
     }
 
+    /**
+     * Retrieves an {@link Optional} of the element at the given index.
+     * If the element at the given index is null, {@link Optional#empty()} is returned.
+     *
+     * @param index The index of the element to retrieve.
+     * @return An instance of {@link Optional}, containing the requested element if present.
+     */
+    default @NotNull Optional<T> getOptional(final int index) {
+        return Optional.ofNullable(get(index));
+    }
+
     @Override
     default void forEachIndexed(final @NotNull ObjIntConsumer<T> consumer) {
         final int size = size();
@@ -294,16 +354,11 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
 
     @Override
     default @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory) {
-        return toArray(0, size() - 1, factory);
+        return toArray(0, size(), factory);
     }
 
     @Override
     default <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory) {
-        return copy(0, size() - 1, i -> factory.get());
-    }
-
-    @Override
-    default int size() {
-        return end() - start();
+        return copy(0, size(), i -> factory.get());
     }
 }

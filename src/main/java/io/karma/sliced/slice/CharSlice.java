@@ -16,7 +16,9 @@
 
 package io.karma.sliced.slice;
 
-import io.karma.sliced.iterator.CharIterator;
+import io.karma.sliced.slice.impl.ArrayCharSlice;
+import io.karma.sliced.slice.impl.CharSeqSlice;
+import io.karma.sliced.view.CharView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -24,27 +26,23 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A char slice is a specialized form of {@link Slice}, which provides
  * primitive specializations and additional functionality through extending {@link CharSequence}.
- * <p>
- * It also extends {@link CharIterator}, which allows
- * the string slice to be used as a regular {@link java.text.CharacterIterator},
- * with the benefit of being able to reset its internal iteration index easily.
  *
  * @author Alexander Hinze
  * @since 13/08/2022
  */
 @API(status = Status.STABLE)
-public interface CharSlice extends Slice<Character>, CharSequence, CharIterator {
+public interface CharSlice extends CharView, Slice<Character> {
     /**
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.<br>
      *
-     * @param seq   The character sequence to create a slice of.
-     * @param start The start index of the slice to be created.
-     * @param end   The end index (inclusive) of the slice to be created.
+     * @param seq    The character sequence to create a slice of.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new string slice referencing the given character sequence.
      */
-    static @NotNull CharSlice of(final @NotNull CharSequence seq, final int start, final int end) {
-        return new StringCharSliceImpl(seq, start, end);
+    static @NotNull CharSlice of(final @NotNull CharSequence seq, final int offset, final int size) {
+        return new CharSeqSlice(seq, offset, size);
     }
 
     /**
@@ -55,20 +53,20 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * @return A new string slice referencing the given character sequence.
      */
     static @NotNull CharSlice of(final @NotNull CharSequence seq) {
-        return new StringCharSliceImpl(seq, 0, seq.length() - 1);
+        return new CharSeqSlice(seq, 0, seq.length());
     }
 
     /**
      * Creates a new string slice for the given character array,
      * with the given start- and end index.
      *
-     * @param ref   The character array to create a slice of.
-     * @param start The start index of the slice to be created.
-     * @param end   The end index (inclusive) of the slice to be created.
+     * @param ref    The character array to create a slice of.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new string slice referencing the given character array.
      */
-    static @NotNull CharSlice of(final char[] ref, final int start, final int end) {
-        return new ArrayCharSliceImpl(ref, start, end);
+    static @NotNull CharSlice of(final char[] ref, final int offset, final int size) {
+        return new ArrayCharSlice(ref, offset, size);
     }
 
     /**
@@ -78,8 +76,8 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * @param ref The character array to create a slice of.
      * @return A new string slice referencing the given character array.
      */
-    static @NotNull CharSlice of(final char[] ref) {
-        return new ArrayCharSliceImpl(ref, 0, ref.length - 1);
+    static @NotNull CharSlice of(final char... ref) {
+        return new ArrayCharSlice(ref, 0, ref.length);
     }
 
     /**
@@ -88,29 +86,27 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      *
      * @param seq       The character sequence to split.
      * @param delimiter The delimiter to split with.
-     * @param start     The index at which to start splitting.
-     * @param end       The index at which to end splitting.
+     * @param offset    The index at which to start splitting.
+     * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
      *         sections of the original char sequence.
      */
-    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter, final int start, final int end) {
-        final int size = seq.length();
-        final int maxIndex = size - 1;
+    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter, final int offset, final int size) {
+        final int seqSize = seq.length();
+        final int maxIndex = seqSize - 1;
 
-        if (start < 0 || start > maxIndex) {
+        if (offset < 0 || offset > maxIndex || size < 0) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
         }
 
-        if (end < 0 || end > maxIndex || end < start) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
+        final int end = offset + size;
 
         // Find number of delimiters
         final int delimiterLength = delimiter.length();
         int numDelimiters = 0; // # of delimiters total
         int matchingChars = 0; // # of matching characters for the delimiter
 
-        for (int i = start; i <= end; i++) {
+        for (int i = offset; i <= end; i++) {
             if (seq.charAt(i) != delimiter.charAt(matchingChars)) {
                 matchingChars = 0; // Reset number of matching chars
                 continue;
@@ -130,11 +126,11 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         final int numSlices = numDelimiters + 1;
         final CharSlice[] slices = new CharSlice[numSlices];
         int index = 0;
-        int lastEnd = start;
+        int lastEnd = offset;
 
         matchingChars = 0; // Reset # of matching chars
 
-        for (int i = start; i <= end; i++) {
+        for (int i = offset; i <= end; i++) {
             if (seq.charAt(i) != delimiter.charAt(matchingChars)) {
                 matchingChars = 0; // Reset number of matching chars
                 continue;
@@ -146,12 +142,12 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
                 continue;
             }
 
-            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i - (delimiterLength - 1));
+            slices[index++] = new CharSeqSlice(seq, lastEnd, i - (delimiterLength - 1));
             lastEnd = i + 1;
             matchingChars = 0;
         }
 
-        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
+        slices[index] = new CharSeqSlice(seq, lastEnd, end + 1);
         return slices;
     }
 
@@ -173,27 +169,25 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      *
      * @param seq       The character sequence to split.
      * @param delimiter The delimiter to split with.
-     * @param start     The index at which to start splitting.
-     * @param end       The index at which to end splitting.
+     * @param offset    The index at which to start splitting.
+     * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
      *         sections of the original char sequence.
      */
-    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter, final int start, final int end) {
-        final int size = seq.length();
-        final int maxIndex = size - 1;
+    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter, final int offset, final int size) {
+        final int seqSize = seq.length();
+        final int maxIndex = seqSize - 1;
 
-        if (start < 0 || start > maxIndex) {
+        if (offset < 0 || offset > maxIndex || size < 0) {
             throw new ArrayIndexOutOfBoundsException("Start index is out of range");
         }
 
-        if (end < 0 || end > maxIndex || end < start) {
-            throw new ArrayIndexOutOfBoundsException("End index is out of range");
-        }
+        final int end = offset + size;
 
         // Find # of delimiters
         int numDelimiters = 0;
 
-        for (int i = start; i <= end; i++) {
+        for (int i = offset; i <= end; i++) {
             if (seq.charAt(i) != delimiter) {
                 continue;
             }
@@ -207,16 +201,16 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         int index = 0;
         int lastEnd = 0;
 
-        for (int i = start; i <= end; i++) {
+        for (int i = offset; i <= end; i++) {
             if (seq.charAt(i) != delimiter) {
                 continue;
             }
 
-            slices[index++] = new StringCharSliceImpl(seq, lastEnd, i);
+            slices[index++] = new CharSeqSlice(seq, lastEnd, i);
             lastEnd = i + 1;
         }
 
-        slices[index] = new StringCharSliceImpl(seq, lastEnd, end + 1);
+        slices[index] = new CharSeqSlice(seq, lastEnd, end + 1);
         return slices;
     }
 
@@ -247,13 +241,13 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * between the given start and end index.
      *
      * @param delimiter The delimiter to split with.
-     * @param start     The index at which to start splitting.
-     * @param end       The index at which to end splitting.
+     * @param offset    The index at which to start splitting.
+     * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
      *         sections of the original char sequence.
      */
-    default @NotNull CharSlice[] split(final char delimiter, final int start, final int end) {
-        return split(this, delimiter, start, end);
+    default @NotNull CharSlice[] split(final char delimiter, final int offset, final int size) {
+        return split(this, delimiter, offset, size);
     }
 
     /**
@@ -272,13 +266,13 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * between the given start and end index.
      *
      * @param delimiter The delimiter to split with.
-     * @param start     The index at which to start splitting.
-     * @param end       The index at which to end splitting.
+     * @param offset    The index at which to start splitting.
+     * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
      *         sections of the original char sequence.
      */
-    default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter, final int start, final int end) {
-        return split(this, delimiter, start, end);
+    default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter, final int offset, final int size) {
+        return split(this, delimiter, offset, size);
     }
 
     /**
@@ -334,20 +328,16 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
      * and copies all values from {@code start} to {@code end} into
      * new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
      *
-     * @param start The index at which to start copying elements.
-     * @param end   The index at which to end copying elements.
+     * @param offset The index at which the newly created array should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created array.
      * @return A new array containing all elements from {@code start} to {@code end}.
      */
-    char[] toCharArray(final int start, final int end);
+    char[] toCharArray(final int offset, final int size);
 
-    /**
-     * Creates a new {@code char} array with the appropriate size,
-     * and copies all values into new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
-     *
-     * @return A new array containing all elements.
-     */
+    @Override
     default char[] toCharArray() {
-        return toCharArray(0, length() - 1);
+        return toCharArray(0, length());
     }
 
     // Slice functions
@@ -357,7 +347,7 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
         return charAt(index);
     }
 
-    // CharacterIterator functions
+    // CharSequence functions
 
     @Override
     default char charAt(final int index) {
@@ -371,26 +361,6 @@ public interface CharSlice extends Slice<Character>, CharSequence, CharIterator 
 
     @Override
     default @NotNull CharSequence subSequence(final int start, final int end) {
-        return (CharSlice) slice(start, end);
-    }
-
-    @Override
-    default char first() {
-        return charAt(0);
-    }
-
-    @Override
-    default char last() {
-        return charAt(length() - 1);
-    }
-
-    @Override
-    default int getBeginIndex() {
-        return start();
-    }
-
-    @Override
-    default int getEndIndex() {
-        return end();
+        return (CharSlice) slice(start, end - start);
     }
 }

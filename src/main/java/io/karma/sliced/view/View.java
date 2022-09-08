@@ -17,6 +17,9 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.slice.Slice;
+import io.karma.sliced.view.impl.ArrayView;
+import io.karma.sliced.view.impl.CollectionView;
+import io.karma.sliced.view.impl.ListView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -60,7 +64,8 @@ public interface View<T> extends Iterable<T> {
      * @param array The array of which to create a view.
      * @return A new view instance, which references the given array.
      */
-    static <T> @NotNull View<T> of(final @NotNull T[] array) {
+    @SafeVarargs
+    static <T> @NotNull View<T> of(final @NotNull T... array) {
         return new ArrayView<>(array);
     }
 
@@ -112,6 +117,102 @@ public interface View<T> extends Iterable<T> {
     @NotNull Slice<T> asSlice();
 
     /**
+     * Checks if the elements referenced by this view instance
+     * are equal to the elements within the given array.
+     *
+     * @param array The array to check elements from.
+     * @return True if the elements in the given array equal the elements
+     *         referenced by this view instance.
+     */
+    default boolean contentEquals(final @NotNull T[] array) {
+        if (array.length == 0) {
+            return false;
+        }
+
+        int index = 0;
+
+        for (final T element : this) {
+            if (!element.equals(array[index++])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the elements referenced by this view instance
+     * are equal to the elements within the given collection instance.
+     *
+     * @param collection THe collection to check elements from.
+     * @return True if the elements in the given collection equal the elements
+     *         referenced by this view instance.
+     */
+    default boolean contentEquals(final @NotNull Collection<? extends T> collection) {
+        if (collection.isEmpty()) {
+            return false;
+        }
+
+        final Iterator<? extends T> itr = collection.iterator();
+
+        for (final T element : this) {
+            if (!itr.hasNext() || !element.equals(itr.next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the elements references in this view instance
+     * are equal to the element references within the given array.
+     *
+     * @param array The array to check elements from.
+     * @return True if the element references in the given array equal the
+     *         element references in this view instance.
+     */
+    default boolean referencesEqual(final @NotNull T[] array) {
+        if (array.length == 0) {
+            return false;
+        }
+
+        int index = 0;
+
+        for (final T element : this) {
+            if (element != array[index++]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the elements references in this view instance
+     * are equal to the element references within the given collection.
+     *
+     * @param collection The collection to check elements from.
+     * @return True if the element references in the given collection equal the
+     *         element references in this view instance.
+     */
+    default boolean referencesEqual(final @NotNull Collection<? extends T> collection) {
+        if (collection.isEmpty()) {
+            return false;
+        }
+
+        final Iterator<? extends T> itr = collection.iterator();
+
+        for (final T element : this) {
+            if (!itr.hasNext() || element != itr.next()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Creates a new array of size n, where n is the number of elements contained
      * within the underlying collection of this view instance, using the given factory function,
      * and copies a reference to all elements contained within the collection
@@ -140,7 +241,6 @@ public interface View<T> extends Iterable<T> {
      * @param factory The function with which to create the new collection.
      * @param <C>     The type of the collection to create.
      * @return A new collection instance of type {@link C}, containing all elements
-     *         given access to by this view instance.
      */
     default <C extends Collection<T>> @NotNull C copy(final @NotNull Supplier<C> factory) {
         final C result = factory.get();

@@ -16,20 +16,50 @@
 
 package io.karma.sliced.iterator;
 
-import io.karma.sliced.util.Resettable;
+import io.karma.sliced.iterator.impl.ArrayCharIterator;
+import io.karma.sliced.iterator.impl.CharSeqCharIterator;
+import io.karma.sliced.iterator.impl.RangedArrayCharIterator;
+import io.karma.sliced.iterator.impl.RangedCharSeqCharIterator;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 
-import java.text.CharacterIterator;
+import java.util.Iterator;
 
 /**
- * Extends both {@link CharacterIterator} as well as {@link Resettable},
- * to allow for the easy polymorphic implementation of multi-purpose
- * resettable iterators/enumerations.
+ * A primitive specialization of {@link Iterator}&lt;{@link Character}&gt;,
+ * which provides a non-boxing version of {@link Iterator#next()}.
  *
  * @author Alexander Hinze
- * @since 13/08/2022
+ * @since 03/09/2022
  */
 @API(status = Status.STABLE)
-public interface CharIterator extends CharacterIterator, Resettable {
+public interface CharIterator extends Iterator<Character> {
+    static @NotNull CharIterator of(final @NotNull CharSequence ref, final int offset, final int size) {
+        return new RangedCharSeqCharIterator(ref, offset, size);
+    }
+
+    static @NotNull CharIterator of(final @NotNull CharSequence ref) {
+        return new CharSeqCharIterator(ref);
+    }
+
+    static @NotNull CharIterator of(final char[] ref, final int offset, final int size) {
+        return new RangedArrayCharIterator(ref, offset, size);
+    }
+
+    static @NotNull CharIterator of(final char... ref) {
+        return new ArrayCharIterator(ref);
+    }
+
+    /**
+     * Retrieves the next {@code char} value in the sequence being iterated over.
+     *
+     * @return The next {@code char} value in the sequence being iterated over.
+     */
+    char nextChar();
+
+    @Override
+    default @NotNull Character next() {
+        return nextChar();
+    }
 }

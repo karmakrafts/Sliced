@@ -16,6 +16,7 @@
 
 package io.karma.sliced.slice;
 
+import io.karma.sliced.slice.impl.ArrayIntSlice;
 import io.karma.sliced.view.IntView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -36,13 +37,13 @@ public interface IntSlice extends IntView, Slice<Integer> {
     /**
      * Creates a new slice instance which references the given array.
      *
-     * @param ref   The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param ref    The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull IntSlice of(final int[] ref, final int start, final int end) {
-        return new ArrayIntSlice(ref, start, end);
+    static @NotNull IntSlice of(final int[] ref, final int offset, final int size) {
+        return new ArrayIntSlice(ref, offset, size);
     }
 
     /**
@@ -52,7 +53,7 @@ public interface IntSlice extends IntView, Slice<Integer> {
      * @return A new mutable slice instance, which references the given array.
      */
     static @NotNull IntSlice of(final int... ref) {
-        return new ArrayIntSlice(ref, 0, ref.length - 1);
+        return new ArrayIntSlice(ref, 0, ref.length);
     }
 
     /**
@@ -64,20 +65,26 @@ public interface IntSlice extends IntView, Slice<Integer> {
      */
     int getInt(final int index);
 
+    @Override
+    default @NotNull Integer get(final int index) {
+        return getInt(index);
+    }
+
     /**
      * Creates a new {@code int} array with the appropriate size,
      * and copies all values from {@code start} to {@code end} into
      * new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
      *
-     * @param start The index at which to start copying elements.
-     * @param end   The index at which to end copying elements.
+     * @param offset The index at which the newly created array should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created array.
      * @return A new array containing all elements from {@code start} to {@code end}.
      */
-    int[] toIntArray(final int start, final int end);
+    int[] toIntArray(final int offset, final int size);
 
     @Override
     default int[] toIntArray() {
-        return toIntArray(0, size() - 1);
+        return toIntArray(0, size());
     }
 
     /**

@@ -16,6 +16,7 @@
 
 package io.karma.sliced.view;
 
+import io.karma.sliced.view.impl.MapViewImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,7 @@ import java.util.stream.Stream;
  * @author Alexander Hinze
  * @since 09/08/2022
  */
-@API(status = Status.STABLE)
+@API(status = Status.EXPERIMENTAL)
 public interface MapView<K, V> extends View<Entry<K, V>> {
     /**
      * Creates a new view instance which references the given {@link Map}.
@@ -48,6 +49,26 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
     static <K, V> @NotNull MapView<K, V> of(final @NotNull Map<K, V> map) {
         return new MapViewImpl<>(map);
     }
+
+    /**
+     * Determines whether the given key is present
+     * within the map referenced by this view instance.
+     *
+     * @param key The key to check for.
+     * @return True if the given key is present within
+     *         the map referenced by this view instance.
+     */
+    boolean containsKey(final @Nullable K key);
+
+    /**
+     * Determines whether the given value is present
+     * within the map referenced by this view instance at least once.
+     *
+     * @param value The value to check for.
+     * @return True if the given value is present within
+     *         the map referenced by this view instance.
+     */
+    boolean containsValue(final @Nullable V value);
 
     /**
      * Retrieves the value associated with the given key.

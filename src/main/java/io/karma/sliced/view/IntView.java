@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.IntIterator;
+import io.karma.sliced.view.impl.ArrayIntView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,10 @@ import java.util.stream.StreamSupport;
  */
 @API(status = Status.STABLE)
 public interface IntView extends View<Integer> {
+    static @NotNull IntView of(final int... ref) {
+        return new ArrayIntView(ref);
+    }
+
     /**
      * Creates a new {@link IntIterator} from the
      * elements referenced by this slice instance.

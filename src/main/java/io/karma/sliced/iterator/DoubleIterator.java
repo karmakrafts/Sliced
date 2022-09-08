@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayDoubleIterator;
+import io.karma.sliced.iterator.impl.RangedArrayDoubleIterator;
 import io.karma.sliced.util.Resettable;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +31,14 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface DoubleIterator extends Iterator<Double>, Resettable {
+    static @NotNull DoubleIterator of(final double[] ref, final int offset, final int size) {
+        return new RangedArrayDoubleIterator(ref, offset, size);
+    }
+
+    static @NotNull DoubleIterator of(final double... ref) {
+        return new ArrayDoubleIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code double} value in the sequence being iterated over.
      *

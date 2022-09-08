@@ -17,6 +17,7 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ShortFunction;
+import io.karma.sliced.slice.impl.ArrayShortSlice;
 import io.karma.sliced.view.ShortView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -35,13 +36,13 @@ public interface ShortSlice extends ShortView, Slice<Short> {
     /**
      * Creates a new slice instance which references the given array.
      *
-     * @param ref   The array of which to create a slice.
-     * @param start The index at which the newly created slice should begin.
-     * @param end   The index at which the newly created slice should end.
+     * @param ref    The array of which to create a slice.
+     * @param offset The index at which the newly created slice should begin.
+     * @param size   The size of the newly created slice.
      * @return A new mutable slice instance, which references the given array.
      */
-    static @NotNull ShortSlice of(final short[] ref, final int start, final int end) {
-        return new ArrayShortSlice(ref, start, end);
+    static @NotNull ShortSlice of(final short[] ref, final int offset, final int size) {
+        return new ArrayShortSlice(ref, offset, size);
     }
 
     /**
@@ -51,7 +52,7 @@ public interface ShortSlice extends ShortView, Slice<Short> {
      * @return A new mutable slice instance, which references the given array.
      */
     static @NotNull ShortSlice of(final short... ref) {
-        return new ArrayShortSlice(ref, 0, ref.length - 1);
+        return new ArrayShortSlice(ref, 0, ref.length);
     }
 
     /**
@@ -63,20 +64,26 @@ public interface ShortSlice extends ShortView, Slice<Short> {
      */
     short getShort(final int index);
 
+    @Override
+    default @NotNull Short get(final int index) {
+        return getShort(index);
+    }
+
     /**
      * Creates a new {@code short} array with the appropriate size,
      * and copies all values from {@code start} to {@code end} into
      * new newly created array using {@link System#arraycopy(Object, int, Object, int, int)}.
      *
-     * @param start The index at which to start copying elements.
-     * @param end   The index at which to end copying elements.
+     * @param offset The index at which the newly created array should begin
+     *               (relative to the offset of this slice).
+     * @param size   The size of the newly created array.
      * @return A new array containing all elements from {@code start} to {@code end}.
      */
-    short[] toShortArray(final int start, final int end);
+    short[] toShortArray(final int offset, final int size);
 
     @Override
     default short[] toShortArray() {
-        return toShortArray(0, size() - 1);
+        return toShortArray(0, size());
     }
 
     /**

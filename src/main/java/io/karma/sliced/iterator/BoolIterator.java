@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayBoolIterator;
+import io.karma.sliced.iterator.impl.RangedArrayBoolIterator;
 import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +34,14 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface BoolIterator extends Iterator<Boolean>, Resettable {
+    static @NotNull BoolIterator of(final boolean[] ref, final int offset, final int size) {
+        return new RangedArrayBoolIterator(ref, offset, size);
+    }
+
+    static @NotNull BoolIterator of(final boolean... ref) {
+        return new ArrayBoolIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code boolean} value in the sequence being iterated over.
      *

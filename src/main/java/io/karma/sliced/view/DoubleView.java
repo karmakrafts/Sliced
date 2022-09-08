@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.DoubleIterator;
+import io.karma.sliced.view.impl.ArrayDoubleView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,10 @@ import java.util.stream.StreamSupport;
  */
 @API(status = Status.STABLE)
 public interface DoubleView extends View<Double> {
+    static @NotNull DoubleView of(final double... ref) {
+        return new ArrayDoubleView(ref);
+    }
+
     /**
      * Creates a new {@link DoubleIterator} from the
      * elements referenced by this slice instance.

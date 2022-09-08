@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayIntIterator;
+import io.karma.sliced.iterator.impl.RangedArrayIntIterator;
 import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +34,14 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface IntIterator extends Iterator<Integer>, Resettable {
+    static @NotNull IntIterator of(final int[] ref, final int offset, final int size) {
+        return new RangedArrayIntIterator(ref, offset, size);
+    }
+
+    static @NotNull IntIterator of(final int... ref) {
+        return new ArrayIntIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code int} value in the sequence being iterated over.
      *

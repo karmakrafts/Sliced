@@ -16,6 +16,10 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayCharIterator;
+import io.karma.sliced.iterator.impl.CharSeqCharIterator;
+import io.karma.sliced.iterator.impl.RangedArrayCharIterator;
+import io.karma.sliced.iterator.impl.RangedCharSeqCharIterator;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +35,22 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface CharIterator extends Iterator<Character> {
+    static @NotNull CharIterator of(final @NotNull CharSequence ref, final int offset, final int size) {
+        return new RangedCharSeqCharIterator(ref, offset, size);
+    }
+
+    static @NotNull CharIterator of(final @NotNull CharSequence ref) {
+        return new CharSeqCharIterator(ref);
+    }
+
+    static @NotNull CharIterator of(final char[] ref, final int offset, final int size) {
+        return new RangedArrayCharIterator(ref, offset, size);
+    }
+
+    static @NotNull CharIterator of(final char... ref) {
+        return new ArrayCharIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code char} value in the sequence being iterated over.
      *

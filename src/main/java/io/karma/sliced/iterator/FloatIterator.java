@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayFloatIterator;
+import io.karma.sliced.iterator.impl.RangedArrayFloatIterator;
 import io.karma.sliced.util.Resettable;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +31,14 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface FloatIterator extends Iterator<Float>, Resettable {
+    static @NotNull FloatIterator of(final float[] ref, final int offset, final int size) {
+        return new RangedArrayFloatIterator(ref, offset, size);
+    }
+
+    static @NotNull FloatIterator of(final float... ref) {
+        return new ArrayFloatIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code float} value in the sequence being iterated over.
      *

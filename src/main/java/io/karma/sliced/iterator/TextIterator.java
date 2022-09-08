@@ -16,15 +16,20 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayTextIterator;
+import io.karma.sliced.iterator.impl.CharSeqTextIterator;
+import io.karma.sliced.iterator.impl.RangedArrayTextIterator;
+import io.karma.sliced.iterator.impl.RangedCharSeqTextIterator;
 import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.CharacterIterator;
 
 /**
  * Extends both {@link CharacterIterator} as well as {@link Resettable},
- * to allow for the easy polymorphic implementation of multi-purpose
+ * to allow for the easy polymorphic implementation of multipurpose
  * resettable iterators/enumerations.
  *
  * @author Alexander Hinze
@@ -32,4 +37,19 @@ import java.text.CharacterIterator;
  */
 @API(status = Status.STABLE)
 public interface TextIterator extends CharacterIterator, Resettable {
+    static @NotNull TextIterator of(final @NotNull CharSequence ref, final int offset, final int size) {
+        return new RangedCharSeqTextIterator(ref, offset, size);
+    }
+
+    static @NotNull TextIterator of(final @NotNull CharSequence ref) {
+        return new CharSeqTextIterator(ref);
+    }
+
+    static @NotNull TextIterator of(final char[] ref, final int offset, final int size) {
+        return new RangedArrayTextIterator(ref, offset, size);
+    }
+
+    static @NotNull TextIterator of(final char[] ref) {
+        return new ArrayTextIterator(ref);
+    }
 }

@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.ShortIterator;
+import io.karma.sliced.view.impl.ArrayShortView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,10 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ShortView extends View<Short> {
+    static @NotNull ShortView of(final short... ref) {
+        return new ArrayShortView(ref);
+    }
+
     /**
      * Creates a new {@link ShortIterator} from the
      * elements referenced by this slice instance.

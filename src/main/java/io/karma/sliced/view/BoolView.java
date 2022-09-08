@@ -17,6 +17,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.BoolIterator;
+import io.karma.sliced.view.impl.ArrayBoolView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +25,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 
 /**
+ * A primitive specialization for {@code boolean} of {@link View}.
+ *
  * @author Alexander Hinze
  * @since 03/09/2022
  */
 @API(status = Status.STABLE)
 public interface BoolView extends View<Boolean> {
+    static @NotNull BoolView of(final boolean... ref) {
+        return new ArrayBoolView(ref);
+    }
+
     /**
      * Creates a new {@link BoolIterator} from the
      * elements referenced by this slice instance.

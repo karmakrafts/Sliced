@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayShortIterator;
+import io.karma.sliced.iterator.impl.RangedArrayShortIterator;
 import io.karma.sliced.util.Resettable;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +34,14 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ShortIterator extends Iterator<Short>, Resettable {
+    static @NotNull ShortIterator of(final short[] ref, final int offset, final int size) {
+        return new RangedArrayShortIterator(ref, offset, size);
+    }
+
+    static @NotNull ShortIterator of(final short... ref) {
+        return new ArrayShortIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code short} value in the sequence being iterated over.
      *

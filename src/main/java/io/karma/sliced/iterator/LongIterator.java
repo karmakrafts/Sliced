@@ -16,6 +16,8 @@
 
 package io.karma.sliced.iterator;
 
+import io.karma.sliced.iterator.impl.ArrayLongIterator;
+import io.karma.sliced.iterator.impl.RangedArrayLongIterator;
 import io.karma.sliced.util.Resettable;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +31,14 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface LongIterator extends Iterator<Long>, Resettable {
+    static @NotNull LongIterator of(final long[] ref, final int offset, final int size) {
+        return new RangedArrayLongIterator(ref, offset, size);
+    }
+
+    static @NotNull LongIterator of(final long... ref) {
+        return new ArrayLongIterator(ref);
+    }
+
     /**
      * Retrieves the next {@code long} value in the sequence being iterated over.
      *

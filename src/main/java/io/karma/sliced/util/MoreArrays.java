@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +41,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static boolean[] copy(final boolean[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -71,7 +70,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static byte[] copy(final byte[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -100,7 +99,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static short[] copy(final short[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -129,7 +128,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static int[] copy(final int[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -158,7 +157,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static long[] copy(final long[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -187,7 +186,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static float[] copy(final float[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -216,7 +215,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static double[] copy(final double[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -245,7 +244,7 @@ public final class MoreArrays {
      * @param offset The offset into the array from which to copy.
      * @param size   The number of elements to copy into the newly created array.
      * @return A new array with the given size, containing
-     *         all the elements from the given array, at the given indices.
+     * all the elements from the given array, at the given indices.
      */
     public static char[] copy(final char[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -269,19 +268,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>boolean</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Boolean}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final boolean[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -300,19 +299,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>byte</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Byte}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final byte[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -331,19 +330,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>short</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Short}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final short[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -362,19 +361,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>int</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Integer}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final int[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -393,19 +392,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>long</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Long}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final long[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -425,19 +424,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>float</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Float}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final float[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -456,19 +455,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>double</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Double}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final double[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -488,19 +487,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>char</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Character}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final char[] ref, final int offset, final int size) {
         if (ref == null || offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -518,19 +517,19 @@ public final class MoreArrays {
 
     /**
      * Returns a hash code based on the contents of the specified array.
-     * For any two <tt>Object</tt> arrays <tt>a</tt> and <tt>b</tt>
-     * such that <tt>Arrays.equals(a, b)</tt>, it is also the case that
-     * <tt>Arrays.hashCode(a) == Arrays.hashCode(b)</tt>.
+     * For any two {@code boolean} arrays <b>a</b> and <b>b</b>
+     * such that {@code Arrays.equals(a, b)}, it is also the case that
+     * {@code Arrays.hashCode(a) == Arrays.hashCode(b)}.
      * <p>The value returned by this method is the same value that would be
-     * obtained by invoking the {@link List#hashCode() <tt>hashCode</tt>}
+     * obtained by invoking the {@link List#hashCode()} {@code hashCode}
      * method on a {@link List} containing a sequence of {@link Object}
-     * instances representing the elements of <tt>a</tt> in the same order.
-     * If <tt>a</tt> is <tt>null</tt>, this method returns 0.
+     * instances representing the elements of <b>a</b> in the same order.
+     * If <b>a</b> is <b>null</b>, this method returns 0.
      *
      * @param ref    the array whose hash value to compute.
      * @param offset The offset into the array at which to start hashing.
      * @param size   The size of the element sequence to hash.
-     * @return a content-based hash code for <tt>a</tt>.
+     * @return a content-based hash code for <b>a</b>.
      */
     public static int hashCode(final @NotNull Object[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -549,16 +548,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final boolean[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -582,16 +581,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final byte[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -615,16 +614,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final short[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -648,16 +647,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final int[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -681,16 +680,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final long[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -714,16 +713,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final float[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -747,16 +746,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final double[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -780,16 +779,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final char[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -813,16 +812,16 @@ public final class MoreArrays {
     /**
      * Returns a string representation of the contents of the specified array.
      * The string representation consists of a list of the array's elements,
-     * enclosed in square brackets (<tt>"[]"</tt>).  Adjacent elements are
-     * separated by the characters <tt>", "</tt> (a comma followed by a
+     * enclosed in square brackets (<b>"[]"</b>).  Adjacent elements are
+     * separated by the characters <b>", "</b> (a comma followed by a
      * space).  Elements are converted to strings as by
-     * <tt>String.valueOf(long)</tt>.  Returns <tt>"null"</tt> if <tt>ref</tt>
-     * is <tt>null</tt>.
+     * {@code String.valueOf()}.  Returns <b>"null"</b> if {@code ref}
+     * is {@code null}.
      *
      * @param ref    the array whose string representation to return.
      * @param offset The offset into the array at which to start the conversion.
      * @param size   The size of the element sequence to convert.
-     * @return a string representation of <tt>ref</tt>.
+     * @return a string representation of {@code ref}.
      */
     public static @NotNull String toString(final @NotNull Object[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -851,7 +850,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Boolean[] box(final boolean[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -873,7 +872,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Boolean[] box(final boolean[] ref) {
         return box(ref, 0, ref.length);
@@ -887,7 +886,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Byte[] box(final byte[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -909,7 +908,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Byte[] box(final byte[] ref) {
         return box(ref, 0, ref.length);
@@ -923,7 +922,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Short[] box(final short[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -945,7 +944,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Short[] box(final short[] ref) {
         return box(ref, 0, ref.length);
@@ -959,7 +958,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Integer[] box(final int[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -981,7 +980,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Integer[] box(final int[] ref) {
         return box(ref, 0, ref.length);
@@ -995,7 +994,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Long[] box(final long[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1017,7 +1016,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Long[] box(final long[] ref) {
         return box(ref, 0, ref.length);
@@ -1031,7 +1030,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Float[] box(final float[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1053,7 +1052,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Float[] box(final float[] ref) {
         return box(ref, 0, ref.length);
@@ -1067,7 +1066,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Double[] box(final double[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1089,7 +1088,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Double[] box(final double[] ref) {
         return box(ref, 0, ref.length);
@@ -1103,7 +1102,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Character[] box(final char[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1125,7 +1124,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         wrapped as a boxed type instance.
+     * wrapped as a boxed type instance.
      */
     public static @NotNull Character[] box(final char[] ref) {
         return box(ref, 0, ref.length);
@@ -1139,7 +1138,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static boolean[] unbox(final @NotNull Boolean[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1161,7 +1160,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static boolean[] unbox(final @NotNull Boolean[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1175,7 +1174,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static byte[] unbox(final @NotNull Byte[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1197,7 +1196,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static byte[] unbox(final @NotNull Byte[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1211,7 +1210,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static short[] unbox(final @NotNull Short[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1233,7 +1232,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static short[] unbox(final @NotNull Short[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1247,7 +1246,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static int[] unbox(final @NotNull Integer[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1269,7 +1268,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static int[] unbox(final @NotNull Integer[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1283,7 +1282,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static long[] unbox(final @NotNull Long[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1305,7 +1304,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static long[] unbox(final @NotNull Long[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1319,7 +1318,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static float[] unbox(final @NotNull Float[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1341,7 +1340,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static float[] unbox(final @NotNull Float[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1355,7 +1354,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static double[] unbox(final @NotNull Double[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1377,7 +1376,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static double[] unbox(final @NotNull Double[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1391,7 +1390,7 @@ public final class MoreArrays {
      * @param offset The offset into the array to box.
      * @param size   The number of elements to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static char[] unbox(final @NotNull Character[] ref, final int offset, final int size) {
         if (offset < 0 || size < 0 || size > ref.length || offset >= size) {
@@ -1413,7 +1412,7 @@ public final class MoreArrays {
      *
      * @param ref The array to box.
      * @return A new array containing all values in the given range,
-     *         as their natural primitive type.
+     * as their natural primitive type.
      */
     public static char[] unbox(final @NotNull Character[] ref) {
         return unbox(ref, 0, ref.length);
@@ -1429,7 +1428,8 @@ public final class MoreArrays {
      * @param a2     The second array to compare references from.
      * @return True if all element references are equal.
      */
-    public static boolean refsEqual(final @NotNull Object[] a1, final int offset, final int size, final @NotNull Object[] a2) {
+    public static boolean refsEqual(final @NotNull Object[] a1, final int offset, final int size,
+                                    final @NotNull Object[] a2) {
         if (offset < 0 || size < 0 || size > a1.length || offset >= size) {
             throw new ArrayIndexOutOfBoundsException("Invalid index range");
         }

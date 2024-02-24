@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,9 +88,10 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param offset    The index at which to start splitting.
      * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
-    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter, final int offset, final int size) {
+    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter,
+                                      final int offset, final int size) {
         final int seqSize = seq.length();
         final int maxIndex = seqSize - 1;
 
@@ -157,7 +157,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param seq       The character sequence to split.
      * @param delimiter The delimiter to split with.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final @NotNull CharSequence delimiter) {
         return split(seq, delimiter, 0, seq.length() - 1);
@@ -172,9 +172,10 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param offset    The index at which to start splitting.
      * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
-    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter, final int offset, final int size) {
+    static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter, final int offset,
+                                      final int size) {
         final int seqSize = seq.length();
         final int maxIndex = seqSize - 1;
 
@@ -220,7 +221,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param seq       The character sequence to split.
      * @param delimiter The delimiter to split with.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     static @NotNull CharSlice[] split(final @NotNull CharSequence seq, final char delimiter) {
         return split(seq, delimiter, 0, seq.length() - 1);
@@ -244,7 +245,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param offset    The index at which to start splitting.
      * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     default @NotNull CharSlice[] split(final char delimiter, final int offset, final int size) {
         return split(this, delimiter, offset, size);
@@ -255,7 +256,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      *
      * @param delimiter The delimiter to split with.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     default @NotNull CharSlice[] split(final char delimiter) {
         return split(delimiter, 0, length() - 1);
@@ -269,7 +270,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * @param offset    The index at which to start splitting.
      * @param size      The size of the part of the sequence to split.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter, final int offset, final int size) {
         return split(this, delimiter, offset, size);
@@ -280,7 +281,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      *
      * @param delimiter The delimiter to split with.
      * @return A new array of {@link CharSlice} instances, referencing the relevant
-     *         sections of the original char sequence.
+     * sections of the original char sequence.
      */
     default @NotNull CharSlice[] split(final @NotNull CharSequence delimiter) {
         return split(delimiter, 0, length() - 1);
@@ -293,7 +294,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * underlying character sequence.
      *
      * @return A new {@link CharSlice} referencing all non-leading-WS
-     *         characters of the original slice instance's character sequence.
+     * characters of the original slice instance's character sequence.
      */
     @NotNull CharSlice trimLeading();
 
@@ -304,7 +305,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * underlying character sequence.
      *
      * @return A new {@link CharSlice} referencing all non-trailing-WS
-     *         characters of the original slice instance's character sequence.
+     * characters of the original slice instance's character sequence.
      */
     @NotNull CharSlice trimTrailing();
 
@@ -317,7 +318,7 @@ public interface CharSlice extends CharView, Slice<Character> {
      * This function is a combination of {@link #trimLeading()} and {@link #trimTrailing()}.
      *
      * @return A new {@link CharSlice} referencing all non-WS
-     *         characters of the original slice instance's character sequence.
+     * characters of the original slice instance's character sequence.
      */
     default @NotNull CharSlice trim() {
         return trimLeading().trimTrailing();

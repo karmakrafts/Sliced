@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +43,7 @@ public interface DoubleView extends View<Double> {
      * elements referenced by this slice instance.
      *
      * @return A new {@link DoubleIterator} from the
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     @NotNull DoubleIterator doubleIterator();
 
@@ -53,7 +52,7 @@ public interface DoubleView extends View<Double> {
      * elements referenced by this slice instance.
      *
      * @return A new {@link Spliterator.OfDouble} from the
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     @NotNull Spliterator.OfDouble doubleSpliterator();
 
@@ -70,7 +69,7 @@ public interface DoubleView extends View<Double> {
      * for the elements referenced by this slice instance.
      *
      * @return A new {@link DoubleStream} instance of all
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     default @NotNull DoubleStream doubleStream() {
         return StreamSupport.doubleStream(doubleSpliterator(), false);
@@ -81,7 +80,7 @@ public interface DoubleView extends View<Double> {
      * for the elements referenced by this slice instance.
      *
      * @return A new {@link DoubleStream} instance of all
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     default @NotNull DoubleStream parallelDoubleStream() {
         return StreamSupport.doubleStream(doubleSpliterator(), true);

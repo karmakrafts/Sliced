@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,21 +23,8 @@ import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Stack;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
-import java.util.function.ObjIntConsumer;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.function.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -100,7 +86,7 @@ public interface View<T> extends Iterable<T> {
      * referenced by this array.
      *
      * @return The number of element contained within the collection/array
-     *         referenced by this view instance.
+     * referenced by this view instance.
      */
     int size();
 
@@ -112,7 +98,7 @@ public interface View<T> extends Iterable<T> {
      * If you want to create slices directly, see {@link Slice#of(Object[])} and it's overloads.
      *
      * @return A new slice instance with a reference to the same collection/array
-     *         as this view instance.
+     * as this view instance.
      */
     @NotNull Slice<T> asSlice();
 
@@ -122,7 +108,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param array The array to check elements from.
      * @return True if the elements in the given array equal the elements
-     *         referenced by this view instance.
+     * referenced by this view instance.
      */
     default boolean contentEquals(final @NotNull T[] array) {
         if (array.length == 0) {
@@ -146,7 +132,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param collection THe collection to check elements from.
      * @return True if the elements in the given collection equal the elements
-     *         referenced by this view instance.
+     * referenced by this view instance.
      */
     default boolean contentEquals(final @NotNull Collection<? extends T> collection) {
         if (collection.isEmpty()) {
@@ -170,7 +156,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param array The array to check elements from.
      * @return True if the element references in the given array equal the
-     *         element references in this view instance.
+     * element references in this view instance.
      */
     default boolean referencesEqual(final @NotNull T[] array) {
         if (array.length == 0) {
@@ -194,7 +180,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param collection The collection to check elements from.
      * @return True if the element references in the given collection equal the
-     *         element references in this view instance.
+     * element references in this view instance.
      */
     default boolean referencesEqual(final @NotNull Collection<? extends T> collection) {
         if (collection.isEmpty()) {
@@ -220,7 +206,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param factory The function with which to create the new array of size n.
      * @return A new array of size n, containing a reference to all elements contained
-     *         within this view's underlying collection/array.
+     * within this view's underlying collection/array.
      */
     default @NotNull T[] toArray(final @NotNull IntFunction<T[]> factory) {
         final T[] result = factory.apply(size());
@@ -258,7 +244,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param value The value to check for.
      * @return True if the given value is contained within the underlying collection/array
-     *         of this view instance.
+     * of this view instance.
      */
     default boolean contains(final @Nullable T value) {
         if (value == null) {
@@ -282,7 +268,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param elements A collection of elements to check for.
      * @return True if all elements contained within the given collection
-     *         are also contained within the collection/array referenced by this view instance.
+     * are also contained within the collection/array referenced by this view instance.
      */
     default boolean containsAll(final @Nullable Collection<? extends T> elements) {
         if (elements == null) {
@@ -308,7 +294,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param ref The reference to check for.
      * @return True if the collection/array associated with this view instance
-     *         contains the exact given reference to an object.
+     * contains the exact given reference to an object.
      */
     default boolean containsRef(final @Nullable T ref) {
         if (ref == null) {
@@ -332,7 +318,7 @@ public interface View<T> extends Iterable<T> {
      *
      * @param refs A collection of element references to check for.
      * @return True if all element references contained within the given collection
-     *         are also contained within the collection/array referenced by this view instance.
+     * are also contained within the collection/array referenced by this view instance.
      */
     default boolean containsAllRefs(final @Nullable Collection<? extends T> refs) {
         if (refs == null) {
@@ -360,7 +346,7 @@ public interface View<T> extends Iterable<T> {
      * collection/array of this view instance.
      *
      * @return A new, non-parallelized {@link Stream} instance with access to the elements
-     *         contained within the collection/array of this view instance.
+     * contained within the collection/array of this view instance.
      */
     default @NotNull Stream<T> stream() {
         return StreamSupport.stream(spliterator(), false);
@@ -372,7 +358,7 @@ public interface View<T> extends Iterable<T> {
      * collection/array of this view instance.
      *
      * @return A new, parallelized {@link Stream} instance with access to the elements
-     *         contained within the collection/array of this view instance.
+     * contained within the collection/array of this view instance.
      */
     default @NotNull Stream<T> parallelStream() {
         return StreamSupport.stream(spliterator(), true);

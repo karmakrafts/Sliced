@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,12 +22,7 @@ import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.ObjIntConsumer;
@@ -111,7 +105,8 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @param size   The size of the newly created slice.
      * @return A new slice instance, which references the given array.
      */
-    static <T> @NotNull Slice<T> copyOf(final @NotNull T[] array, final int offset, final int size, final @NotNull IntFunction<T[]> factory) {
+    static <T> @NotNull Slice<T> copyOf(final @NotNull T[] array, final int offset, final int size,
+                                        final @NotNull IntFunction<T[]> factory) {
         final int arraySize = array.length;
 
         if (offset < 0 || size < 0 || size > arraySize) {
@@ -186,7 +181,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      *               (relative to the offset of this slice).
      * @param size   The size of the newly created slice.
      * @return A new slice instance containing the same collection/array reference
-     *         as this slice instance, but with the given relative index range.
+     * as this slice instance, but with the given relative index range.
      */
     @NotNull Slice<T> slice(final int offset, final int size);
 
@@ -201,7 +196,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @param size    The size of the newly created array.
      * @param factory The function with which to create the new array of size n.
      * @return A new array of size n, containing a reference to all elements contained
-     *         within this view's underlying collection/array.
+     * within this view's underlying collection/array.
      */
     default @NotNull T[] toArray(final int offset, final int size, final @NotNull IntFunction<T[]> factory) {
         if (offset < 0 || offset > size() || size <= 0) {
@@ -228,9 +223,10 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      * @param factory The function with which to create the new collection.
      * @param <C>     The type of the collection to create.
      * @return A new collection instance of type {@link C}, containing all elements
-     *         given access to by this view instance.
+     * given access to by this view instance.
      */
-    default <C extends Collection<T>> @NotNull C copy(final int offset, final int size, final @NotNull IntFunction<C> factory) {
+    default <C extends Collection<T>> @NotNull C copy(final int offset, final int size,
+                                                      final @NotNull IntFunction<C> factory) {
         if (offset < 0 || offset > size() || size <= 0) {
             throw new ArrayIndexOutOfBoundsException("Invalid slice range");
         }
@@ -253,7 +249,7 @@ public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
      *                pre-allocated with the given size.
      * @param <C>     The type of the collection to create.
      * @return A new collection instance of type {@link C}, containing all elements
-     *         given access to by this view instance.
+     * given access to by this view instance.
      */
     default <C extends Collection<T>> @NotNull C copy(final @NotNull IntFunction<C> factory) {
         return copy(0, size(), factory);

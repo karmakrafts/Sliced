@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +55,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      *
      * @param key The key to check for.
      * @return True if the given key is present within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     boolean containsKey(final @Nullable K key);
 
@@ -66,7 +65,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      *
      * @param value The value to check for.
      * @return True if the given value is present within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     boolean containsValue(final @Nullable V value);
 
@@ -93,7 +92,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      * the map, which is referenced by this view instance.
      *
      * @return A new stream instance of all keys contained within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     default @NotNull Stream<K> keyStream() {
         return keys().stream();
@@ -104,7 +103,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      * the map, which is referenced by this view instance.
      *
      * @return A new parallel stream instance of all keys contained within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     default @NotNull Stream<K> parallelKeyStream() {
         return keys().parallelStream();
@@ -123,7 +122,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      * the map, which is referenced by this view instance.
      *
      * @return A new stream instance of all values contained within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     default @NotNull Stream<V> valueStream() {
         return values().stream();
@@ -134,7 +133,7 @@ public interface MapView<K, V> extends View<Entry<K, V>> {
      * the map, which is referenced by this view instance.
      *
      * @return A new parallel stream instance of all values contained within
-     *         the map referenced by this view instance.
+     * the map referenced by this view instance.
      */
     default @NotNull Stream<V> parallelValueStream() {
         return values().parallelStream();

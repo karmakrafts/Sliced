@@ -1,11 +1,10 @@
 /*
- * Copyright 2022 Karma Krafts
- *
+ * Copyright 2022 - 2024 Karma Krafts & associates
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -44,7 +43,7 @@ public interface LongView extends View<Long> {
      * elements referenced by this slice instance.
      *
      * @return A new {@link LongIterator} from the
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     @NotNull LongIterator longIterator();
 
@@ -53,7 +52,7 @@ public interface LongView extends View<Long> {
      * elements referenced by this slice instance.
      *
      * @return A new {@link Spliterator.OfLong} from the
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     @NotNull Spliterator.OfLong longSpliterator();
 
@@ -70,7 +69,7 @@ public interface LongView extends View<Long> {
      * for the elements referenced by this slice instance.
      *
      * @return A new {@link LongStream} instance of all
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     default @NotNull LongStream longStream() {
         return StreamSupport.longStream(longSpliterator(), false);
@@ -81,7 +80,7 @@ public interface LongView extends View<Long> {
      * for the elements referenced by this slice instance.
      *
      * @return A new {@link LongStream} instance of all
-     *         elements referenced by this slice instance.
+     * elements referenced by this slice instance.
      */
     default @NotNull LongStream parallelLongStream() {
         return StreamSupport.longStream(longSpliterator(), true);

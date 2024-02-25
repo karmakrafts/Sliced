@@ -18,6 +18,7 @@ package io.karma.sliced.view;
 import io.karma.sliced.slice.Slice;
 import io.karma.sliced.view.impl.ArrayView;
 import io.karma.sliced.view.impl.CollectionView;
+import io.karma.sliced.view.impl.EmptyView;
 import io.karma.sliced.view.impl.ListView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,16 @@ import java.util.stream.StreamSupport;
  */
 @API(status = API.Status.STABLE)
 public interface View<T> extends Iterable<T> {
+    /**
+     * Creates an empty view for the given type which has no elements.
+     *
+     * @return An empty view for the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> View<T> empty() {
+        return (View<T>) EmptyView.INSTANCE;
+    }
+
     /**
      * Creates a new view instance which references the given array.<br>
      *

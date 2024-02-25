@@ -16,6 +16,7 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.slice.impl.ArraySlice;
+import io.karma.sliced.slice.impl.EmptySlice;
 import io.karma.sliced.slice.impl.ListSlice;
 import io.karma.sliced.util.ResettableEnumeration;
 import io.karma.sliced.view.View;
@@ -47,6 +48,17 @@ import java.util.function.Supplier;
  */
 @API(status = API.Status.STABLE)
 public interface Slice<T> extends View<T>, ResettableEnumeration<T> {
+    /**
+     * Creates a new slice of the given type which has no elements.
+     *
+     * @param <T> The type of the slice to be created.
+     * @return A new slice of the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> Slice<T> empty() {
+        return (Slice<T>) EmptySlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

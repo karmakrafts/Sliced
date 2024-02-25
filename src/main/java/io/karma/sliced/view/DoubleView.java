@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.DoubleIterator;
 import io.karma.sliced.view.impl.ArrayDoubleView;
+import io.karma.sliced.view.impl.EmptyDoubleView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,15 @@ import java.util.stream.StreamSupport;
  */
 @API(status = Status.STABLE)
 public interface DoubleView extends View<Double> {
+    /**
+     * Creates an empty double view with no elements.
+     *
+     * @return An empty double view with no elements.
+     */
+    static DoubleView empty() {
+        return EmptyDoubleView.INSTANCE;
+    }
+
     static @NotNull DoubleView of(final double... ref) {
         return new ArrayDoubleView(ref);
     }

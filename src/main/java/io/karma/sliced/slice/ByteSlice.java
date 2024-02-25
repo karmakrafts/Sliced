@@ -17,6 +17,7 @@ package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ByteFunction;
 import io.karma.sliced.slice.impl.ArrayByteSlice;
+import io.karma.sliced.slice.impl.EmptyByteSlice;
 import io.karma.sliced.view.ByteView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @API(status = Status.STABLE)
 public interface ByteSlice extends ByteView, Slice<Byte> {
+    /**
+     * Creates a new byte slice which has no elements.
+     *
+     * @return A new byte slice which has no elements.
+     */
+    static ByteSlice empty() {
+        return EmptyByteSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

@@ -16,6 +16,7 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.slice.impl.ArrayIntSlice;
+import io.karma.sliced.slice.impl.EmptyIntSlice;
 import io.karma.sliced.view.IntView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -33,6 +34,15 @@ import java.util.function.IntFunction;
  */
 @API(status = Status.STABLE)
 public interface IntSlice extends IntView, Slice<Integer> {
+    /**
+     * Creates a new int slice which has no elements.
+     *
+     * @return A new int slice which has no elements.
+     */
+    static IntSlice empty() {
+        return EmptyIntSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.ByteIterator;
 import io.karma.sliced.view.impl.ArrayByteView;
+import io.karma.sliced.view.impl.EmptyByteView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,15 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ByteView extends View<Byte> {
+    /**
+     * Creates an empty byte view with no elements.
+     *
+     * @return An empty byte view with no elements.
+     */
+    static ByteView empty() {
+        return EmptyByteView.INSTANCE;
+    }
+
     static @NotNull ByteView of(final byte... ref) {
         return new ArrayByteView(ref);
     }

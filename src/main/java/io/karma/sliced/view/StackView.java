@@ -15,6 +15,7 @@
 
 package io.karma.sliced.view;
 
+import io.karma.sliced.view.impl.EmptyStackView;
 import io.karma.sliced.view.impl.StackViewImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,16 @@ import java.util.Stack;
  */
 @API(status = Status.STABLE)
 public interface StackView<T> extends View<T> {
+    /**
+     * Creates an empty stack view for the given type which has no elements.
+     *
+     * @return An empty stack view for the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> StackView<T> empty() {
+        return (StackView<T>) EmptyStackView.INSTANCE;
+    }
+
     /**
      * Creates a new view instance which references the given {@link Stack}.
      *

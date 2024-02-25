@@ -30,6 +30,23 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface LongIterator extends Iterator<Long>, Resettable {
+    LongIterator NOP = new LongIterator() {
+        @Override
+        public long nextLong() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull LongIterator of(final long[] ref, final int offset, final int size) {
         return new RangedArrayLongIterator(ref, offset, size);
     }

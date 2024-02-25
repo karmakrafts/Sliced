@@ -34,6 +34,18 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface CharIterator extends Iterator<Character> {
+    CharIterator NOP = new CharIterator() {
+        @Override
+        public char nextChar() {
+            return 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull CharIterator of(final @NotNull CharSequence ref, final int offset, final int size) {
         return new RangedCharSeqCharIterator(ref, offset, size);
     }

@@ -15,6 +15,7 @@
 
 package io.karma.sliced.slice;
 
+import io.karma.sliced.slice.impl.EmptyStackSlice;
 import io.karma.sliced.slice.impl.StackSliceImpl;
 import io.karma.sliced.view.StackView;
 import org.apiguardian.api.API;
@@ -32,6 +33,17 @@ import java.util.Stack;
  */
 @API(status = API.Status.STABLE)
 public interface StackSlice<T> extends Slice<T>, StackView<T> {
+    /**
+     * Creates a new stack slice of the given type which has no elements.
+     *
+     * @param <T> The type of the slice to be created.
+     * @return A new stack slice of the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> StackSlice<T> empty() {
+        return (StackSlice<T>) EmptyStackSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given {@link Stack}.
      *

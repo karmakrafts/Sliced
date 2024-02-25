@@ -16,6 +16,7 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.slice.impl.ArrayLongSlice;
+import io.karma.sliced.slice.impl.EmptyLongSlice;
 import io.karma.sliced.view.LongView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -33,6 +34,15 @@ import java.util.function.LongFunction;
  */
 @API(status = Status.STABLE)
 public interface LongSlice extends LongView, Slice<Long> {
+    /**
+     * Creates a new long slice which has no elements.
+     *
+     * @return A new long slice which has no elements.
+     */
+    static LongSlice empty() {
+        return EmptyLongSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

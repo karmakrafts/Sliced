@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.ShortIterator;
 import io.karma.sliced.view.impl.ArrayShortView;
+import io.karma.sliced.view.impl.EmptyShortView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,15 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ShortView extends View<Short> {
+    /**
+     * Creates an empty short view with no elements.
+     *
+     * @return An empty short view with no elements.
+     */
+    static ShortView empty() {
+        return EmptyShortView.INSTANCE;
+    }
+
     static @NotNull ShortView of(final short... ref) {
         return new ArrayShortView(ref);
     }

@@ -30,6 +30,23 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface FloatIterator extends Iterator<Float>, Resettable {
+    FloatIterator NOP = new FloatIterator() {
+        @Override
+        public float nextFloat() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull FloatIterator of(final float[] ref, final int offset, final int size) {
         return new RangedArrayFloatIterator(ref, offset, size);
     }

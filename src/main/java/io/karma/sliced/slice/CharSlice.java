@@ -17,6 +17,7 @@ package io.karma.sliced.slice;
 
 import io.karma.sliced.slice.impl.ArrayCharSlice;
 import io.karma.sliced.slice.impl.CharSeqSlice;
+import io.karma.sliced.slice.impl.EmptyCharSlice;
 import io.karma.sliced.view.CharView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -31,6 +32,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @API(status = Status.STABLE)
 public interface CharSlice extends CharView, Slice<Character> {
+    /**
+     * Creates a new char slice which has no elements.
+     *
+     * @return A new char slice which has no elements.
+     */
+    static CharSlice empty() {
+        return EmptyCharSlice.INSTANCE;
+    }
+
     /**
      * Creates a new string slice for the given character sequence,
      * with the given start- and end index.<br>

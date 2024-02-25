@@ -16,6 +16,7 @@
 package io.karma.sliced.view;
 
 import io.karma.sliced.view.impl.DequeViewImpl;
+import io.karma.sliced.view.impl.EmptyDequeView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,16 @@ import java.util.Deque;
  */
 @API(status = Status.STABLE)
 public interface DequeView<T> extends QueueView<T> {
+    /**
+     * Creates an empty deque view for the given type which has no elements.
+     *
+     * @return An empty deque view for the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> DequeView<T> empty() {
+        return (DequeView<T>) EmptyDequeView.INSTANCE;
+    }
+
     /**
      * Creates a new view instance which references the given {@link Deque}.
      *

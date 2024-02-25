@@ -17,6 +17,7 @@ package io.karma.sliced.slice;
 
 import io.karma.sliced.function.ShortFunction;
 import io.karma.sliced.slice.impl.ArrayShortSlice;
+import io.karma.sliced.slice.impl.EmptyShortSlice;
 import io.karma.sliced.view.ShortView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @API(status = Status.STABLE)
 public interface ShortSlice extends ShortView, Slice<Short> {
+    /**
+     * Creates a new short slice which has no elements.
+     *
+     * @return A new short slice which has no elements.
+     */
+    static ShortSlice empty() {
+        return EmptyShortSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

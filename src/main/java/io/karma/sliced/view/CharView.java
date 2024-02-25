@@ -20,6 +20,7 @@ import io.karma.sliced.iterator.TextIterator;
 import io.karma.sliced.iterator.impl.CharSeqCharIterator;
 import io.karma.sliced.iterator.impl.CharSeqTextIterator;
 import io.karma.sliced.view.impl.ArrayCharView;
+import io.karma.sliced.view.impl.EmptyCharView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,15 @@ import java.util.regex.Pattern;
  */
 @API(status = Status.STABLE)
 public interface CharView extends View<Character>, CharSequence {
+    /**
+     * Creates an empty char view with no elements.
+     *
+     * @return An empty char view with no elements.
+     */
+    static CharView empty() {
+        return EmptyCharView.INSTANCE;
+    }
+
     static @NotNull CharView of(final char... ref) {
         return new ArrayCharView(ref);
     }

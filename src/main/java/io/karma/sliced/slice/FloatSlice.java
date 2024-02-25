@@ -17,6 +17,7 @@ package io.karma.sliced.slice;
 
 import io.karma.sliced.function.FloatFunction;
 import io.karma.sliced.slice.impl.ArrayFloatSlice;
+import io.karma.sliced.slice.impl.EmptyFloatSlice;
 import io.karma.sliced.view.FloatView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @API(status = Status.STABLE)
 public interface FloatSlice extends FloatView, Slice<Float> {
+    /**
+     * Creates a new float slice which has no elements.
+     *
+     * @return A new float slice which has no elements.
+     */
+    static FloatSlice empty() {
+        return EmptyFloatSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

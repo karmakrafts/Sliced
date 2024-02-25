@@ -15,25 +15,42 @@
 
 package io.karma.sliced.view.impl;
 
+import io.karma.sliced.iterator.LongIterator;
+import io.karma.sliced.slice.LongSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.LongView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyLongView implements LongView {
+    public static final EmptyLongView INSTANCE = new EmptyLongView();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyLongView() {}
     // @formatter:on
+
+    @Override
+    public @NotNull LongIterator longIterator() {
+        return LongIterator.NOP;
+    }
+
+    @Override
+    public @NotNull Spliterator.OfLong longSpliterator() {
+        return Spliterators.emptyLongSpliterator();
+    }
+
+    @Override
+    public long[] toLongArray() {
+        return new long[0];
+    }
 
     @Override
     public int size() {
@@ -41,13 +58,7 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public @NotNull Slice<Long> asSlice() {
+        return LongSlice.empty();
     }
 }

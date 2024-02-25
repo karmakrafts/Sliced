@@ -13,27 +13,55 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.view.impl;
+package io.karma.sliced.slice.impl;
 
+import io.karma.sliced.iterator.ByteIterator;
+import io.karma.sliced.slice.ByteSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyByteSlice implements ByteSlice {
+    public static final EmptyByteSlice INSTANCE = new EmptyByteSlice();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyByteSlice() {}
     // @formatter:on
+
+    @Override
+    public byte getByte(final int index) {
+        return 0;
+    }
+
+    @Override
+    public byte[] toByteArray(final int offset, final int size) {
+        return new byte[0];
+    }
+
+    @Override
+    public int offset() {
+        return 0;
+    }
+
+    @Override
+    public @NotNull Slice<Byte> slice(final int offset, final int size) {
+        return this;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public @NotNull ByteIterator byteIterator() {
+        return ByteIterator.NOP;
+    }
 
     @Override
     public int size() {
@@ -41,13 +69,12 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
+    public boolean hasMoreElements() {
+        return false;
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public Byte nextElement() {
+        return null;
     }
 }

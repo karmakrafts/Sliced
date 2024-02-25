@@ -15,25 +15,34 @@
 
 package io.karma.sliced.view.impl;
 
+import io.karma.sliced.iterator.ByteIterator;
+import io.karma.sliced.slice.ByteSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.ByteView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyByteView implements ByteView {
+    public static final EmptyByteView INSTANCE = new EmptyByteView();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyByteView() {}
     // @formatter:on
+
+    @Override
+    public @NotNull ByteIterator byteIterator() {
+        return ByteIterator.NOP;
+    }
+
+    @Override
+    public byte[] toByteArray() {
+        return new byte[0];
+    }
 
     @Override
     public int size() {
@@ -41,13 +50,7 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public @NotNull Slice<Byte> asSlice() {
+        return ByteSlice.empty();
     }
 }

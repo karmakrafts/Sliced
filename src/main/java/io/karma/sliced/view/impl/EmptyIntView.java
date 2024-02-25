@@ -15,25 +15,42 @@
 
 package io.karma.sliced.view.impl;
 
+import io.karma.sliced.iterator.IntIterator;
+import io.karma.sliced.slice.IntSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.IntView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyIntView implements IntView {
+    public static final EmptyIntView INSTANCE = new EmptyIntView();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyIntView() {}
     // @formatter:on
+
+    @Override
+    public @NotNull IntIterator intIterator() {
+        return IntIterator.NOP;
+    }
+
+    @Override
+    public @NotNull Spliterator.OfInt intSpliterator() {
+        return Spliterators.emptyIntSpliterator();
+    }
+
+    @Override
+    public int[] toIntArray() {
+        return new int[0];
+    }
 
     @Override
     public int size() {
@@ -41,13 +58,7 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public @NotNull Slice<Integer> asSlice() {
+        return IntSlice.empty();
     }
 }

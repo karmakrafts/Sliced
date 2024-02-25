@@ -17,23 +17,49 @@ package io.karma.sliced.view.impl;
 
 import io.karma.sliced.slice.Slice;
 import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.MapView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyMapView<K, V> implements MapView<K, V> {
+    public static final EmptyMapView<?, ?> INSTANCE = new EmptyMapView<>();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyMapView() {}
     // @formatter:on
+
+    @Override
+    public boolean containsKey(@Nullable K key) {
+        return false;
+    }
+
+    @Override
+    public boolean containsValue(@Nullable V value) {
+        return false;
+    }
+
+    @Override
+    public V get(@Nullable K key) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Set<K> keys() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public @NotNull Collection<V> values() {
+        return Collections.emptyList();
+    }
 
     @Override
     public int size() {
@@ -41,13 +67,13 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
+    public @NotNull Slice<Map.Entry<K, V>> asSlice() {
         return Slice.empty();
     }
 
     @NotNull
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<Map.Entry<K, V>> iterator() {
         return NopIterator.instance();
     }
 }

@@ -33,6 +33,23 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ShortIterator extends Iterator<Short>, Resettable {
+    ShortIterator NOP = new ShortIterator() {
+        @Override
+        public short nextShort() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull ShortIterator of(final short[] ref, final int offset, final int size) {
         return new RangedArrayShortIterator(ref, offset, size);
     }

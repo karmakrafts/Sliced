@@ -13,27 +13,55 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.view.impl;
+package io.karma.sliced.slice.impl;
 
+import io.karma.sliced.iterator.ShortIterator;
+import io.karma.sliced.slice.ShortSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyShortSlice implements ShortSlice {
+    public static final EmptyShortSlice INSTANCE = new EmptyShortSlice();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyShortSlice() {}
     // @formatter:on
+
+    @Override
+    public short getShort(final int index) {
+        return 0;
+    }
+
+    @Override
+    public short[] toShortArray(final int offset, final int size) {
+        return new short[0];
+    }
+
+    @Override
+    public int offset() {
+        return 0;
+    }
+
+    @Override
+    public @NotNull Slice<Short> slice(final int offset, final int size) {
+        return this;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public @NotNull ShortIterator shortIterator() {
+        return ShortIterator.NOP;
+    }
 
     @Override
     public int size() {
@@ -41,13 +69,12 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
+    public boolean hasMoreElements() {
+        return false;
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public Short nextElement() {
+        return null;
     }
 }

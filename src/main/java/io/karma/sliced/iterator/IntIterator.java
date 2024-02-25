@@ -33,6 +33,23 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface IntIterator extends Iterator<Integer>, Resettable {
+    IntIterator NOP = new IntIterator() {
+        @Override
+        public int nextInt() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull IntIterator of(final int[] ref, final int offset, final int size) {
         return new RangedArrayIntIterator(ref, offset, size);
     }

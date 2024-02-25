@@ -15,25 +15,34 @@
 
 package io.karma.sliced.view.impl;
 
+import io.karma.sliced.iterator.FloatIterator;
+import io.karma.sliced.slice.FloatSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.FloatView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyFloatView implements FloatView {
+    public static final EmptyFloatView INSTANCE = new EmptyFloatView();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyFloatView() {}
     // @formatter:on
+
+    @Override
+    public @NotNull FloatIterator floatIterator() {
+        return FloatIterator.NOP;
+    }
+
+    @Override
+    public float[] toFloatArray() {
+        return new float[0];
+    }
 
     @Override
     public int size() {
@@ -41,13 +50,7 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
-    }
-
-    @NotNull
-    @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public @NotNull Slice<Float> asSlice() {
+        return FloatSlice.empty();
     }
 }

@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.view.impl;
+package io.karma.sliced.slice.impl;
 
 import io.karma.sliced.slice.Slice;
+import io.karma.sliced.slice.StackSlice;
 import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,12 +28,37 @@ import java.util.Iterator;
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyStackSlice<T> implements StackSlice<T> {
+    public static final EmptyStackSlice<?> INSTANCE = new EmptyStackSlice<>();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyStackSlice() {}
     // @formatter:on
+
+    @Override
+    public int offset() {
+        return 0;
+    }
+
+    @Override
+    public T get(final int index) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Slice<T> slice(final int offset, final int size) {
+        return this;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public T peek() {
+        return null;
+    }
 
     @Override
     public int size() {
@@ -42,12 +67,22 @@ public final class EmptyView<T> implements View<T> {
 
     @Override
     public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
+        return this;
     }
 
     @NotNull
     @Override
     public Iterator<T> iterator() {
         return NopIterator.instance();
+    }
+
+    @Override
+    public boolean hasMoreElements() {
+        return false;
+    }
+
+    @Override
+    public T nextElement() {
+        return null;
     }
 }

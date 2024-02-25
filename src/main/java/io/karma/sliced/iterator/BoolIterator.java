@@ -33,6 +33,22 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface BoolIterator extends Iterator<Boolean>, Resettable {
+    BoolIterator NOP = new BoolIterator() {
+        @Override
+        public boolean nextBool() {
+            return false;
+        }
+
+        @Override
+        public void reset() {
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull BoolIterator of(final boolean[] ref, final int offset, final int size) {
         return new RangedArrayBoolIterator(ref, offset, size);
     }

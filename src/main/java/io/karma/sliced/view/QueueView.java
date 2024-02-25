@@ -15,6 +15,7 @@
 
 package io.karma.sliced.view;
 
+import io.karma.sliced.view.impl.EmptyQueueView;
 import io.karma.sliced.view.impl.QueueViewImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,16 @@ import java.util.Queue;
  */
 @API(status = Status.STABLE)
 public interface QueueView<T> extends View<T> {
+    /**
+     * Creates an empty queue view for the given type which has no elements.
+     *
+     * @return An empty queue view for the given type which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> QueueView<T> empty() {
+        return (QueueView<T>) EmptyQueueView.INSTANCE;
+    }
+
     /**
      * Creates a new view instance which references the given {@link Queue}.
      *

@@ -17,6 +17,7 @@ package io.karma.sliced.slice;
 
 import io.karma.sliced.function.BoolFunction;
 import io.karma.sliced.slice.impl.ArrayBoolSlice;
+import io.karma.sliced.slice.impl.EmptyBoolSlice;
 import io.karma.sliced.view.BoolView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -32,6 +33,15 @@ import org.jetbrains.annotations.NotNull;
  */
 @API(status = Status.STABLE)
 public interface BoolSlice extends BoolView, Slice<Boolean> {
+    /**
+     * Creates a new boolean slice which has no elements.
+     *
+     * @return A new boolean slice which has no elements.
+     */
+    static BoolSlice empty() {
+        return EmptyBoolSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

@@ -13,27 +13,55 @@
  * limitations under the License.
  */
 
-package io.karma.sliced.view.impl;
+package io.karma.sliced.slice.impl;
 
+import io.karma.sliced.iterator.BoolIterator;
+import io.karma.sliced.slice.BoolSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyBoolSlice implements BoolSlice {
+    public static final EmptyBoolSlice INSTANCE = new EmptyBoolSlice();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyBoolSlice() {}
     // @formatter:on
+
+    @Override
+    public boolean getBool(final int index) {
+        return false;
+    }
+
+    @Override
+    public boolean[] toBoolArray(final int offset, final int size) {
+        return new boolean[0];
+    }
+
+    @Override
+    public int offset() {
+        return 0;
+    }
+
+    @Override
+    public @NotNull Slice<Boolean> slice(final int offset, final int size) {
+        return this;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    @Override
+    public @NotNull BoolIterator boolIterator() {
+        return BoolIterator.NOP;
+    }
 
     @Override
     public int size() {
@@ -41,13 +69,12 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
+    public boolean hasMoreElements() {
+        return false;
     }
 
-    @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public Boolean nextElement() {
+        return null;
     }
 }

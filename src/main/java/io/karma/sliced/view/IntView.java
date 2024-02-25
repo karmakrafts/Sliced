@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.IntIterator;
 import io.karma.sliced.view.impl.ArrayIntView;
+import io.karma.sliced.view.impl.EmptyIntView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,15 @@ import java.util.stream.StreamSupport;
  */
 @API(status = Status.STABLE)
 public interface IntView extends View<Integer> {
+    /**
+     * Creates an empty int view with no elements.
+     *
+     * @return An empty int view with no elements.
+     */
+    static IntView empty() {
+        return EmptyIntView.INSTANCE;
+    }
+
     static @NotNull IntView of(final int... ref) {
         return new ArrayIntView(ref);
     }

@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.FloatIterator;
 import io.karma.sliced.view.impl.ArrayFloatView;
+import io.karma.sliced.view.impl.EmptyFloatView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,15 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface FloatView extends View<Float> {
+    /**
+     * Creates an empty float view with no elements.
+     *
+     * @return An empty float view with no elements.
+     */
+    static FloatView empty() {
+        return EmptyFloatView.INSTANCE;
+    }
+
     static @NotNull FloatView of(final float... ref) {
         return new ArrayFloatView(ref);
     }

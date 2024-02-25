@@ -33,6 +33,23 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface ByteIterator extends Iterator<Byte>, Resettable {
+    ByteIterator NOP = new ByteIterator() {
+        @Override
+        public byte nextByte() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull ByteIterator of(final byte[] ref, final int offset, final int size) {
         return new RangedArrayByteIterator(ref, offset, size);
     }

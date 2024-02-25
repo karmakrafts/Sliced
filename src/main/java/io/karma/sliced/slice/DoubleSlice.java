@@ -16,6 +16,7 @@
 package io.karma.sliced.slice;
 
 import io.karma.sliced.slice.impl.ArrayDoubleSlice;
+import io.karma.sliced.slice.impl.EmptyDoubleSlice;
 import io.karma.sliced.view.DoubleView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -33,6 +34,15 @@ import java.util.function.DoubleFunction;
  */
 @API(status = Status.STABLE)
 public interface DoubleSlice extends DoubleView, Slice<Double> {
+    /**
+     * Creates a new double slice which has no elements.
+     *
+     * @return A new double slice which has no elements.
+     */
+    static DoubleSlice empty() {
+        return EmptyDoubleSlice.INSTANCE;
+    }
+
     /**
      * Creates a new slice instance which references the given array.
      *

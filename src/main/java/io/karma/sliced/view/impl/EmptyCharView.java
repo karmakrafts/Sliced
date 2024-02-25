@@ -15,25 +15,28 @@
 
 package io.karma.sliced.view.impl;
 
+import io.karma.sliced.slice.CharSlice;
 import io.karma.sliced.slice.Slice;
-import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.CharView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Iterator;
 
 /**
  * @author Alexander Hinze
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyCharView implements CharView {
+    public static final EmptyCharView INSTANCE = new EmptyCharView();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyCharView() {}
     // @formatter:on
+
+    @Override
+    public char[] toCharArray() {
+        return new char[0];
+    }
 
     @Override
     public int size() {
@@ -41,13 +44,23 @@ public final class EmptyView<T> implements View<T> {
     }
 
     @Override
-    public @NotNull Slice<T> asSlice() {
-        return Slice.empty();
+    public @NotNull Slice<Character> asSlice() {
+        return CharSlice.empty();
+    }
+
+    @Override
+    public int length() {
+        return 0;
+    }
+
+    @Override
+    public char charAt(final int i) {
+        return 0;
     }
 
     @NotNull
     @Override
-    public Iterator<T> iterator() {
-        return NopIterator.instance();
+    public CharSequence subSequence(final int i, final int i1) {
+        return "";
     }
 }

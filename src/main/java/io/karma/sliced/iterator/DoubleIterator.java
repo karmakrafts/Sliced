@@ -30,6 +30,23 @@ import java.util.Iterator;
  * @since 25/08/2022
  */
 public interface DoubleIterator extends Iterator<Double>, Resettable {
+    DoubleIterator NOP = new DoubleIterator() {
+        @Override
+        public double nextDouble() {
+            return 0;
+        }
+
+        @Override
+        public void reset() {
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+    };
+
     static @NotNull DoubleIterator of(final double[] ref, final int offset, final int size) {
         return new RangedArrayDoubleIterator(ref, offset, size);
     }

@@ -17,6 +17,7 @@ package io.karma.sliced.view;
 
 import io.karma.sliced.iterator.BoolIterator;
 import io.karma.sliced.view.impl.ArrayBoolView;
+import io.karma.sliced.view.impl.EmptyBoolView;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,15 @@ import java.util.Iterator;
  */
 @API(status = Status.STABLE)
 public interface BoolView extends View<Boolean> {
+    /**
+     * Creates an empty boolean view with no elements.
+     *
+     * @return An empty boolean view with no elements.
+     */
+    static BoolView empty() {
+        return EmptyBoolView.INSTANCE;
+    }
+
     static @NotNull BoolView of(final boolean... ref) {
         return new ArrayBoolView(ref);
     }

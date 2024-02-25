@@ -17,7 +17,7 @@ package io.karma.sliced.view.impl;
 
 import io.karma.sliced.slice.Slice;
 import io.karma.sliced.util.NopIterator;
-import io.karma.sliced.view.View;
+import io.karma.sliced.view.QueueView;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,12 +28,17 @@ import java.util.Iterator;
  * @since 25/02/2024
  */
 @API(status = API.Status.INTERNAL)
-public final class EmptyView<T> implements View<T> {
-    public static final EmptyView<?> INSTANCE = new EmptyView<>();
+public final class EmptyQueueView<T> implements QueueView<T> {
+    public static final EmptyQueueView<?> INSTANCE = new EmptyQueueView<>();
 
     // @formatter:off
-    private EmptyView() {}
+    private EmptyQueueView() {}
     // @formatter:on
+
+    @Override
+    public T peek() {
+        return null;
+    }
 
     @Override
     public int size() {

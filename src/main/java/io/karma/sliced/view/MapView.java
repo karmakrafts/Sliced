@@ -15,6 +15,7 @@
 
 package io.karma.sliced.view;
 
+import io.karma.sliced.view.impl.EmptyMapView;
 import io.karma.sliced.view.impl.MapViewImpl;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -37,6 +38,16 @@ import java.util.stream.Stream;
  */
 @API(status = Status.EXPERIMENTAL)
 public interface MapView<K, V> extends View<Entry<K, V>> {
+    /**
+     * Creates an empty map view for the given types which has no elements.
+     *
+     * @return An empty map view for the given types which has no elements.
+     */
+    @SuppressWarnings("unchecked")
+    static <K, V> MapView<K, V> empty() {
+        return (MapView<K, V>) EmptyMapView.INSTANCE;
+    }
+
     /**
      * Creates a new view instance which references the given {@link Map}.
      *
